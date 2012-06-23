@@ -13,7 +13,6 @@ ofxGuiImage * ofxGuiImage::setup(string _name, ofImage* _imgPtr, float width ) {
 	b.y = 0;
 	b.width = width;
 	float scale = width/_imgPtr->width;
-	cout << "Scale:" << scale << endl;
 	b.height = _imgPtr->height*scale;
 	currentFrame = 0;
 	bGuiActive = false;
