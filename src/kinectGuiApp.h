@@ -48,4 +48,7 @@ class kinectGuiApp : public ofBaseApp {
         void setupGui();
         ofxPanel guiApp;
         ofxFloatSlider fpsSlider;
+
+        ofxPanel guiKinect;
+        ofxFloatSlider kinectAngle;
 };

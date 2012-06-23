@@ -47,6 +47,10 @@ void kinectGuiApp::setupKinect() {
 void kinectGuiApp::setupGui() {
     guiApp.setup("KinectGui");
     guiApp.add( fpsSlider.setup("FPS", 0.0, 0.0, 60.0 + 10.0) );
+
+    guiKinect.setup("Kinect");
+    guiKinect.setPosition(guiApp.getShape().width+guiApp.getPosition().x+10.0, 10.0);
+    guiKinect.add( kinectAngle.setup("Angle", 0.0, -30.0, 30.0) );
 }
 
 //--------------------------------------------------------------
@@ -128,8 +132,11 @@ void kinectGuiApp::draw(){
     easyCam.begin();
     drawPointCloud();
     easyCam.end();
+
     guiApp.draw();
+    guiKinect.draw();
 }
+
 
 void kinectGuiApp::drawPointCloud() {
     int w = 640;
@@ -155,7 +162,6 @@ void kinectGuiApp::drawPointCloud() {
     glDisable(GL_DEPTH_TEST);
     ofPopMatrix();
 }
-
 
 //--------------------------------------------------------------
 void kinectGuiApp::keyPressed(int key){
