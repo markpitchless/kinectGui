@@ -47,12 +47,12 @@ void kinectGuiApp::setupGui() {
     guiApp.add( fpsSlider.setup("FPS", 60.0 + 10.0) );
     guiApp.add( showGui.setup("Show Gui", true) );
     guiApp.loadFromFile("settings.xml");
-
     guiKinect.setup("Kinect");
     guiKinect.setPosition(guiApp.getShape().width+guiApp.getPosition().x+10.0, 10.0);
     guiKinect.add( kinectAngle.setup("Angle", 0.0, -30.0, 30.0) );
     kinectAngle.addListener(this, &kinectGuiApp::setKinectAngle);
     guiKinect.add( kinectFlip.setup("H Flip Image", false) );
+    guiKinect.add( colorImageGui.setup("Color Image", (ofImage*)&colorImg) );
     guiKinect.loadFromFile("settings.xml");
 }
 
