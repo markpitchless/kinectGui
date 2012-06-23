@@ -39,24 +39,3 @@ void ofxFpsSlider::draw() {
     ofPopMatrix();
     ofPopStyle();
 }
-
-void ofxFpsSlider::mouseMoved(ofMouseEventArgs& args) {
-}
-
-void ofxFpsSlider::mousePressed(ofMouseEventArgs& args) {
-}
-
-void ofxFpsSlider::mouseDragged(ofMouseEventArgs& args) {
-}
-
-void ofxFpsSlider::mouseReleased(ofMouseEventArgs& args) {
-}
-
-void ofxFpsSlider::saveToXml(ofxXmlSettings& xml) {
-}
-
-void ofxFpsSlider::loadFromXml(ofxXmlSettings& xml) {
-}
-
-
-

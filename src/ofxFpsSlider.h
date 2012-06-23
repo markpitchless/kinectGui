@@ -12,12 +12,12 @@ public:
     void draw();
 
     // Abstract methods we must implement
-	virtual void mouseMoved(ofMouseEventArgs & args);
-	virtual void mousePressed(ofMouseEventArgs & args);
-	virtual void mouseDragged(ofMouseEventArgs & args);
-	virtual void mouseReleased(ofMouseEventArgs & args);
-	virtual void saveToXml(ofxXmlSettings& xml) ;
-	virtual void loadFromXml(ofxXmlSettings& xml);
+	virtual void mouseMoved(ofMouseEventArgs & args){}
+	virtual void mousePressed(ofMouseEventArgs & args){}
+	virtual void mouseDragged(ofMouseEventArgs & args){}
+	virtual void mouseReleased(ofMouseEventArgs & args){}
+	virtual void saveToXml(ofxXmlSettings& xml){}
+	virtual void loadFromXml(ofxXmlSettings& xml){}
 	virtual void setValue(float mx, float my, bool bCheckBounds){}
 
 protected:
