@@ -44,13 +44,15 @@ void kinectGuiApp::setupKinect() {
 
 void kinectGuiApp::setupGui() {
     guiApp.setup("KinectGui");
-    guiApp.add( fpsSlider.setup("FPS", 0.0, 0.0, 60.0 + 10.0) );
+    guiApp.add( fpsSlider.setup("FPS", 60.0 + 10.0) );
+    guiApp.loadFromFile("settings.xml");
 
     guiKinect.setup("Kinect");
     guiKinect.setPosition(guiApp.getShape().width+guiApp.getPosition().x+10.0, 10.0);
     guiKinect.add( kinectAngle.setup("Angle", 0.0, -30.0, 30.0) );
     kinectAngle.addListener(this, &kinectGuiApp::setKinectAngle);
     guiKinect.add( kinectFlip.setup("H Flip Image", false) );
+    guiKinect.loadFromFile("settings.xml");
 }
 
 //--------------------------------------------------------------
@@ -77,8 +79,6 @@ void kinectGuiApp::setFarThreshold(int n) {
 
 //--------------------------------------------------------------
 void kinectGuiApp::update(){
-    fpsSlider = ofGetFrameRate();
-
     // there is a new frame and we are connected
     kinect.update();
     if(kinect.isFrameNew()) {

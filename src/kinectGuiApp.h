@@ -5,6 +5,8 @@
 #include "ofxOpenCv.h"
 #include "ofxKinect.h"
 
+// Custom controls.
+#include "ofxFpsSlider.h"
 
 class kinectGuiApp : public ofBaseApp {
 
@@ -46,7 +48,7 @@ class kinectGuiApp : public ofBaseApp {
 
         void setupGui();
         ofxPanel guiApp;
-        ofxFloatSlider fpsSlider;
+        ofxFpsSlider fpsSlider;
 
         ofxPanel guiKinect;
         ofxFloatSlider kinectAngle;
