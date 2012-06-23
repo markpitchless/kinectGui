@@ -52,7 +52,7 @@ void ofxGuiImage::draw(){
 
 	ofTranslate(b.x, b.y);
 	ofSetColor(ofColor::white);
-	imgPtr->draw(0, 0, b.width, b.height);
+	imgPtr->draw(textPadding, textPadding, b.width-2*textPadding, b.height-2*textPadding);
 
 	ofSetColor(textColor);
 	ofDrawBitmapString(name, textPadding, b.height-textPadding);
