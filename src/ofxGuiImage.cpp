@@ -7,6 +7,21 @@
 
 #include "ofxGuiImage.h"
 
+ofxGuiImage * ofxGuiImage::setup(string _name, ofImage* _imgPtr, float width ) {
+	name = _name;
+	b.x = 0;
+	b.y = 0;
+	b.width = width;
+	float scale = width/_imgPtr->width;
+	cout << "Scale:" << scale << endl;
+	b.height = _imgPtr->height*scale;
+	currentFrame = 0;
+	bGuiActive = false;
+	imgPtr = _imgPtr;
+
+	return this;
+}
+
 ofxGuiImage * ofxGuiImage::setup(string _name, ofImage* _imgPtr, float width, float height ) {
 	name = _name;
 	b.x = 0;

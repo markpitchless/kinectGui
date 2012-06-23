@@ -8,9 +8,10 @@ public:
     ofxGuiImage(){}
     virtual ~ofxGuiImage(){}
 
-    // Height is also set to width to give nice square image instead of
-    // of little bar.
-    ofxGuiImage * setup(string _name, ofImage* _imgPtr, float width = defaultWidth, float height = defaultWidth );
+    // Set size explicitly
+    ofxGuiImage * setup(string _name, ofImage* _imgPtr, float width, float height );
+    // Set width scale height based on img
+    ofxGuiImage * setup(string _name, ofImage* _imgPtr, float width = defaultWidth );
 
 	virtual void mouseMoved(ofMouseEventArgs & args);
 	virtual void mousePressed(ofMouseEventArgs & args);

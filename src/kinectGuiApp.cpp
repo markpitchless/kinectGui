@@ -8,8 +8,8 @@ void kinectGuiApp::setup(){
 	ofEnableAlphaBlending();
 	ofEnableSmoothing();
 
-    setupGui();
     setupKinect();
+    setupGui();
 }
 
 
