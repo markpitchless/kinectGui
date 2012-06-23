@@ -55,4 +55,6 @@ class kinectGuiApp : public ofBaseApp {
         ofxPanel guiKinect;
         ofxFloatSlider kinectAngle;
         ofxGuiImage colorImageGui;
+        ofxGuiImage depthImageGui;
+        ofxGuiImage grayImageGui;
 };

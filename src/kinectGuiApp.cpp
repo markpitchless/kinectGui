@@ -53,6 +53,8 @@ void kinectGuiApp::setupGui() {
     kinectAngle.addListener(this, &kinectGuiApp::setKinectAngle);
     guiKinect.add( kinectFlip.setup("H Flip Image", false) );
     guiKinect.add( colorImageGui.setup("Color Image", (ofImage*)&colorImg) );
+    guiKinect.add( depthImageGui.setup("Depth Image", (ofImage*)&depthImage) );
+    guiKinect.add( grayImageGui.setup("Gray Image", (ofImage*)&grayImage) );
     guiKinect.loadFromFile("settings.xml");
 }
 
