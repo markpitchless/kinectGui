@@ -1,0 +1,7 @@
+****************
+*   kinectGui   *
+****************
+
+(c) 2012 Mark Pitchless <markpitchless@gmail.com>
+
+Simple kinect GUI built using openFrameworks with ofxGui and ofxKinect.
