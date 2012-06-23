@@ -40,7 +40,7 @@ class kinectGuiApp : public ofBaseApp {
         bool bDrawPointCloud;
         int nearThreshold;
         int farThreshold;
-        bool flip_kinect;
+        ofxToggle kinectFlip;
         // used for viewing the point cloud
         ofEasyCam easyCam;
 

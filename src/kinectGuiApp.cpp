@@ -9,7 +9,6 @@ void kinectGuiApp::setup(){
 	ofEnableSmoothing();
 
     setupGui();
-    flip_kinect = false;
     setupKinect();
 }
 
@@ -51,6 +50,7 @@ void kinectGuiApp::setupGui() {
     guiKinect.setPosition(guiApp.getShape().width+guiApp.getPosition().x+10.0, 10.0);
     guiKinect.add( kinectAngle.setup("Angle", 0.0, -30.0, 30.0) );
     kinectAngle.addListener(this, &kinectGuiApp::setKinectAngle);
+    guiKinect.add( kinectFlip.setup("H Flip Image", false) );
 }
 
 //--------------------------------------------------------------
@@ -84,12 +84,12 @@ void kinectGuiApp::update(){
     if(kinect.isFrameNew()) {
         // load the rgb image
         colorImg.setFromPixels(kinect.getPixels(), kinect.width, kinect.height);
-        if (flip_kinect)
+        if (kinectFlip)
             colorImg.mirror(false,true);
 
         // load grayscale depth image from the kinect source
         depthImage.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
-        if (flip_kinect)
+        if (kinectFlip)
             depthImage.mirror(false,true);
         grayImage = depthImage;
 
