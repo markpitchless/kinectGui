@@ -25,7 +25,7 @@ class kinectGuiApp : public ofBaseApp {
         void exit();
 
         void setupKinect();
-        void setKinectAngle( int n_angle );
+        void setKinectAngle( float & n_angle );
         void setNearThreshold( int n );
         void setFarThreshold( int n);
         void drawPointCloud();
@@ -40,7 +40,6 @@ class kinectGuiApp : public ofBaseApp {
         bool bDrawPointCloud;
         int nearThreshold;
         int farThreshold;
-        int angle;
         bool flip_kinect;
         // used for viewing the point cloud
         ofEasyCam easyCam;

@@ -8,9 +8,9 @@ void kinectGuiApp::setup(){
 	ofEnableAlphaBlending();
 	ofEnableSmoothing();
 
+    setupGui();
     flip_kinect = false;
     setupKinect();
-    setupGui();
 }
 
 
@@ -37,8 +37,7 @@ void kinectGuiApp::setupKinect() {
 	bThreshWithOpenCV = true;
 
 	// zero the tilt on startup
-	angle = 0;
-	kinect.setCameraTiltAngle(angle);
+	kinect.setCameraTiltAngle(kinectAngle);
 
 	// start from the front
 	bDrawPointCloud = false;
@@ -51,14 +50,14 @@ void kinectGuiApp::setupGui() {
     guiKinect.setup("Kinect");
     guiKinect.setPosition(guiApp.getShape().width+guiApp.getPosition().x+10.0, 10.0);
     guiKinect.add( kinectAngle.setup("Angle", 0.0, -30.0, 30.0) );
+    kinectAngle.addListener(this, &kinectGuiApp::setKinectAngle);
 }
 
 //--------------------------------------------------------------
-void kinectGuiApp::setKinectAngle(int n_angle) {
+void kinectGuiApp::setKinectAngle(float & n_angle) {
     if (n_angle>30)  n_angle=30;
     if (n_angle<-30) n_angle=-30;
-    angle = n_angle;
-    kinect.setCameraTiltAngle(angle);
+    kinect.setCameraTiltAngle(n_angle);
 }
 
 void kinectGuiApp::setNearThreshold(int n) {
