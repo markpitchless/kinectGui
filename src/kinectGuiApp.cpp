@@ -45,6 +45,7 @@ void kinectGuiApp::setupKinect() {
 void kinectGuiApp::setupGui() {
     guiApp.setup("KinectGui");
     guiApp.add( fpsSlider.setup("FPS", 60.0 + 10.0) );
+    guiApp.add( showGui.setup("Show Gui", true) );
     guiApp.loadFromFile("settings.xml");
 
     guiKinect.setup("Kinect");
@@ -132,8 +133,10 @@ void kinectGuiApp::draw(){
     drawPointCloud();
     easyCam.end();
 
-    guiApp.draw();
-    guiKinect.draw();
+    if (showGui) {
+        guiApp.draw();
+        guiKinect.draw();
+    }
 }
 
 
@@ -164,11 +167,15 @@ void kinectGuiApp::drawPointCloud() {
 
 //--------------------------------------------------------------
 void kinectGuiApp::keyPressed(int key){
-    switch(key) {
-        case '\t':
-        // TODO: toggle gui visibility.
-        break;
-    }
+    if( key == 'h' ){
+        showGui = !showGui;
+	}
+	if(key == 's') {
+		guiKinect.saveToFile("settings.xml");
+	}
+	if(key == 'l') {
+		guiKinect.loadFromFile("settings.xml");
+	}
 }
 
 //--------------------------------------------------------------
