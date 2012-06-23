@@ -10,6 +10,7 @@ void kinectGuiApp::setup(){
 
     flip_kinect = false;
     setupKinect();
+    setupGui();
 }
 
 
@@ -43,6 +44,10 @@ void kinectGuiApp::setupKinect() {
 	bDrawPointCloud = false;
 }
 
+void kinectGuiApp::setupGui() {
+    guiApp.setup("KinectGui");
+    guiApp.add( fpsSlider.setup("FPS", 0.0, 0.0, 60.0 + 10.0) );
+}
 
 //--------------------------------------------------------------
 void kinectGuiApp::setKinectAngle(int n_angle) {
@@ -69,8 +74,10 @@ void kinectGuiApp::setFarThreshold(int n) {
 
 //--------------------------------------------------------------
 void kinectGuiApp::update(){
-    kinect.update();
+    fpsSlider = ofGetFrameRate();
+
     // there is a new frame and we are connected
+    kinect.update();
     if(kinect.isFrameNew()) {
         // load the rgb image
         colorImg.setFromPixels(kinect.getPixels(), kinect.width, kinect.height);
@@ -117,9 +124,11 @@ void kinectGuiApp::update(){
 
 //--------------------------------------------------------------
 void kinectGuiApp::draw(){
+    ofBackgroundGradient(ofColor::white, ofColor::gray);
     easyCam.begin();
     drawPointCloud();
     easyCam.end();
+    guiApp.draw();
 }
 
 void kinectGuiApp::drawPointCloud() {

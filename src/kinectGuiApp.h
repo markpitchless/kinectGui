@@ -44,4 +44,8 @@ class kinectGuiApp : public ofBaseApp {
         bool flip_kinect;
         // used for viewing the point cloud
         ofEasyCam easyCam;
+
+        void setupGui();
+        ofxPanel guiApp;
+        ofxFloatSlider fpsSlider;
 };
