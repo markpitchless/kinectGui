@@ -13,13 +13,12 @@ void kinectGuiApp::setup(){
 	grayImage.allocate(kinect.width, kinect.height);
 	grayThreshNear.allocate(kinect.width, kinect.height);
 	grayThreshFar.allocate(kinect.width, kinect.height);
-	// start from the front
-	bDrawPointCloud = false;
 
 	// Starting the kinect after the gui seems to break loading xml settings
 	// in setup, which breaks any future load and save. If you don't load xml
 	// in setup you don't see the bug at all. Very strange.
     setupGui();
+    loadSettings();
     startKinect();
 }
 
@@ -40,9 +39,6 @@ void kinectGuiApp::setupGui() {
     guiKinect.add( colorImageGui.setup("Color Image", (ofImage*)&colorImg) );
     guiKinect.add( depthImageGui.setup("Depth Image", (ofImage*)&depthImage) );
     guiKinect.add( grayImageGui.setup("Gray Image", (ofImage*)&grayImage) );
-
-    guiApp.loadFromFile("settings.xml");
-    guiKinect.loadFromFile("kinect.xml");
 }
 
 void kinectGuiApp::startKinect() {
@@ -64,6 +60,16 @@ void kinectGuiApp::startKinect() {
 }
 
 //--------------------------------------------------------------
+void kinectGuiApp::loadSettings() {
+    guiApp.loadFromFile("settings.xml");
+    guiKinect.loadFromFile("kinect.xml");
+}
+
+void kinectGuiApp::saveSettings() {
+    guiApp.saveToFile("settings.xml");
+    guiKinect.saveToFile("kinect.xml");
+}
+
 void kinectGuiApp::setKinectAngle(float & n_angle) {
     if (n_angle>30)  n_angle=30;
     if (n_angle<-30) n_angle=-30;
@@ -84,7 +90,6 @@ void kinectGuiApp::setFarThreshold(int n) {
     farThreshold = n;
 }
 
-
 //--------------------------------------------------------------
 void kinectGuiApp::update(){
     // there is a new frame and we are connected
@@ -103,14 +108,15 @@ void kinectGuiApp::update(){
 
         // we do two thresholds - one for the far plane and one for the near plane
         // we then do a cvAnd to get the pixels which are a union of the two thresholds
+        // CV method seems to be a tad faster. Needs some proper profiling.
         if(bThreshWithOpenCV) {
             grayThreshNear = grayImage;
             grayThreshFar = grayImage;
             grayThreshNear.threshold(nearThreshold, true);
             grayThreshFar.threshold(farThreshold);
             cvAnd(grayThreshNear.getCvImage(), grayThreshFar.getCvImage(), grayImage.getCvImage(), NULL);
-        } else {
-
+        }
+        else {
             // or we do it ourselves - show people how they can work with the pixels
             unsigned char * pix = grayImage.getPixels();
 
@@ -146,7 +152,6 @@ void kinectGuiApp::draw(){
     }
 }
 
-
 void kinectGuiApp::drawPointCloud() {
     int w = 640;
     int h = 480;
@@ -178,12 +183,10 @@ void kinectGuiApp::keyPressed(int key){
         showGui = !showGui;
 	}
 	if(key == 's') {
-		guiApp.saveToFile("settings.xml");
-		guiKinect.saveToFile("kinect.xml");
+	    saveSettings();
 	}
 	if(key == 'l') {
-		guiApp.loadFromFile("settings.xml");
-		guiKinect.loadFromFile("kinect.xml");
+	    loadSettings();
 	}
 }
 
@@ -231,6 +234,8 @@ void kinectGuiApp::dragEvent(ofDragInfo dragInfo){
 void kinectGuiApp::exit() {
     kinect.setCameraTiltAngle(0); // zero the tilt on exit
     kinect.close();
+
+    kinectAngle.removeListener(this, &kinectGuiApp::setKinectAngle);
 }
 
 

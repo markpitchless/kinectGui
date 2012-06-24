@@ -28,6 +28,8 @@ class kinectGuiApp : public ofBaseApp {
         void exit();
 
         void setupGui();
+        void loadSettings();
+        void saveSettings();
         ofxPanel guiApp;
         ofxFpsSlider fpsSlider;
         ofxToggle showGui;
@@ -51,7 +53,6 @@ class kinectGuiApp : public ofBaseApp {
         ofxCvGrayscaleImage grayThreshFar;  // the far thresholded image
         ofxCvContourFinder contourFinder;
         ofxToggle bThreshWithOpenCV;
-        bool bDrawPointCloud;
         ofxIntSlider nearThreshold;
         ofxIntSlider farThreshold;
         ofxToggle kinectFlip;
