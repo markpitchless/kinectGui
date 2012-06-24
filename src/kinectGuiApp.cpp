@@ -8,12 +8,44 @@ void kinectGuiApp::setup(){
 	ofEnableAlphaBlending();
 	ofEnableSmoothing();
 
-    setupKinect();
+	colorImg.allocate(kinect.width, kinect.height);
+	depthImage.allocate(kinect.width, kinect.height);
+	grayImage.allocate(kinect.width, kinect.height);
+	grayThreshNear.allocate(kinect.width, kinect.height);
+	grayThreshFar.allocate(kinect.width, kinect.height);
+	bThreshWithOpenCV = true;
+	// start from the front
+	bDrawPointCloud = false;
+
+	// Starting the kinect after the gui seems to break loading xml settings
+	// in setup, which breaks any future load and save. If you don't load xml
+	// in setup you don't see the bug at all. Very strange.
     setupGui();
+    startKinect();
 }
 
 
-void kinectGuiApp::setupKinect() {
+void kinectGuiApp::setupGui() {
+    guiApp.setup("KinectGui");
+    guiApp.add( fpsSlider.setup("FPS", 60.0 + 10.0) );
+    guiApp.add( showGui.setup("Show Gui", true) );
+
+    guiKinect.setup("Kinect");
+    guiKinect.setPosition(guiApp.getShape().width+guiApp.getPosition().x+10.0, 10.0);
+    guiKinect.add( kinectAngle.setup("Angle", 0.0, -30.0, 30.0) );
+    kinectAngle.addListener(this, &kinectGuiApp::setKinectAngle);
+    guiKinect.add( kinectFlip.setup("H Flip Image", false) );
+    guiKinect.add( nearThreshold.setup("Near", 255, 0, 255) );
+    guiKinect.add( farThreshold.setup("Far", 0, 0, 255) );
+    guiKinect.add( colorImageGui.setup("Color Image", (ofImage*)&colorImg) );
+    guiKinect.add( depthImageGui.setup("Depth Image", (ofImage*)&depthImage) );
+    guiKinect.add( grayImageGui.setup("Gray Image", (ofImage*)&grayImage) );
+
+    guiApp.loadFromFile("settings.xml");
+    guiKinect.loadFromFile("kinect.xml");
+}
+
+void kinectGuiApp::startKinect() {
 	// enable depth->video image calibration
 	kinect.setRegistration(true);
 
@@ -25,37 +57,10 @@ void kinectGuiApp::setupKinect() {
 	//kinect.open(1);	// open a kinect by id, starting with 0 (sorted by serial # lexicographically))
 	//kinect.open("A00362A08602047A");	// open a kinect using it's unique serial #
 
-	colorImg.allocate(kinect.width, kinect.height);
-	depthImage.allocate(kinect.width, kinect.height);
-	grayImage.allocate(kinect.width, kinect.height);
-	grayThreshNear.allocate(kinect.width, kinect.height);
-	grayThreshFar.allocate(kinect.width, kinect.height);
-
-	nearThreshold = 230;
-	farThreshold = 70;
-	bThreshWithOpenCV = true;
-
-	// zero the tilt on startup
 	kinect.setCameraTiltAngle(kinectAngle);
 
-	// start from the front
-	bDrawPointCloud = false;
-}
-
-void kinectGuiApp::setupGui() {
-    guiApp.setup("KinectGui");
-    guiApp.add( fpsSlider.setup("FPS", 60.0 + 10.0) );
-    guiApp.add( showGui.setup("Show Gui", true) );
-    guiApp.loadFromFile("settings.xml");
-    guiKinect.setup("Kinect");
-    guiKinect.setPosition(guiApp.getShape().width+guiApp.getPosition().x+10.0, 10.0);
-    guiKinect.add( kinectAngle.setup("Angle", 0.0, -30.0, 30.0) );
-    kinectAngle.addListener(this, &kinectGuiApp::setKinectAngle);
-    guiKinect.add( kinectFlip.setup("H Flip Image", false) );
-    guiKinect.add( colorImageGui.setup("Color Image", (ofImage*)&colorImg) );
-    guiKinect.add( depthImageGui.setup("Depth Image", (ofImage*)&depthImage) );
-    guiKinect.add( grayImageGui.setup("Gray Image", (ofImage*)&grayImage) );
-    guiKinect.loadFromFile("settings.xml");
+	// Some time to settle the kinect.
+	ofSleepMillis(1000);
 }
 
 //--------------------------------------------------------------
@@ -173,10 +178,12 @@ void kinectGuiApp::keyPressed(int key){
         showGui = !showGui;
 	}
 	if(key == 's') {
-		guiKinect.saveToFile("settings.xml");
+		guiApp.saveToFile("settings.xml");
+		guiKinect.saveToFile("kinect.xml");
 	}
 	if(key == 'l') {
-		guiKinect.loadFromFile("settings.xml");
+		guiApp.loadFromFile("settings.xml");
+		guiKinect.loadFromFile("kinect.xml");
 	}
 }
 

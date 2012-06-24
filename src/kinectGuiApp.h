@@ -27,7 +27,18 @@ class kinectGuiApp : public ofBaseApp {
         void gotMessage(ofMessage msg);
         void exit();
 
-        void setupKinect();
+        void setupGui();
+        ofxPanel guiApp;
+        ofxFpsSlider fpsSlider;
+        ofxToggle showGui;
+
+        ofxPanel guiKinect;
+        ofxFloatSlider kinectAngle;
+        ofxGuiImage colorImageGui;
+        ofxGuiImage depthImageGui;
+        ofxGuiImage grayImageGui;
+
+        void startKinect();
         void setKinectAngle( float & n_angle );
         void setNearThreshold( int n );
         void setFarThreshold( int n);
@@ -41,20 +52,9 @@ class kinectGuiApp : public ofBaseApp {
         ofxCvContourFinder contourFinder;
         bool bThreshWithOpenCV;
         bool bDrawPointCloud;
-        int nearThreshold;
-        int farThreshold;
+        ofxIntSlider nearThreshold;
+        ofxIntSlider farThreshold;
         ofxToggle kinectFlip;
         // used for viewing the point cloud
         ofEasyCam easyCam;
-
-        void setupGui();
-        ofxPanel guiApp;
-        ofxFpsSlider fpsSlider;
-        ofxToggle showGui;
-
-        ofxPanel guiKinect;
-        ofxFloatSlider kinectAngle;
-        ofxGuiImage colorImageGui;
-        ofxGuiImage depthImageGui;
-        ofxGuiImage grayImageGui;
 };
