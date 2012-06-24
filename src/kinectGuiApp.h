@@ -50,7 +50,7 @@ class kinectGuiApp : public ofBaseApp {
         ofxCvGrayscaleImage grayThreshNear; // the near thresholded image
         ofxCvGrayscaleImage grayThreshFar;  // the far thresholded image
         ofxCvContourFinder contourFinder;
-        bool bThreshWithOpenCV;
+        ofxToggle bThreshWithOpenCV;
         bool bDrawPointCloud;
         ofxIntSlider nearThreshold;
         ofxIntSlider farThreshold;

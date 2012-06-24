@@ -13,7 +13,6 @@ void kinectGuiApp::setup(){
 	grayImage.allocate(kinect.width, kinect.height);
 	grayThreshNear.allocate(kinect.width, kinect.height);
 	grayThreshFar.allocate(kinect.width, kinect.height);
-	bThreshWithOpenCV = true;
 	// start from the front
 	bDrawPointCloud = false;
 
@@ -37,6 +36,7 @@ void kinectGuiApp::setupGui() {
     guiKinect.add( kinectFlip.setup("H Flip Image", false) );
     guiKinect.add( nearThreshold.setup("Near", 255, 0, 255) );
     guiKinect.add( farThreshold.setup("Far", 0, 0, 255) );
+    guiKinect.add( bThreshWithOpenCV.setup("Open CV Threshold", true) );
     guiKinect.add( colorImageGui.setup("Color Image", (ofImage*)&colorImg) );
     guiKinect.add( depthImageGui.setup("Depth Image", (ofImage*)&depthImage) );
     guiKinect.add( grayImageGui.setup("Gray Image", (ofImage*)&grayImage) );
