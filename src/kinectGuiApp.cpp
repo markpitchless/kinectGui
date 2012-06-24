@@ -249,6 +249,8 @@ void kinectGuiApp::exit() {
     kinect.setCameraTiltAngle(0); // zero the tilt on exit
     kinect.close();
 
+    loadButton.removeListener(this, &kinectGuiApp::loadButtonPressed);
+    saveButton.removeListener(this, &kinectGuiApp::saveButtonPressed);
     kinectAngle.removeListener(this, &kinectGuiApp::setKinectAngle);
 }
 
