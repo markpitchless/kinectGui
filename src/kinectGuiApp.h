@@ -30,9 +30,13 @@ class kinectGuiApp : public ofBaseApp {
         void setupGui();
         void loadSettings();
         void saveSettings();
+        void loadButtonPressed(bool&);
+        void saveButtonPressed(bool&);
         ofxPanel guiApp;
         ofxFpsSlider fpsSlider;
         ofxToggle showGui;
+        ofxButton loadButton;
+        ofxButton saveButton;
 
         ofxPanel guiKinect;
         ofxFloatSlider kinectAngle;

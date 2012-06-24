@@ -27,6 +27,10 @@ void kinectGuiApp::setupGui() {
     guiApp.setup("KinectGui");
     guiApp.add( fpsSlider.setup("FPS", 60.0 + 10.0) );
     guiApp.add( showGui.setup("Show Gui", true) );
+    guiApp.add( loadButton.setup("Load") );
+    guiApp.add( saveButton.setup("Save") );
+    loadButton.addListener(this, &kinectGuiApp::loadButtonPressed);
+    saveButton.addListener(this, &kinectGuiApp::saveButtonPressed);
 
     guiKinect.setup("Kinect");
     guiKinect.setPosition(guiApp.getShape().width+guiApp.getPosition().x+10.0, 10.0);
@@ -68,6 +72,16 @@ void kinectGuiApp::loadSettings() {
 void kinectGuiApp::saveSettings() {
     guiApp.saveToFile("settings.xml");
     guiKinect.saveToFile("kinect.xml");
+}
+
+void kinectGuiApp::loadButtonPressed(bool& pressed) {
+    if (pressed)
+        loadSettings();
+}
+
+void kinectGuiApp::saveButtonPressed(bool& pressed) {
+    if (pressed)
+        saveSettings();
 }
 
 void kinectGuiApp::setKinectAngle(float & n_angle) {
