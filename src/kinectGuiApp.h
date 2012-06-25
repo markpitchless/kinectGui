@@ -42,9 +42,9 @@ class kinectGuiApp : public ofBaseApp {
         ofxPanel guiKinect;
         ofxLabel kinectId;
         ofxFloatSlider kinectAngle;
-        ofxGuiImage colorImageGui;
-        ofxGuiImage depthImageGui;
-        ofxGuiImage grayImageGui;
+        ofxGuiImage colorImgGui;
+        ofxGuiImage depthImgGui;
+        ofxGuiImage grayImgGui;
         ofxGuiImage maskImgGui;
         ofxGuiImage stencilImgGui;
 
@@ -57,8 +57,8 @@ class kinectGuiApp : public ofBaseApp {
         void drawPointCloud();
         ofxKinect kinect;
         ofxCvColorImage colorImg;
-        ofxCvGrayscaleImage depthImage;// grayscale depth image
-        ofxCvGrayscaleImage grayImage; // grayscale depth image after threshold
+        ofxCvGrayscaleImage depthImg;// grayscale depth image
+        ofxCvGrayscaleImage grayImg; // grayscale depth image after threshold
         ofxCvGrayscaleImage grayThreshNear; // the near thresholded image
         ofxCvGrayscaleImage grayThreshFar;  // the far thresholded image
         // Remove this img from depth before contour finding. e.g. background.

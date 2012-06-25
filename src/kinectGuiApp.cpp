@@ -9,8 +9,8 @@ void kinectGuiApp::setup(){
     ofEnableSmoothing();
 
     colorImg.allocate(kinect.width, kinect.height);
-    depthImage.allocate(kinect.width, kinect.height);
-    grayImage.allocate(kinect.width, kinect.height);
+    depthImg.allocate(kinect.width, kinect.height);
+    grayImg.allocate(kinect.width, kinect.height);
     grayThreshNear.allocate(kinect.width, kinect.height);
     grayThreshFar.allocate(kinect.width, kinect.height);
     maskImg.allocate(kinect.width, kinect.height);
@@ -48,11 +48,11 @@ void kinectGuiApp::setupGui() {
     guiKinect.add( extraMaskDepth.setup("Extra Mask Depth", 0, 0, 100) );
     guiKinect.add( bMask.setup("Apply Mask", false) );
     // Images
-    guiKinect.add( colorImageGui.setup("Color Image", (ofImage*)&colorImg) );
-    guiKinect.add( depthImageGui.setup("Depth Image", (ofImage*)&depthImage) );
+    guiKinect.add( colorImgGui.setup("Color Image", (ofImage*)&colorImg) );
+    guiKinect.add( depthImgGui.setup("Depth Image", (ofImage*)&depthImg) );
     guiKinect.add( maskImgGui.setup("Mask", (ofImage*)&maskImg) );
     guiKinect.add( stencilImgGui.setup("Stencil", (ofImage*)&stencilImg) );
-    guiKinect.add( grayImageGui.setup("Gray Image", (ofImage*)&grayImage) );
+    guiKinect.add( grayImgGui.setup("Gray Image", (ofImage*)&grayImg) );
 }
 
 void kinectGuiApp::startKinect() {
@@ -105,7 +105,7 @@ void kinectGuiApp::setFarThreshold(int n) {
 }
 
 void kinectGuiApp::grabMask() {
-    maskImg = depthImage;
+    maskImg = depthImg;
 
     // Add a bit to each value to pull the mask forward a bit, help deal with
     // noise in the kinect data.
@@ -129,32 +129,32 @@ void kinectGuiApp::update(){
             colorImg.mirror(false,true);
 
         // load grayscale depth image from the kinect source
-        depthImage.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
+        depthImg.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
         if (kinectFlip)
-            depthImage.mirror(false,true);
+            depthImg.mirror(false,true);
 
-        grayImage = depthImage;
+        grayImg = depthImg;
 
         // Apply the thresholds, setting pix to black when past thresh.
         if (bThresholds) {
-            cvThreshold(grayImage.getCvImage(), grayImage.getCvImage(), farThreshold, 0, CV_THRESH_TOZERO);
-            cvThreshold(grayImage.getCvImage(), grayImage.getCvImage(), nearThreshold, 0, CV_THRESH_TOZERO_INV);
+            cvThreshold(grayImg.getCvImage(), grayImg.getCvImage(), farThreshold, 0, CV_THRESH_TOZERO);
+            cvThreshold(grayImg.getCvImage(), grayImg.getCvImage(), nearThreshold, 0, CV_THRESH_TOZERO_INV);
         }
 
         if (bMask) {
             // Make a stencil. fooImg is 255 for keep and 0 for remove.
-            cvCmp(depthImage.getCvImage(), maskImg.getCvImage(), stencilImg.getCvImage(), CV_CMP_GT);
+            cvCmp(depthImg.getCvImage(), maskImg.getCvImage(), stencilImg.getCvImage(), CV_CMP_GT);
             // Apply the stencil to the depth image.
-            cvAnd(grayImage.getCvImage(), stencilImg.getCvImage(), grayImage.getCvImage());
+            cvAnd(grayImg.getCvImage(), stencilImg.getCvImage(), grayImg.getCvImage());
         }
 
         // update the cv images
-        grayImage.flagImageChanged();
+        grayImg.flagImageChanged();
         stencilImg.flagImageChanged();
 
         // find contours which are between the size of 20 pixels and 1/3 the w*h pixels.
         // also, find holes is set to true so we will get interior contours as well....
-        contourFinder.findContours(grayImage, 10, (kinect.width*kinect.height)/2, 20, false);
+        contourFinder.findContours(grayImg, 10, (kinect.width*kinect.height)/2, 20, false);
     }
 }
 
