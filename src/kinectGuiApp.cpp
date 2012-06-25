@@ -3,22 +3,22 @@
 //--------------------------------------------------------------
 void kinectGuiApp::setup(){
     ofSetWindowTitle("kinectGui");
-	ofSetLogLevel(OF_LOG_VERBOSE);
-	ofSetFrameRate(60);
-	ofEnableAlphaBlending();
-	ofEnableSmoothing();
+    ofSetLogLevel(OF_LOG_VERBOSE);
+    ofSetFrameRate(60);
+    ofEnableAlphaBlending();
+    ofEnableSmoothing();
 
-	colorImg.allocate(kinect.width, kinect.height);
-	depthImage.allocate(kinect.width, kinect.height);
-	grayImage.allocate(kinect.width, kinect.height);
-	grayThreshNear.allocate(kinect.width, kinect.height);
-	grayThreshFar.allocate(kinect.width, kinect.height);
-	maskImg.allocate(kinect.width, kinect.height);
+    colorImg.allocate(kinect.width, kinect.height);
+    depthImage.allocate(kinect.width, kinect.height);
+    grayImage.allocate(kinect.width, kinect.height);
+    grayThreshNear.allocate(kinect.width, kinect.height);
+    grayThreshFar.allocate(kinect.width, kinect.height);
+    maskImg.allocate(kinect.width, kinect.height);
     stencilImg.allocate(kinect.width, kinect.height);
 
-	// Starting the kinect after the gui seems to break loading xml settings
-	// in setup, which breaks any future load and save. If you don't load xml
-	// in setup you don't see the bug at all. Very strange.
+    // Starting the kinect after the gui seems to break loading xml settings
+    // in setup, which breaks any future load and save. If you don't load xml
+    // in setup you don't see the bug at all. Very strange.
     setupGui();
     loadSettings();
     startKinect();
@@ -56,23 +56,23 @@ void kinectGuiApp::setupGui() {
 }
 
 void kinectGuiApp::startKinect() {
-	// enable depth->video image calibration
-	kinect.setRegistration(true);
+    // enable depth->video image calibration
+    kinect.setRegistration(true);
 
-	kinect.init();
-	//kinect.init(true); // shows infrared instead of RGB video image
-	//kinect.init(false, false); // disable video image (faster fps)
+    kinect.init();
+    //kinect.init(true); // shows infrared instead of RGB video image
+    //kinect.init(false, false); // disable video image (faster fps)
 
-	kinect.open();		// opens first available kinect
-	//kinect.open(1);	// open a kinect by id, starting with 0 (sorted by serial # lexicographically))
-	//kinect.open("A00362A08602047A");	// open a kinect using it's unique serial #
+    kinect.open();		// opens first available kinect
+    //kinect.open(1);	// open a kinect by id, starting with 0 (sorted by serial # lexicographically))
+    //kinect.open("A00362A08602047A");	// open a kinect using it's unique serial #
 
-	kinect.setCameraTiltAngle(kinectAngle);
+    kinect.setCameraTiltAngle(kinectAngle);
 
-	kinectId = "ID: " + ofToString(kinect.getDeviceId()) + " " + kinect.getSerial();;
+    kinectId = "ID: " + ofToString(kinect.getDeviceId()) + " " + kinect.getSerial();;
 
-	// Some time to settle the kinect.
-	ofSleepMillis(1000);
+    // Some time to settle the kinect.
+    ofSleepMillis(1000);
 }
 
 //--------------------------------------------------------------
@@ -103,14 +103,12 @@ void kinectGuiApp::setKinectAngle(float & n_angle) {
 }
 
 void kinectGuiApp::setNearThreshold(int n) {
-    cout << "near: " << n << endl;
     if (n>255) n=255;
     if (n<0)   n=0;
     nearThreshold = n;
 }
 
 void kinectGuiApp::setFarThreshold(int n) {
-    cout << "far: " << n << endl;
     if (n>255) n=255;
     if (n<0)   n=0;
     farThreshold = n;
@@ -268,6 +266,7 @@ void kinectGuiApp::exit() {
     loadButton.removeListener(this, &kinectGuiApp::loadButtonPressed);
     saveButton.removeListener(this, &kinectGuiApp::saveButtonPressed);
     kinectAngle.removeListener(this, &kinectGuiApp::setKinectAngle);
+    grabMaskButton.removeListener(this, &kinectGuiApp::grabMask);
 }
 
 
