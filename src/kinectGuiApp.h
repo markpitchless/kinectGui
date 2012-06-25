@@ -10,13 +10,6 @@
 #include "ofxGuiImage.h"
 #include "ofxLabel.h"
 
-// The event for a button gives us a bool&, with a true value.
-// You can't directly set a bool& function param default so we us this the
-// default, so we can have a doStuff() type function that can also be
-// bound to a button.
-// http://stackoverflow.com/questions/1059630/default-value-to-a-parameter-while-passing-by-reference-in-c
-static bool BOOL_TRUE = true;
-
 class kinectGuiApp : public ofBaseApp {
 
     public:
@@ -58,7 +51,8 @@ class kinectGuiApp : public ofBaseApp {
         void setKinectAngle( float & n_angle );
         void setNearThreshold( int n );
         void setFarThreshold( int n);
-        void grabMask( bool& doit = BOOL_TRUE );
+        void grabMask();
+        void grabMask( bool& pressed) { if (pressed) grabMask(); } // event hook
         void drawPointCloud();
         ofxKinect kinect;
         ofxCvColorImage colorImg;

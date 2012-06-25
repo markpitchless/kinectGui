@@ -110,8 +110,7 @@ void kinectGuiApp::setFarThreshold(int n) {
     farThreshold = n;
 }
 
-void kinectGuiApp::grabMask( bool& doit ) {
-    if (!doit) return;
+void kinectGuiApp::grabMask() {
     maskImg = depthImage;
 }
 
