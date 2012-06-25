@@ -46,6 +46,7 @@ class kinectGuiApp : public ofBaseApp {
         ofxGuiImage depthImageGui;
         ofxGuiImage grayImageGui;
         ofxGuiImage maskImgGui;
+        ofxGuiImage stencilImgGui;
 
         void startKinect();
         void setKinectAngle( float & n_angle );
@@ -62,11 +63,15 @@ class kinectGuiApp : public ofBaseApp {
         ofxCvGrayscaleImage grayThreshFar;  // the far thresholded image
         // Remove this img from depth before contour finding. e.g. background.
         ofxCvGrayscaleImage maskImg;
+        ofxCvGrayscaleImage stencilImg;
         ofxCvContourFinder contourFinder;
         ofxIntSlider nearThreshold;
         ofxIntSlider farThreshold;
+        ofxIntSlider extraMaskDepth;
         ofxToggle kinectFlip;
+        ofxToggle bThresholds;
         ofxButton grabMaskButton;
+        ofxToggle bMask;
         // used for viewing the point cloud
         ofEasyCam easyCam;
 };

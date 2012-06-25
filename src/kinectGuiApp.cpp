@@ -14,6 +14,7 @@ void kinectGuiApp::setup(){
 	grayThreshNear.allocate(kinect.width, kinect.height);
 	grayThreshFar.allocate(kinect.width, kinect.height);
 	maskImg.allocate(kinect.width, kinect.height);
+    stencilImg.allocate(kinect.width, kinect.height);
 
 	// Starting the kinect after the gui seems to break loading xml settings
 	// in setup, which breaks any future load and save. If you don't load xml
@@ -41,11 +42,16 @@ void kinectGuiApp::setupGui() {
     guiKinect.add( kinectFlip.setup("H Flip Image", false) );
     guiKinect.add( nearThreshold.setup("Near", 255, 0, 255) );
     guiKinect.add( farThreshold.setup("Far", 0, 0, 255) );
+    guiKinect.add( bThresholds.setup("Apply Threshold", true) );
     guiKinect.add( grabMaskButton.setup("Grab Mask") );
     grabMaskButton.addListener(this, &kinectGuiApp::grabMask);
+    guiKinect.add( extraMaskDepth.setup("Extra Mask Depth", 0, 0, 100) );
+    guiKinect.add( bMask.setup("Apply Mask", false) );
+    // Images
     guiKinect.add( colorImageGui.setup("Color Image", (ofImage*)&colorImg) );
     guiKinect.add( depthImageGui.setup("Depth Image", (ofImage*)&depthImage) );
     guiKinect.add( maskImgGui.setup("Mask", (ofImage*)&maskImg) );
+    guiKinect.add( stencilImgGui.setup("Stencil", (ofImage*)&stencilImg) );
     guiKinect.add( grayImageGui.setup("Gray Image", (ofImage*)&grayImage) );
 }
 
@@ -112,6 +118,14 @@ void kinectGuiApp::setFarThreshold(int n) {
 
 void kinectGuiApp::grabMask() {
     maskImg = depthImage;
+
+    // Add a bit to each value to pull the mask forward a bit, help deal with
+    // noise in the kinect data.
+    unsigned char* pix = maskImg.getPixels();
+    int numPixels = maskImg.getWidth() * maskImg.getHeight();
+    for ( int i=0; i<numPixels; ++i ) {
+        pix[i] = ofClamp(pix[i]+extraMaskDepth, 0, 255);
+    }
 }
 
 
@@ -129,18 +143,25 @@ void kinectGuiApp::update(){
         depthImage.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
         if (kinectFlip)
             depthImage.mirror(false,true);
+
         grayImage = depthImage;
 
-        // we do two thresholds - one for the far plane and one for the near plane
-        // we then do a cvAnd to get the pixels which are a union of the two thresholds
-        grayThreshNear = grayImage;
-        grayThreshFar = grayImage;
-        grayThreshNear.threshold(nearThreshold, true);
-        grayThreshFar.threshold(farThreshold);
-        cvAnd(grayThreshNear.getCvImage(), grayThreshFar.getCvImage(), grayImage.getCvImage(), NULL);
+        // Apply the thresholds, setting pix to black when past thresh.
+        if (bThresholds) {
+            cvThreshold(grayImage.getCvImage(), grayImage.getCvImage(), farThreshold, 0, CV_THRESH_TOZERO);
+            cvThreshold(grayImage.getCvImage(), grayImage.getCvImage(), nearThreshold, 0, CV_THRESH_TOZERO_INV);
+        }
+
+        if (bMask) {
+            // Make a stencil. fooImg is 255 for keep and 0 for remove.
+            cvCmp(depthImage.getCvImage(), maskImg.getCvImage(), stencilImg.getCvImage(), CV_CMP_GT);
+            // Apply the stencil to the depth image.
+            cvAnd(grayImage.getCvImage(), stencilImg.getCvImage(), grayImage.getCvImage());
+        }
 
         // update the cv images
         grayImage.flagImageChanged();
+        stencilImg.flagImageChanged();
 
         // find contours which are between the size of 20 pixels and 1/3 the w*h pixels.
         // also, find holes is set to true so we will get interior contours as well....
