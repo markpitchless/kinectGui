@@ -30,9 +30,9 @@ class kinectGuiApp : public ofBaseApp {
 
         void setupGui();
         void loadSettings();
+        void loadSettings( bool& pressed) { if (pressed) loadSettings(); } // event hook
         void saveSettings();
-        void loadButtonPressed(bool&);
-        void saveButtonPressed(bool&);
+        void saveSettings( bool& pressed) { if (pressed) saveSettings(); } // event hook
         ofxPanel guiApp;
         ofxFpsSlider fpsSlider;
         ofxToggle showGui;

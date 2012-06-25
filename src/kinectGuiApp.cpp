@@ -31,8 +31,8 @@ void kinectGuiApp::setupGui() {
     guiApp.add( showGui.setup("Show Gui", true) );
     guiApp.add( loadButton.setup("Load") );
     guiApp.add( saveButton.setup("Save") );
-    loadButton.addListener(this, &kinectGuiApp::loadButtonPressed);
-    saveButton.addListener(this, &kinectGuiApp::saveButtonPressed);
+    loadButton.addListener(this, &kinectGuiApp::loadSettings);
+    saveButton.addListener(this, &kinectGuiApp::saveSettings);
 
     guiKinect.setup("Kinect");
     guiKinect.setPosition(guiApp.getShape().width+guiApp.getPosition().x+10.0, 10.0);
@@ -86,16 +86,6 @@ void kinectGuiApp::saveSettings() {
     guiKinect.saveToFile("kinect.xml");
 }
 
-void kinectGuiApp::loadButtonPressed(bool& pressed) {
-    if (pressed)
-        loadSettings();
-}
-
-void kinectGuiApp::saveButtonPressed(bool& pressed) {
-    if (pressed)
-        saveSettings();
-}
-
 void kinectGuiApp::setKinectAngle(float & n_angle) {
     if (n_angle>30)  n_angle=30;
     if (n_angle<-30) n_angle=-30;
@@ -119,6 +109,7 @@ void kinectGuiApp::grabMask() {
 
     // Add a bit to each value to pull the mask forward a bit, help deal with
     // noise in the kinect data.
+    // TODO - Do this with cvAdd, could be faster?
     unsigned char* pix = maskImg.getPixels();
     int numPixels = maskImg.getWidth() * maskImg.getHeight();
     for ( int i=0; i<numPixels; ++i ) {
@@ -263,8 +254,8 @@ void kinectGuiApp::exit() {
     kinect.setCameraTiltAngle(0); // zero the tilt on exit
     kinect.close();
 
-    loadButton.removeListener(this, &kinectGuiApp::loadButtonPressed);
-    saveButton.removeListener(this, &kinectGuiApp::saveButtonPressed);
+    loadButton.removeListener(this, &kinectGuiApp::loadSettings);
+    saveButton.removeListener(this, &kinectGuiApp::saveSettings);
     kinectAngle.removeListener(this, &kinectGuiApp::setKinectAngle);
     grabMaskButton.removeListener(this, &kinectGuiApp::grabMask);
 }
