@@ -13,6 +13,7 @@ void kinectGuiApp::setup(){
 	grayImage.allocate(kinect.width, kinect.height);
 	grayThreshNear.allocate(kinect.width, kinect.height);
 	grayThreshFar.allocate(kinect.width, kinect.height);
+	maskImg.allocate(kinect.width, kinect.height);
 
 	// Starting the kinect after the gui seems to break loading xml settings
 	// in setup, which breaks any future load and save. If you don't load xml
@@ -40,8 +41,11 @@ void kinectGuiApp::setupGui() {
     guiKinect.add( kinectFlip.setup("H Flip Image", false) );
     guiKinect.add( nearThreshold.setup("Near", 255, 0, 255) );
     guiKinect.add( farThreshold.setup("Far", 0, 0, 255) );
+    guiKinect.add( grabMaskButton.setup("Grab Mask") );
+    grabMaskButton.addListener(this, &kinectGuiApp::grabMask);
     guiKinect.add( colorImageGui.setup("Color Image", (ofImage*)&colorImg) );
     guiKinect.add( depthImageGui.setup("Depth Image", (ofImage*)&depthImage) );
+    guiKinect.add( maskImgGui.setup("Mask", (ofImage*)&maskImg) );
     guiKinect.add( grayImageGui.setup("Gray Image", (ofImage*)&grayImage) );
 }
 
@@ -105,6 +109,12 @@ void kinectGuiApp::setFarThreshold(int n) {
     if (n<0)   n=0;
     farThreshold = n;
 }
+
+void kinectGuiApp::grabMask( bool& doit ) {
+    if (!doit) return;
+    maskImg = depthImage;
+}
+
 
 //--------------------------------------------------------------
 void kinectGuiApp::update(){
