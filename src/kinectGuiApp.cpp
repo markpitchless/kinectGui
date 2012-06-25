@@ -34,6 +34,7 @@ void kinectGuiApp::setupGui() {
 
     guiKinect.setup("Kinect");
     guiKinect.setPosition(guiApp.getShape().width+guiApp.getPosition().x+10.0, 10.0);
+    guiKinect.add( kinectId.setup("kinectId", "Connecting...") );
     guiKinect.add( kinectAngle.setup("Angle", 0.0, -30.0, 30.0) );
     kinectAngle.addListener(this, &kinectGuiApp::setKinectAngle);
     guiKinect.add( kinectFlip.setup("H Flip Image", false) );
@@ -58,6 +59,8 @@ void kinectGuiApp::startKinect() {
 	//kinect.open("A00362A08602047A");	// open a kinect using it's unique serial #
 
 	kinect.setCameraTiltAngle(kinectAngle);
+
+	kinectId = "ID: " + ofToString(kinect.getDeviceId()) + " " + kinect.getSerial();;
 
 	// Some time to settle the kinect.
 	ofSleepMillis(1000);

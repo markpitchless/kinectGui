@@ -8,6 +8,7 @@
 // Custom controls.
 #include "ofxFpsSlider.h"
 #include "ofxGuiImage.h"
+#include "ofxLabel.h"
 
 class kinectGuiApp : public ofBaseApp {
 
@@ -39,6 +40,7 @@ class kinectGuiApp : public ofBaseApp {
         ofxButton saveButton;
 
         ofxPanel guiKinect;
+        ofxLabel kinectId;
         ofxFloatSlider kinectAngle;
         ofxGuiImage colorImageGui;
         ofxGuiImage depthImageGui;
