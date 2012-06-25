@@ -40,7 +40,6 @@ void kinectGuiApp::setupGui() {
     guiKinect.add( kinectFlip.setup("H Flip Image", false) );
     guiKinect.add( nearThreshold.setup("Near", 255, 0, 255) );
     guiKinect.add( farThreshold.setup("Far", 0, 0, 255) );
-    guiKinect.add( bThreshWithOpenCV.setup("Open CV Threshold", true) );
     guiKinect.add( colorImageGui.setup("Color Image", (ofImage*)&colorImg) );
     guiKinect.add( depthImageGui.setup("Depth Image", (ofImage*)&depthImage) );
     guiKinect.add( grayImageGui.setup("Gray Image", (ofImage*)&grayImage) );
@@ -125,27 +124,11 @@ void kinectGuiApp::update(){
 
         // we do two thresholds - one for the far plane and one for the near plane
         // we then do a cvAnd to get the pixels which are a union of the two thresholds
-        // CV method seems to be a tad faster. Needs some proper profiling.
-        if(bThreshWithOpenCV) {
-            grayThreshNear = grayImage;
-            grayThreshFar = grayImage;
-            grayThreshNear.threshold(nearThreshold, true);
-            grayThreshFar.threshold(farThreshold);
-            cvAnd(grayThreshNear.getCvImage(), grayThreshFar.getCvImage(), grayImage.getCvImage(), NULL);
-        }
-        else {
-            // or we do it ourselves - show people how they can work with the pixels
-            unsigned char * pix = grayImage.getPixels();
-
-            int numPixels = grayImage.getWidth() * grayImage.getHeight();
-            for(int i = 0; i < numPixels; i++) {
-                if(pix[i] < nearThreshold && pix[i] > farThreshold) {
-                    pix[i] = 255;
-                } else {
-                    pix[i] = 0;
-                }
-            }
-        }
+        grayThreshNear = grayImage;
+        grayThreshFar = grayImage;
+        grayThreshNear.threshold(nearThreshold, true);
+        grayThreshFar.threshold(farThreshold);
+        cvAnd(grayThreshNear.getCvImage(), grayThreshFar.getCvImage(), grayImage.getCvImage(), NULL);
 
         // update the cv images
         grayImage.flagImageChanged();
