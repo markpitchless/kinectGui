@@ -28,6 +28,7 @@ void kinectGuiApp::setup(){
 
 
 void kinectGuiApp::setupGui() {
+    // Note: The panels will get repositioned in windowResized
     guiApp.setup("KinectGui");
     guiApp.add( fpsSlider.setup("FPS", 60.0 + 10.0) );
     guiApp.add( showGui.setup("Show Gui", true) );
@@ -37,7 +38,6 @@ void kinectGuiApp::setupGui() {
     saveButton.addListener(this, &kinectGuiApp::saveSettings);
 
     guiKinect.setup("Kinect");
-    guiKinect.setPosition(guiApp.getShape().width+guiApp.getPosition().x+10.0, 10.0);
     guiKinect.add( kinectId.setup("kinectId", "Connecting...") );
     guiKinect.add( kinectAngle.setup("Angle", 0.0, -30.0, 30.0) );
     kinectAngle.addListener(this, &kinectGuiApp::setKinectAngle);
@@ -271,7 +271,8 @@ void kinectGuiApp::mouseReleased(int x, int y, int button){
 
 //--------------------------------------------------------------
 void kinectGuiApp::windowResized(int w, int h){
-
+    guiApp.setPosition(ofGetWidth()-guiApp.getShape().width-10, 10);
+    guiKinect.setPosition(10,10);
 }
 
 //--------------------------------------------------------------
