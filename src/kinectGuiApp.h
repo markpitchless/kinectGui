@@ -73,6 +73,7 @@ class kinectGuiApp : public ofBaseApp {
         ofxIntSlider farThreshold;
         ofxIntSlider extraMaskDepth;
         ofxIntSlider medianBlur;
+        ofxIntSlider gaussianBlur;
         ofxToggle kinectFlip;
         ofxToggle bThresholds;
         ofxButton grabMaskButton;

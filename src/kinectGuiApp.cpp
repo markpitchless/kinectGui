@@ -52,7 +52,8 @@ void kinectGuiApp::setupGui() {
     clearMaskButton.addListener(this, &kinectGuiApp::clearMask);
     guiKinect.add( extraMaskDepth.setup("Extra Mask Depth", 0, 0, 100) );
     guiKinect.add( bMask.setup("Apply Mask", false) );
-    guiKinect.add( medianBlur.setup("Median Blur", 0, 0, 100) );
+    guiKinect.add( medianBlur.setup("Median Blur", 0, 0, 99) );
+    guiKinect.add( gaussianBlur.setup("Gaussian Blur", 0, 0, 23) );
     guiKinect.add( showPointCloud.setup("Point Cloud", true) );
     // Images
     // Hide the names and use toggles as labels on the images.
@@ -190,10 +191,14 @@ void kinectGuiApp::update(){
         }
 
         if (medianBlur > 0) {
-            if (medianBlur % 2 == 0)
-                medianBlur++; // must be odd
+            if (medianBlur % 2 == 0) medianBlur++; // must be odd
             tempGrayImg = grayImg;
             cvSmooth(tempGrayImg.getCvImage(), grayImg.getCvImage(), CV_MEDIAN, medianBlur);
+        }
+
+        if (gaussianBlur > 0) {
+            if (gaussianBlur % 2 == 0) gaussianBlur++; // must be odd
+            grayImg.blurGaussian(gaussianBlur);
         }
 
         // update the cv images
