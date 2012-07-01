@@ -15,6 +15,7 @@ void kinectGuiApp::setup(){
     grayThreshFar.allocate(kinect.width, kinect.height);
     maskImg.allocate(kinect.width, kinect.height);
     stencilImg.allocate(kinect.width, kinect.height);
+    tempGrayImg.allocate(kinect.width, kinect.height);
 
     maskFilename = "mask.png";
 
@@ -51,6 +52,7 @@ void kinectGuiApp::setupGui() {
     clearMaskButton.addListener(this, &kinectGuiApp::clearMask);
     guiKinect.add( extraMaskDepth.setup("Extra Mask Depth", 0, 0, 100) );
     guiKinect.add( bMask.setup("Apply Mask", false) );
+    guiKinect.add( medianBlur.setup("Median Blur", 0, 0, 100) );
     guiKinect.add( showPointCloud.setup("Point Cloud", true) );
     // Images
     // Hide the names and use toggles as labels on the images.
@@ -185,6 +187,13 @@ void kinectGuiApp::update(){
             cvCmp(depthImg.getCvImage(), maskImg.getCvImage(), stencilImg.getCvImage(), CV_CMP_GT);
             // Apply the stencil to the depth image.
             cvAnd(grayImg.getCvImage(), stencilImg.getCvImage(), grayImg.getCvImage());
+        }
+
+        if (medianBlur > 0) {
+            if (medianBlur % 2 == 0)
+                medianBlur++; // must be odd
+            tempGrayImg = grayImg;
+            cvSmooth(tempGrayImg.getCvImage(), grayImg.getCvImage(), CV_MEDIAN, medianBlur);
         }
 
         // update the cv images

@@ -64,6 +64,7 @@ class kinectGuiApp : public ofBaseApp {
         ofxCvGrayscaleImage grayImg; // grayscale depth image after threshold
         ofxCvGrayscaleImage grayThreshNear; // the near thresholded image
         ofxCvGrayscaleImage grayThreshFar;  // the far thresholded image
+        ofxCvGrayscaleImage tempGrayImg;    // Used by some filters
         // Remove this img from depth before contour finding. e.g. background.
         ofxCvGrayscaleImage maskImg;
         ofxCvGrayscaleImage stencilImg;
@@ -71,6 +72,7 @@ class kinectGuiApp : public ofBaseApp {
         ofxIntSlider nearThreshold;
         ofxIntSlider farThreshold;
         ofxIntSlider extraMaskDepth;
+        ofxIntSlider medianBlur;
         ofxToggle kinectFlip;
         ofxToggle bThresholds;
         ofxButton grabMaskButton;
