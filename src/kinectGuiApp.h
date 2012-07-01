@@ -54,6 +54,8 @@ class kinectGuiApp : public ofBaseApp {
         void setFarThreshold( int n);
         void grabMask();
         void grabMask( bool& pressed) { if (pressed) grabMask(); } // event hook
+        void clearMask();
+        void clearMask( bool& pressed) { if (pressed) clearMask(); } // event hook
         void drawPointCloud();
         ofxKinect kinect;
         ofxCvColorImage colorImg;
@@ -71,6 +73,7 @@ class kinectGuiApp : public ofBaseApp {
         ofxToggle kinectFlip;
         ofxToggle bThresholds;
         ofxButton grabMaskButton;
+        ofxButton clearMaskButton;
         ofxToggle bMask;
         string maskFilename;
         // used for viewing the point cloud

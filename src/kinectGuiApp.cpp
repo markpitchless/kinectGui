@@ -47,6 +47,8 @@ void kinectGuiApp::setupGui() {
     guiKinect.add( bThresholds.setup("Apply Threshold", true) );
     guiKinect.add( grabMaskButton.setup("Grab Mask") );
     grabMaskButton.addListener(this, &kinectGuiApp::grabMask);
+    guiKinect.add( clearMaskButton.setup("Clear Mask") );
+    clearMaskButton.addListener(this, &kinectGuiApp::clearMask);
     guiKinect.add( extraMaskDepth.setup("Extra Mask Depth", 0, 0, 100) );
     guiKinect.add( bMask.setup("Apply Mask", false) );
     // Images
@@ -141,6 +143,12 @@ void kinectGuiApp::grabMask() {
     }
 }
 
+void kinectGuiApp::clearMask() {
+    maskImg.set(0);
+    ofFile maskfile(maskFilename);
+    if (maskfile.exists())
+        maskfile.remove();
+}
 
 //--------------------------------------------------------------
 void kinectGuiApp::update(){
