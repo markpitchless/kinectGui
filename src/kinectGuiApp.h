@@ -72,6 +72,7 @@ class kinectGuiApp : public ofBaseApp {
         ofxToggle bThresholds;
         ofxButton grabMaskButton;
         ofxToggle bMask;
+        string maskFilename;
         // used for viewing the point cloud
         ofEasyCam easyCam;
 };

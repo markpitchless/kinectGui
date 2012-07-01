@@ -16,6 +16,8 @@ void kinectGuiApp::setup(){
     maskImg.allocate(kinect.width, kinect.height);
     stencilImg.allocate(kinect.width, kinect.height);
 
+    maskFilename = "mask.png";
+
     // Starting the kinect after the gui seems to break loading xml settings
     // in setup, which breaks any future load and save. If you don't load xml
     // in setup you don't see the bug at all. Very strange.
@@ -79,11 +81,33 @@ void kinectGuiApp::startKinect() {
 void kinectGuiApp::loadSettings() {
     guiApp.loadFromFile("settings.xml");
     guiKinect.loadFromFile("kinect.xml");
+
+    // Load the mask, if it is there.
+    ofFile maskfile(maskFilename);
+    if (maskfile.exists()) {
+        ofImage loadImg;
+        loadImg.loadImage(maskFilename);
+        ofxCvColorImage cvColorImg;
+        cvColorImg.allocate(maskImg.width, maskImg.height);
+        cvColorImg.setFromPixels(loadImg.getPixels(), maskImg.width, maskImg.height);
+        maskImg = cvColorImg;
+    }
+
 }
 
 void kinectGuiApp::saveSettings() {
     guiApp.saveToFile("settings.xml");
     guiKinect.saveToFile("kinect.xml");
+
+    // Save the mask. CV images have no save so we convert to ofImage
+    // Can't seem to do that for a cvGrayScale image so convert to color first.
+    ofxCvColorImage cvColorImg;
+    cvColorImg.allocate(maskImg.width, maskImg.height);
+    cvColorImg = maskImg;
+    ofImage saveImg;
+    saveImg.setFromPixels(cvColorImg.getPixels(),
+            cvColorImg.width, cvColorImg.height, OF_IMAGE_COLOR);
+    saveImg.saveImage(maskFilename);
 }
 
 void kinectGuiApp::setKinectAngle(float & n_angle) {
@@ -206,6 +230,9 @@ void kinectGuiApp::keyPressed(int key){
 	}
 	if(key == 'l') {
 	    loadSettings();
+	}
+	if(key == 'g') {
+	    grabMask();
 	}
 }
 
