@@ -57,6 +57,7 @@ class kinectGuiApp : public ofBaseApp {
         void clearMask();
         void clearMask( bool& pressed) { if (pressed) clearMask(); } // event hook
         void drawPointCloud();
+        void drawKinectImages();
         ofxKinect kinect;
         ofxCvColorImage colorImg;
         ofxCvGrayscaleImage depthImg;// grayscale depth image
@@ -76,6 +77,12 @@ class kinectGuiApp : public ofBaseApp {
         ofxButton clearMaskButton;
         ofxToggle bMask;
         string maskFilename;
+        ofxToggle showPointCloud;
+        ofxToggle showColorImg;
+        ofxToggle showDepthImg;
+        ofxToggle showMaskImg;
+        ofxToggle showStencilImg;
+        ofxToggle showGrayImg;
         // used for viewing the point cloud
         ofEasyCam easyCam;
 };

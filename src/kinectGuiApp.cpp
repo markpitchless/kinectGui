@@ -51,12 +51,19 @@ void kinectGuiApp::setupGui() {
     clearMaskButton.addListener(this, &kinectGuiApp::clearMask);
     guiKinect.add( extraMaskDepth.setup("Extra Mask Depth", 0, 0, 100) );
     guiKinect.add( bMask.setup("Apply Mask", false) );
+    guiKinect.add( showPointCloud.setup("Point Cloud", true) );
     // Images
-    guiKinect.add( colorImgGui.setup("Color Image", (ofImage*)&colorImg) );
-    guiKinect.add( depthImgGui.setup("Depth Image", (ofImage*)&depthImg) );
-    guiKinect.add( maskImgGui.setup("Mask", (ofImage*)&maskImg) );
-    guiKinect.add( stencilImgGui.setup("Stencil", (ofImage*)&stencilImg) );
-    guiKinect.add( grayImgGui.setup("Gray Image", (ofImage*)&grayImg) );
+    // Hide the names and use toggles as labels on the images.
+    guiKinect.add( colorImgGui.setup("Color", (ofImage*)&colorImg,false) );
+    guiKinect.add( showColorImg.setup("RGB", false) );
+    guiKinect.add( depthImgGui.setup("Depth", (ofImage*)&depthImg, false) );
+    guiKinect.add( showDepthImg.setup("Depth", false) );
+    guiKinect.add( maskImgGui.setup("Mask", (ofImage*)&maskImg, false) );
+    guiKinect.add( showMaskImg.setup("Mask", false) );
+    guiKinect.add( stencilImgGui.setup("Stencil", (ofImage*)&stencilImg, false) );
+    guiKinect.add( showStencilImg.setup("Stencil", false) );
+    guiKinect.add( grayImgGui.setup("Gray", (ofImage*)&grayImg, false) );
+    guiKinect.add( showGrayImg.setup("Gray", false) );
 }
 
 void kinectGuiApp::startKinect() {
@@ -193,9 +200,14 @@ void kinectGuiApp::update(){
 //--------------------------------------------------------------
 void kinectGuiApp::draw(){
     ofBackgroundGradient(ofColor::white, ofColor::gray);
-    easyCam.begin();
-    drawPointCloud();
-    easyCam.end();
+
+    drawKinectImages();
+
+    if (showPointCloud) {
+        easyCam.begin();
+        drawPointCloud();
+        easyCam.end();
+    }
 
     if (showGui) {
         guiApp.draw();
@@ -226,6 +238,38 @@ void kinectGuiApp::drawPointCloud() {
     mesh.drawVertices();
     glDisable(GL_DEPTH_TEST);
     ofPopMatrix();
+}
+
+void kinectGuiApp::drawKinectImages() {
+    vector<ofxCvImage*> images;
+    if (showColorImg)   images.push_back(&colorImg);
+    if (showDepthImg)   images.push_back(&depthImg);
+    if (showMaskImg)    images.push_back(&maskImg);
+    if (showStencilImg) images.push_back(&stencilImg);
+    if (showGrayImg)    images.push_back(&grayImg);
+    int numImg = images.size();
+
+    int ww = ofGetWidth();
+    int wh = ofGetHeight();
+    ofRectangle rects[4];
+    if (numImg == 1) {
+        rects[0] = ofRectangle(0,0,ww,wh);
+    }
+    else if (numImg < 5) { // 2 - 4
+        int w = ww/2;
+        int h = wh/2;
+        rects[0] = ofRectangle(0,0,w,h);
+        rects[1] = ofRectangle(w,0,w,h);
+        rects[2] = ofRectangle(0,h,w,h);
+        rects[3] = ofRectangle(w,h,w,h);
+    }
+    else {
+        // 4 max!
+        numImg = 4;
+    }
+
+    for (int i = 0; i < numImg; ++i)
+        images[i]->draw(rects[i]);
 }
 
 //--------------------------------------------------------------
