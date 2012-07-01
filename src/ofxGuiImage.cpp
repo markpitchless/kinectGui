@@ -7,16 +7,20 @@
 
 #include "ofxGuiImage.h"
 
-ofxGuiImage * ofxGuiImage::setup(string _name, ofImage* _imgPtr, float width ) {
+ofxGuiImage * ofxGuiImage::setup(string _name, ofImage* _imgPtr, bool _showName, float width ) {
 	name     = _name;
+	showName = _showName;
 	b.width  = width;
 	b.height = _imgPtr->height*(width/_imgPtr->width);
+	if (showName)
+	    b.height += defaultHeight;
 	imgPtr   = _imgPtr;
 	return this;
 }
 
-ofxGuiImage * ofxGuiImage::setup(string _name, ofImage* _imgPtr, float width, float height ) {
+ofxGuiImage * ofxGuiImage::setup(string _name, ofImage* _imgPtr, bool _showName, float width, float height ) {
 	name     = _name;
+	showName = _showName;
 	b.width  = width;
 	b.height = height;
 	imgPtr   = _imgPtr;
@@ -55,10 +59,15 @@ void ofxGuiImage::draw(){
 
 	ofTranslate(b.x, b.y);
 	ofSetColor(ofColor::white);
-	imgPtr->draw(textPadding, textPadding, b.width-2*textPadding, b.height-2*textPadding);
+	float h = b.height-2*textPadding;
+	if (showName)
+	    h -= defaultHeight;
+	imgPtr->draw(textPadding, textPadding, b.width-2*textPadding, h);
 
-	ofSetColor(textColor);
-	ofDrawBitmapString(name, textPadding, b.height-textPadding);
+	if (showName) {
+        ofSetColor(textColor);
+        ofDrawBitmapString(name, textPadding, b.height-textPadding);
+	}
 
 	ofPopMatrix();
 	ofPopStyle();

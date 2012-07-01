@@ -5,13 +5,13 @@
 
 class ofxGuiImage: public ofxBaseGui {
 public:
-    ofxGuiImage(){}
+    ofxGuiImage() : showName(true) {}
     virtual ~ofxGuiImage(){}
 
     // Set size explicitly
-    ofxGuiImage * setup(string _name, ofImage* _imgPtr, float width, float height );
+    ofxGuiImage * setup(string _name, ofImage* _imgPtr, bool _showName, float width, float height );
     // Set width scale height based on img
-    ofxGuiImage * setup(string _name, ofImage* _imgPtr, float width = defaultWidth );
+    ofxGuiImage * setup(string _name, ofImage* _imgPtr, bool _showName = true, float width = defaultWidth );
 
 	virtual void mouseMoved(ofMouseEventArgs & args);
 	virtual void mousePressed(ofMouseEventArgs & args);
@@ -30,4 +30,5 @@ public:
 
 protected:
 	void setValue(float mx, float my, bool bCheck);
+	bool showName;
 };
