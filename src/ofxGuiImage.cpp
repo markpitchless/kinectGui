@@ -8,29 +8,18 @@
 #include "ofxGuiImage.h"
 
 ofxGuiImage * ofxGuiImage::setup(string _name, ofImage* _imgPtr, float width ) {
-	name = _name;
-	b.x = 0;
-	b.y = 0;
-	b.width = width;
-	float scale = width/_imgPtr->width;
-	b.height = _imgPtr->height*scale;
-	currentFrame = 0;
-	bGuiActive = false;
-	imgPtr = _imgPtr;
-
+	name     = _name;
+	b.width  = width;
+	b.height = _imgPtr->height*(width/_imgPtr->width);
+	imgPtr   = _imgPtr;
 	return this;
 }
 
 ofxGuiImage * ofxGuiImage::setup(string _name, ofImage* _imgPtr, float width, float height ) {
-	name = _name;
-	b.x = 0;
-	b.y = 0;
-	b.width = width;
+	name     = _name;
+	b.width  = width;
 	b.height = height;
-	currentFrame = 0;
-	bGuiActive = false;
-	imgPtr = _imgPtr;
-
+	imgPtr   = _imgPtr;
 	return this;
 }
 
