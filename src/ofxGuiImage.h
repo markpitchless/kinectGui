@@ -8,9 +8,9 @@ public:
     ofxGuiImage() : showName(true) {}
     virtual ~ofxGuiImage(){}
 
-    // Set size explicitly
+    // Set size explicitly (includes name is showName is true).
     ofxGuiImage * setup(string _name, ofImage* _imgPtr, bool _showName, float width, float height );
-    // Set width scale height based on img
+    // Set width, scale height based on img and showName.
     ofxGuiImage * setup(string _name, ofImage* _imgPtr, bool _showName = true, float width = defaultWidth );
 
 	virtual void mouseMoved(ofMouseEventArgs & args);
@@ -36,9 +36,8 @@ public:
 	bool operator=(bool v) { value = v; return v; }
 	operator bool & ()     { return value; }
 
-	ofImage* imgPtr;
-
 protected:
+	ofImage* imgPtr;
     ofxParameter<bool> value;
 	void setValue(float mx, float my, bool bCheck);
 	bool showName;

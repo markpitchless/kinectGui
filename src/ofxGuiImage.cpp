@@ -1,10 +1,3 @@
-/*
- * ofxGuiImage.cpp
- *
- *  Created on: 23 Jun 2012
- *      Author: mda
- */
-
 #include "ofxGuiImage.h"
 
 ofxGuiImage * ofxGuiImage::setup(string _name, ofImage* _imgPtr, bool _showName, float width ) {
@@ -27,7 +20,6 @@ ofxGuiImage * ofxGuiImage::setup(string _name, ofImage* _imgPtr, bool _showName,
 	return this;
 }
 
-
 void ofxGuiImage::mouseMoved(ofMouseEventArgs & args){
 }
 
@@ -43,11 +35,9 @@ void ofxGuiImage::mouseReleased(ofMouseEventArgs & args){
 }
 
 void ofxGuiImage::saveToXml(ofxXmlSettings& xml) {
-    // Nothing to save for an image
 }
 
 void ofxGuiImage::loadFromXml(ofxXmlSettings& xml) {
-    // Nothing to save for an image
 }
 
 void ofxGuiImage::draw(){
