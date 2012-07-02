@@ -32,12 +32,14 @@ void ofxGuiImage::mouseMoved(ofMouseEventArgs & args){
 }
 
 void ofxGuiImage::mousePressed(ofMouseEventArgs & args){
+    setValue(args.x, args.y, true);
 }
 
 void ofxGuiImage::mouseDragged(ofMouseEventArgs & args){
 }
 
 void ofxGuiImage::mouseReleased(ofMouseEventArgs & args){
+    bGuiActive = false;
 }
 
 void ofxGuiImage::saveToXml(ofxXmlSettings& xml) {
@@ -73,14 +75,19 @@ void ofxGuiImage::draw(){
 	ofPopStyle();
 }
 
-//ofImage ofxGuiImage::operator=(ofImage v){
-//	value = v;
-//	return v;
-//}
-//
-//ofxGuiImage::operator ofImage & (){
-//	return value;
-//}
-
 void ofxGuiImage::setValue(float mx, float my, bool bCheck){
+    if( ofGetFrameNum() - currentFrame > 1 ){
+        bGuiActive = false;
+        return;
+    }
+    if( bCheck ){
+        if( b.inside(mx, my) ){
+            bGuiActive = true;
+        }else{
+            bGuiActive = false;
+        }
+    }
+    if( bGuiActive ){
+        value = !value;
+    }
 }

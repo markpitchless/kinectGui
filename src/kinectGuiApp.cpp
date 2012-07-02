@@ -4,7 +4,7 @@
 void kinectGuiApp::setup(){
     ofSetWindowTitle("kinectGui");
     ofSetLogLevel(OF_LOG_VERBOSE);
-    ofSetFrameRate(60);
+    //ofSetFrameRate(60);
     ofEnableAlphaBlending();
     ofEnableSmoothing();
 
@@ -31,7 +31,7 @@ void kinectGuiApp::setup(){
 void kinectGuiApp::setupGui() {
     // Note: The panels will get repositioned in windowResized
     guiApp.setup("KinectGui");
-    guiApp.add( fpsSlider.setup("FPS", 60.0 + 10.0) );
+    guiApp.add( fpsSlider.setup("FPS", 200) );
     guiApp.add( showGui.setup("Show Gui", true) );
     guiApp.add( loadButton.setup("Load") );
     guiApp.add( saveButton.setup("Save") );

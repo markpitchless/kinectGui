@@ -23,12 +23,23 @@ public:
 
 	void draw();
 
-	//ofImage operator=(ofImage v);
-	//operator ofImage & ();
+    template<class ListenerClass>
+    void addListener(ListenerClass * listener, void ( ListenerClass::*method )(bool&)){
+        value.addListener(listener,method);
+    }
+
+    template<class ListenerClass>
+    void removeListener(ListenerClass * listener, void ( ListenerClass::*method )(bool&)){
+        value.removeListener(listener,method);
+    }
+
+	bool operator=(bool v) { value = v; return v; }
+	operator bool & ()     { return value; }
 
 	ofImage* imgPtr;
 
 protected:
+    ofxParameter<bool> value;
 	void setValue(float mx, float my, bool bCheck);
 	bool showName;
 };
