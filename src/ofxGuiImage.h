@@ -5,12 +5,12 @@
 
 class ofxGuiImage: public ofxBaseGui {
 public:
-    ofxGuiImage() : showName(true) {}
+    ofxGuiImage() : showName(true), imgBorder(1) {}
     virtual ~ofxGuiImage(){}
 
-    // Set size explicitly (includes name is showName is true).
+    // Set size explicitly (includes name if showName is true).
     ofxGuiImage * setup(string _name, ofImage* _imgPtr, bool _showName, float width, float height );
-    // Set width, scale height based on img and showName.
+    // Set width, scale height based on img and showName to preserve aspect.
     ofxGuiImage * setup(string _name, ofImage* _imgPtr, bool _showName = true, float width = defaultWidth );
 
 	virtual void mouseMoved(ofMouseEventArgs & args);
@@ -33,6 +33,9 @@ public:
         value.removeListener(listener,method);
     }
 
+    ofxParameter<int> getImgBorder() { return imgBorder; }
+    void setImgBorder(int v)         { imgBorder = v; }
+
 	bool operator=(bool v) { value = v; return v; }
 	operator bool & ()     { return value; }
 
@@ -41,4 +44,5 @@ protected:
     ofxParameter<bool> value;
 	void setValue(float mx, float my, bool bCheck);
 	bool showName;
+	ofxParameter<int> imgBorder; // pixels of border around img
 };

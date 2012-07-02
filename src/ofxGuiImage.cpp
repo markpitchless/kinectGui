@@ -51,10 +51,10 @@ void ofxGuiImage::draw(){
 
 	ofTranslate(b.x, b.y);
 	ofSetColor(ofColor::white);
-	float h = b.height-2*textPadding;
+	float h = b.height-2*imgBorder;
 	if (showName)
 	    h -= defaultHeight;
-	imgPtr->draw(textPadding, textPadding, b.width-2*textPadding, h);
+	imgPtr->draw(imgBorder, imgBorder, b.width-2*imgBorder, h);
 
 	if (showName) {
         ofSetColor(textColor);
