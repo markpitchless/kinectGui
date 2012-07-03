@@ -35,6 +35,7 @@ void kinectGuiApp::setupGui() {
     guiApp.add( showGui.setup("Show Gui", true) );
     guiApp.add( loadButton.setup("Load") );
     guiApp.add( saveButton.setup("Save") );
+    guiApp.add( status.setup("Status","") );
     loadButton.addListener(this, &kinectGuiApp::loadSettings);
     saveButton.addListener(this, &kinectGuiApp::saveSettings);
 
@@ -329,6 +330,7 @@ void kinectGuiApp::mouseReleased(int x, int y, int button){
 
 //--------------------------------------------------------------
 void kinectGuiApp::windowResized(int w, int h){
+    status = "Size: " + ofToString(w) + "x" + ofToString(h);
     guiApp.setPosition(ofGetWidth()-guiApp.getShape().width-10, 10);
     guiKinect.setPosition(10,10);
 }

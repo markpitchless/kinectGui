@@ -37,6 +37,7 @@ class kinectGuiApp : public ofBaseApp {
         ofxToggle showGui;
         ofxButton loadButton;
         ofxButton saveButton;
+        ofxLabel status;
 
         ofxPanel guiKinect;
         ofxLabel kinectId;
