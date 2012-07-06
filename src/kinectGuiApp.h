@@ -9,6 +9,8 @@
 #include "ofxFpsSlider.h"
 #include "ofxGuiImage.h"
 
+#include "KinectBlobTracker.h"
+
 class kinectGuiApp : public ofBaseApp {
 
     public:
@@ -32,6 +34,14 @@ class kinectGuiApp : public ofBaseApp {
         void loadSettings( bool& pressed) { if (pressed) loadSettings(); } // event hook
         void saveSettings();
         void saveSettings( bool& pressed) { if (pressed) saveSettings(); } // event hook
+        void grabMask();
+        void grabMask( bool& pressed) { if (pressed) grabMask(); } // event hook
+        void clearMask();
+        void clearMask( bool& pressed) { if (pressed) clearMask(); } // event hook
+        void drawKinectImages();
+
+        KinectBlobTracker kinect;
+
         ofxPanel guiApp;
         ofxFpsSlider fpsSlider;
         ofxToggle showGui;
@@ -41,44 +51,13 @@ class kinectGuiApp : public ofBaseApp {
 
         ofxPanel guiKinect;
         ofxLabel kinectId;
-        ofxFloatSlider kinectAngle;
         ofxGuiImage colorImgGui;
         ofxGuiImage depthImgGui;
         ofxGuiImage grayImgGui;
         ofxGuiImage maskImgGui;
         ofxGuiImage stencilImgGui;
-
-        void startKinect();
-        void setKinectAngle( float & n_angle );
-        void setNearThreshold( int n );
-        void setFarThreshold( int n);
-        void grabMask();
-        void grabMask( bool& pressed) { if (pressed) grabMask(); } // event hook
-        void clearMask();
-        void clearMask( bool& pressed) { if (pressed) clearMask(); } // event hook
-        void drawPointCloud();
-        void drawKinectImages();
-        ofxKinect kinect;
-        ofxCvColorImage colorImg;
-        ofxCvGrayscaleImage depthImg;// grayscale depth image
-        ofxCvGrayscaleImage grayImg; // grayscale depth image after threshold
-        ofxCvGrayscaleImage grayThreshNear; // the near thresholded image
-        ofxCvGrayscaleImage grayThreshFar;  // the far thresholded image
-        ofxCvGrayscaleImage tempGrayImg;    // Used by some filters
-        // Remove this img from depth before contour finding. e.g. background.
-        ofxCvGrayscaleImage maskImg;
-        ofxCvGrayscaleImage stencilImg;
-        ofxCvContourFinder contourFinder;
-        ofxIntSlider nearThreshold;
-        ofxIntSlider farThreshold;
-        ofxIntSlider extraMaskDepth;
-        ofxIntSlider medianBlur;
-        ofxIntSlider gaussianBlur;
-        ofxToggle kinectFlip;
-        ofxToggle bThresholds;
         ofxButton grabMaskButton;
         ofxButton clearMaskButton;
-        ofxToggle bMask;
         string maskFilename;
         ofxToggle showPointCloud;
         ofxToggle showColorImg;
