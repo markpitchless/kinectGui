@@ -44,4 +44,6 @@ class KinectBlobTracker {
         ofxParameter<int> medianBlur;
         ofxParameter<int> gaussianBlur;
         ofxParameter<bool> kinectFlip;
+        ofxParameter<int> minArea, maxArea, maxBlobs;
+        ofxParameter<bool> bFindHoles, bUseApproximation;
 };

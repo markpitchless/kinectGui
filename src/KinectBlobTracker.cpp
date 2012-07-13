@@ -10,6 +10,12 @@ KinectBlobTracker::KinectBlobTracker() {
     extraMaskDepth.set("Extra Mask Depth", 0, 0, 100);
     medianBlur.set("Median Blur", 0, 0, 99);
     gaussianBlur.set("Gaussian Blur", 0, 0, 23);
+    int kinectArea = kinect.width*kinect.height;
+    minArea.set("Min Blob Area", 10, 0, (kinectArea/2) );
+    maxArea.set("Max Blob Area", (kinectArea/2), 0, kinectArea );
+    maxBlobs.set("Max Blobs", 10, 0, 200);
+    bFindHoles.set("Find Holes", false);
+    bUseApproximation.set("Use Approximation", false);
 }
 
 KinectBlobTracker::~KinectBlobTracker() {
@@ -85,9 +91,8 @@ void KinectBlobTracker::update() {
         grayImg.flagImageChanged();
         stencilImg.flagImageChanged();
 
-        // find contours which are between the size of 20 pixels and 1/3 the w*h pixels.
-        // also, find holes is set to true so we will get interior contours as well....
-        contourFinder.findContours(grayImg, 10, (kinect.width*kinect.height)/2, 20, false);
+        // find contours
+        contourFinder.findContours(grayImg, minArea, maxArea, maxBlobs, bFindHoles, bUseApproximation);
     }
 }
 
