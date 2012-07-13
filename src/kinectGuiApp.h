@@ -53,19 +53,21 @@ class kinectGuiApp : public ofBaseApp {
         ofxLabel kinectId;
         ofxGuiImage colorImgGui;
         ofxGuiImage depthImgGui;
-        ofxGuiImage grayImgGui;
         ofxGuiImage maskImgGui;
-        ofxGuiImage stencilImgGui;
         ofxButton grabMaskButton;
         ofxButton clearMaskButton;
         string maskFilename;
         ofxToggle showPointCloud;
-        ofxToggle showBlobs;
         ofxToggle showColorImg;
         ofxToggle showDepthImg;
         ofxToggle showMaskImg;
-        ofxToggle showStencilImg;
-        ofxToggle showGrayImg;
         // used for viewing the point cloud
         ofEasyCam easyCam;
+
+        ofxPanel guiBlobs;
+        ofxToggle showBlobs;
+        ofxGuiImage grayImgGui;
+        ofxGuiImage stencilImgGui;
+        ofxToggle showStencilImg;
+        ofxToggle showGrayImg;
 };

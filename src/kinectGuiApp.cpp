@@ -47,10 +47,7 @@ void kinectGuiApp::setupGui() {
     clearMaskButton.addListener(this, &kinectGuiApp::clearMask);
     guiKinect.add( kinect.extraMaskDepth );
     guiKinect.add( kinect.bMask );
-    guiKinect.add( kinect.medianBlur );
-    guiKinect.add( kinect.gaussianBlur );
     guiKinect.add( showPointCloud.setup("Point Cloud", true) );
-    guiKinect.add( showBlobs.setup("Show Blobs", false) );
     // Images
     // Hide the names and use toggles as labels on the images.
     guiKinect.add( colorImgGui.setup("Color", (ofImage*)&kinect.colorImg,false) );
@@ -59,22 +56,34 @@ void kinectGuiApp::setupGui() {
     guiKinect.add( showDepthImg.setup("Depth", false) );
     guiKinect.add( maskImgGui.setup("Mask", (ofImage*)&kinect.maskImg, false) );
     guiKinect.add( showMaskImg.setup("Mask", false) );
-    guiKinect.add( stencilImgGui.setup("Stencil", (ofImage*)&kinect.stencilImg, false) );
-    guiKinect.add( showStencilImg.setup("Stencil", false) );
-    guiKinect.add( grayImgGui.setup("Gray", (ofImage*)&kinect.grayImg, false) );
-    guiKinect.add( showGrayImg.setup("Gray", false) );
+
+    guiBlobs.setup("Blobs");
+    guiBlobs.add( showBlobs.setup("Show Blobs", false) );
+    guiBlobs.add( kinect.medianBlur );
+    guiBlobs.add( kinect.gaussianBlur );
+    guiBlobs.add( kinect.minArea );
+    guiBlobs.add( kinect.maxArea );
+    guiBlobs.add( kinect.maxBlobs );
+    guiBlobs.add( kinect.bFindHoles );
+    guiBlobs.add( kinect.bUseApproximation );
+    guiBlobs.add( stencilImgGui.setup("Stencil", (ofImage*)&kinect.stencilImg, false) );
+    guiBlobs.add( showStencilImg.setup("Stencil", false) );
+    guiBlobs.add( grayImgGui.setup("Gray", (ofImage*)&kinect.grayImg, false) );
+    guiBlobs.add( showGrayImg.setup("Gray", false) );
 }
 
 //--------------------------------------------------------------
 void kinectGuiApp::loadSettings() {
     guiApp.loadFromFile("settings.xml");
     guiKinect.loadFromFile("kinect.xml");
+    guiBlobs.loadFromFile("blobs.xml");
     kinect.loadMask(maskFilename);
 }
 
 void kinectGuiApp::saveSettings() {
     guiApp.saveToFile("settings.xml");
     guiKinect.saveToFile("kinect.xml");
+    guiBlobs.saveToFile("blobs.xml");
     kinect.saveMask(maskFilename);
 }
 
@@ -113,6 +122,7 @@ void kinectGuiApp::draw(){
     if (showGui) {
         guiApp.draw();
         guiKinect.draw();
+        guiBlobs.draw();
     }
 }
 
@@ -194,6 +204,7 @@ void kinectGuiApp::windowResized(int w, int h){
     status = "Size: " + ofToString(w) + "x" + ofToString(h);
     guiApp.setPosition(ofGetWidth()-guiApp.getShape().width-10, 10);
     guiKinect.setPosition(10,10);
+    guiBlobs.setPosition(10+guiKinect.getShape().width+10,10);
 }
 
 //--------------------------------------------------------------
