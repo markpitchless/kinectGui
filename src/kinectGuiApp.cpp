@@ -67,6 +67,8 @@ void kinectGuiApp::setupGui() {
     guiBlobs.add( kinect.bFindHoles );
     guiBlobs.add( kinect.bUseApproximation );
     guiBlobs.add( kinect.simplify );
+    guiBlobs.add( kinect.resampleSpacing );
+    guiBlobs.add( kinect.resampleCount );
     guiBlobs.add( stencilImgGui.setup("Stencil", (ofImage*)&kinect.stencilImg, false) );
     guiBlobs.add( showStencilImg.setup("Stencil", false) );
     guiBlobs.add( grayImgGui.setup("Gray", (ofImage*)&kinect.grayImg, false) );

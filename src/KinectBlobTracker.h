@@ -54,5 +54,9 @@ class KinectBlobTracker {
         ofxParameter<bool> kinectFlip;
         ofxParameter<int> minArea, maxArea, maxBlobs;
         ofxParameter<bool> bFindHoles, bUseApproximation;
-        ofxParameter<float> simplify;
+        ofxParameter<float> simplify, resampleSpacing;
+        ofxParameter<int> resampleCount;
+
+    private:
+        ofPolyline tmpLine;
 };

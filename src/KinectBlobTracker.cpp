@@ -19,6 +19,8 @@ KinectBlobTracker::KinectBlobTracker() {
     bFindHoles.set("Find Holes", false);
     bUseApproximation.set("Use Approximation", false);
     simplify.set("Simplify Blob Lines", 0.0, 0.0, 1.0);
+    resampleSpacing.set("Resample Spacing", 0.0, 0.0, kinect.width);
+    resampleCount.set("Resample Count", 0, 0, 1000);
 }
 
 KinectBlobTracker::~KinectBlobTracker() {
@@ -106,8 +108,17 @@ void KinectBlobTracker::findBlobs() {
     for (size_t i=0; i < contourFinder.blobs.size(); ++i) {
         ofPolyline nline;
         nline.addVertexes(contourFinder.blobs[i].pts);
-        if (simplify > 0.0)
+        if (simplify > 0.0) {
             nline.simplify(simplify);
+        }
+        if (resampleSpacing > 0.0) {
+            tmpLine = nline.getResampledBySpacing(resampleSpacing);
+            nline = tmpLine;
+        }
+        if (resampleCount > 0) {
+            tmpLine = nline.getResampledByCount(resampleCount);
+            nline = tmpLine;
+        }
         blobs.push_back(nline);
     }
 }
