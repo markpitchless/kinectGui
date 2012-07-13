@@ -60,6 +60,7 @@ class kinectGuiApp : public ofBaseApp {
         ofxButton clearMaskButton;
         string maskFilename;
         ofxToggle showPointCloud;
+        ofxToggle showBlobs;
         ofxToggle showColorImg;
         ofxToggle showDepthImg;
         ofxToggle showMaskImg;

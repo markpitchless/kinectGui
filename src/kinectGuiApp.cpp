@@ -50,6 +50,7 @@ void kinectGuiApp::setupGui() {
     guiKinect.add( kinect.medianBlur );
     guiKinect.add( kinect.gaussianBlur );
     guiKinect.add( showPointCloud.setup("Point Cloud", true) );
+    guiKinect.add( showBlobs.setup("Show Blobs", false) );
     // Images
     // Hide the names and use toggles as labels on the images.
     guiKinect.add( colorImgGui.setup("Color", (ofImage*)&kinect.colorImg,false) );
@@ -103,6 +104,10 @@ void kinectGuiApp::draw(){
         easyCam.begin();
         kinect.drawPointCloud();
         easyCam.end();
+    }
+
+    if (showBlobs) {
+        kinect.contourFinder.draw(0,0,ofGetWidth(),ofGetWindowHeight());
     }
 
     if (showGui) {
