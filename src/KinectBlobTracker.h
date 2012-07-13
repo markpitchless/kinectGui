@@ -19,8 +19,13 @@ class KinectBlobTracker {
         void clearMask();
         bool loadMask(string filename);
         void saveMask(string filename);
+        void findBlobs();
 
         void drawPointCloud();
+        void drawBlobs(float x=0, float y=0, float w=640, float h=480);
+        void drawBlobs(const ofRectangle & rect) {
+            drawBlobs(rect.x, rect.y, rect.width, rect.height);
+        }
 
         void close();
 
@@ -35,6 +40,9 @@ class KinectBlobTracker {
         ofxCvGrayscaleImage maskImg;
         ofxCvGrayscaleImage stencilImg;
         ofxCvContourFinder contourFinder;
+        vector<ofPolyline> blobs;
+        ofColor boundingColor;
+        ofColor lineColor;
         ofxParameter<float> kinectAngle;
         ofxParameter<bool> bThresholds;
         ofxParameter<int> nearThreshold;

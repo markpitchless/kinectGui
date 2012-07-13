@@ -116,7 +116,7 @@ void kinectGuiApp::draw(){
     }
 
     if (showBlobs) {
-        kinect.contourFinder.draw(0,0,ofGetWidth(),ofGetWindowHeight());
+        kinect.drawBlobs(0,0,ofGetWidth(),ofGetWindowHeight());
     }
 
     if (showGui) {

@@ -1,6 +1,8 @@
 #include "KinectBlobTracker.h"
 
 KinectBlobTracker::KinectBlobTracker() {
+    boundingColor = ofColor::green;
+    lineColor = ofColor::yellow;
     kinectAngle.set("Angle", 0.0, -30.0, 30.0);
     bThresholds.set("Apply Threshold", false);
     nearThreshold.set("Near Threshold", 255, 0, 255);
@@ -50,49 +52,60 @@ void KinectBlobTracker::setup() {
 
 void KinectBlobTracker::update() {
     kinect.update();
-    if(kinect.isFrameNew()) {
-        // load the rgb image
-        colorImg.setFromPixels(kinect.getPixels(), kinect.width, kinect.height);
-        if (kinectFlip)
-            colorImg.mirror(false,true);
+    if(!kinect.isFrameNew()) return;
 
-        // load grayscale depth image from the kinect source
-        depthImg.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
-        if (kinectFlip)
-            depthImg.mirror(false,true);
+    // load the rgb image
+    colorImg.setFromPixels(kinect.getPixels(), kinect.width, kinect.height);
+    if (kinectFlip)
+        colorImg.mirror(false,true);
 
-        grayImg = depthImg;
+    // load grayscale depth image from the kinect source
+    depthImg.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
+    if (kinectFlip)
+        depthImg.mirror(false,true);
 
-        // Apply the thresholds, setting pix to black when past thresh.
-        if (bThresholds) {
-            cvThreshold(grayImg.getCvImage(), grayImg.getCvImage(), farThreshold, 0, CV_THRESH_TOZERO);
-            cvThreshold(grayImg.getCvImage(), grayImg.getCvImage(), nearThreshold, 0, CV_THRESH_TOZERO_INV);
-        }
+    grayImg = depthImg;
 
-        if (bMask) {
-            // Make a stencil. fooImg is 255 for keep and 0 for remove.
-            cvCmp(depthImg.getCvImage(), maskImg.getCvImage(), stencilImg.getCvImage(), CV_CMP_GT);
-            // Apply the stencil to the depth image.
-            cvAnd(grayImg.getCvImage(), stencilImg.getCvImage(), grayImg.getCvImage());
-        }
+    // Apply the thresholds, setting pix to black when past thresh.
+    if (bThresholds) {
+        cvThreshold(grayImg.getCvImage(), grayImg.getCvImage(), farThreshold, 0, CV_THRESH_TOZERO);
+        cvThreshold(grayImg.getCvImage(), grayImg.getCvImage(), nearThreshold, 0, CV_THRESH_TOZERO_INV);
+    }
 
-        if (medianBlur > 0) {
-            if (medianBlur % 2 == 0) medianBlur++; // must be odd
-            tempGrayImg = grayImg;
-            cvSmooth(tempGrayImg.getCvImage(), grayImg.getCvImage(), CV_MEDIAN, medianBlur);
-        }
+    if (bMask) {
+        // Make a stencil. fooImg is 255 for keep and 0 for remove.
+        cvCmp(depthImg.getCvImage(), maskImg.getCvImage(), stencilImg.getCvImage(), CV_CMP_GT);
+        // Apply the stencil to the depth image.
+        cvAnd(grayImg.getCvImage(), stencilImg.getCvImage(), grayImg.getCvImage());
+    }
 
-        if (gaussianBlur > 0) {
-            if (gaussianBlur % 2 == 0) gaussianBlur++; // must be odd
-            grayImg.blurGaussian(gaussianBlur);
-        }
+    if (medianBlur > 0) {
+        if (medianBlur % 2 == 0) medianBlur++; // must be odd
+        tempGrayImg = grayImg;
+        cvSmooth(tempGrayImg.getCvImage(), grayImg.getCvImage(), CV_MEDIAN, medianBlur);
+    }
 
-        // update the cv images
-        grayImg.flagImageChanged();
-        stencilImg.flagImageChanged();
+    if (gaussianBlur > 0) {
+        if (gaussianBlur % 2 == 0) gaussianBlur++; // must be odd
+        grayImg.blurGaussian(gaussianBlur);
+    }
 
-        // find contours
-        contourFinder.findContours(grayImg, minArea, maxArea, maxBlobs, bFindHoles, bUseApproximation);
+    // update the cv images
+    grayImg.flagImageChanged();
+    stencilImg.flagImageChanged();
+
+    findBlobs();
+}
+
+void KinectBlobTracker::findBlobs() {
+    contourFinder.findContours(grayImg, minArea, maxArea, maxBlobs, bFindHoles, bUseApproximation);
+    if (contourFinder.blobs.size() == 0) return;
+
+    blobs.clear();
+    for (size_t i=0; i < contourFinder.blobs.size(); ++i) {
+        ofPolyline nline;
+        nline.addVertexes(contourFinder.blobs[i].pts);
+        blobs.push_back(nline);
     }
 }
 
@@ -144,6 +157,28 @@ void KinectBlobTracker::saveMask(string filename) {
     saveImg.setFromPixels(cvColorImg.getPixels(),
             cvColorImg.width, cvColorImg.height, OF_IMAGE_COLOR);
     saveImg.saveImage(filename);
+}
+
+void KinectBlobTracker::drawBlobs(float x, float y, float w, float h) {
+    float scalex = w/kinect.width;
+    float scaley = h/kinect.height;
+    ofPushStyle();
+    ofPushMatrix();
+    ofTranslate(x,y,0.0);
+    ofScale(scalex, scaley, 0.0);
+
+        ofNoFill();
+        // Draw the blobs
+        vector<ofPolyline>::iterator it;
+        for (it = blobs.begin(); it != blobs.end(); ++it) {
+            ofSetColor(boundingColor);
+            ofRect(it->getBoundingBox());
+            ofSetColor(lineColor);
+            it->draw();
+        }
+
+    ofPopMatrix();
+    ofPopStyle();
 }
 
 void KinectBlobTracker::drawPointCloud() {
