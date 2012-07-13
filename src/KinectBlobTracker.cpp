@@ -178,6 +178,17 @@ void KinectBlobTracker::drawBlobs(float x, float y, float w, float h) {
             ofRect(it->getBoundingBox());
             ofSetColor(lineColor);
             it->draw();
+            vector<ofPoint> pts = it->getVertices();
+            for (size_t j=0; j<pts.size(); ++j) {
+                ofSetColor(255,0,255,100);
+                ofFill();
+                ofCircle(pts[j].x, pts[j].y, 10);
+                ofSetColor(0,0,0);
+                ofDrawBitmapString(ofToString(j), pts[j].x-6, pts[j].y+3);
+                ofSetColor(255,255,255);
+                ofNoFill();
+                ofCircle(pts[j].x, pts[j].y, 10);
+            }
         }
 
     ofPopMatrix();
