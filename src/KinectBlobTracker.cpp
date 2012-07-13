@@ -108,6 +108,7 @@ void KinectBlobTracker::findBlobs() {
     for (size_t i=0; i < contourFinder.blobs.size(); ++i) {
         ofPolyline nline;
         nline.addVertexes(contourFinder.blobs[i].pts);
+        nline.setClosed(true);
         if (simplify > 0.0) {
             nline.simplify(simplify);
         }
@@ -185,10 +186,18 @@ void KinectBlobTracker::drawBlobs(float x, float y, float w, float h) {
         // Draw the blobs
         vector<ofPolyline>::iterator it;
         for (it = blobs.begin(); it != blobs.end(); ++it) {
+            stringstream info;
+            info << "Size:" << it->size()
+                    << " Area:" << it->getArea()
+                    << " Perimeter:" << it->getPerimeter();
             ofSetColor(boundingColor);
-            ofRect(it->getBoundingBox());
+            ofRectangle box = it->getBoundingBox();
+            ofRect(box);
+            ofDrawBitmapString(info.str(), box.x, box.y);
+
             ofSetColor(lineColor);
             it->draw();
+
             vector<ofPoint> pts = it->getVertices();
             for (size_t j=0; j<pts.size(); ++j) {
                 ofSetColor(255,0,255,100);
