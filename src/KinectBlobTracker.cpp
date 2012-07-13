@@ -18,6 +18,7 @@ KinectBlobTracker::KinectBlobTracker() {
     maxBlobs.set("Max Blobs", 10, 0, 200);
     bFindHoles.set("Find Holes", false);
     bUseApproximation.set("Use Approximation", false);
+    simplify.set("Simplify Blob Lines", 0.0, 0.0, 1.0);
 }
 
 KinectBlobTracker::~KinectBlobTracker() {
@@ -105,6 +106,8 @@ void KinectBlobTracker::findBlobs() {
     for (size_t i=0; i < contourFinder.blobs.size(); ++i) {
         ofPolyline nline;
         nline.addVertexes(contourFinder.blobs[i].pts);
+        if (simplify > 0.0)
+            nline.simplify(simplify);
         blobs.push_back(nline);
     }
 }
