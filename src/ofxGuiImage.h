@@ -15,10 +15,10 @@ public:
     // Set width, scale height based on img and showName to preserve aspect.
     ofxGuiImage * setup(string _name, ofImage* _imgPtr, bool _showName = true, float width = defaultWidth );
 
-	virtual bool mouseMoved(ofMouseEventArgs & args);
+	virtual bool mouseMoved(ofMouseEventArgs & args) { return false; }
 	virtual bool mousePressed(ofMouseEventArgs & args);
-	virtual bool mouseDragged(ofMouseEventArgs & args);
-	virtual bool mouseReleased(ofMouseEventArgs & args);
+	virtual bool mouseDragged(ofMouseEventArgs & args) { return false; }
+	virtual bool mouseReleased(ofMouseEventArgs & args) { return false; }
 
     template<class ListenerClass>
     void addListener(ListenerClass * listener, void ( ListenerClass::*method )(bool&)){

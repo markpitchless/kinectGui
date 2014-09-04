@@ -20,20 +20,8 @@ ofxGuiImage * ofxGuiImage::setup(string _name, ofImage* _imgPtr, bool _showName,
 	return this;
 }
 
-bool ofxGuiImage::mouseMoved(ofMouseEventArgs & args){
-    return false;
-}
-
 bool ofxGuiImage::mousePressed(ofMouseEventArgs & args){
     return setValue(args.x, args.y, true);
-}
-
-bool ofxGuiImage::mouseDragged(ofMouseEventArgs & args){
-    return false;
-}
-
-bool ofxGuiImage::mouseReleased(ofMouseEventArgs & args){
-    return false;
 }
 
 void ofxGuiImage::render(){
@@ -60,15 +48,22 @@ void ofxGuiImage::render(){
 }
 
 bool ofxGuiImage::setValue(float mx, float my, bool bCheck){
-//    if( bCheck ){
-//        if( b.inside(mx, my) ){
-//            bGuiActive = true;
-//        }else{
-//            bGuiActive = false;
-//        }
-//    }
-    if( isGuiDrawing() ){
-        value = !value;
+    // TODO - Taken from slider. Do we need out own bGuiActive on the class?
+    bool bGuiActive(false);
+    if( !isGuiDrawing() ){
+    bGuiActive = false;
+        return false;
     }
-    return value;
+    if( bCheck ){
+        if( b.inside(mx, my) ){
+            bGuiActive = true;
+        }else{
+            bGuiActive = false;
+        }
+    }
+    if( bGuiActive ){
+        value = !value;
+        return true;
+    }
+    return false;
 }
