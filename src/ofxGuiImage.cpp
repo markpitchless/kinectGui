@@ -36,7 +36,7 @@ bool ofxGuiImage::mouseReleased(ofMouseEventArgs & args){
     return false;
 }
 
-void ofxGuiImage::draw(){
+void ofxGuiImage::render(){
 	ofPushStyle();
 	ofPushMatrix();
 

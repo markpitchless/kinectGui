@@ -20,8 +20,6 @@ public:
 	virtual bool mouseDragged(ofMouseEventArgs & args);
 	virtual bool mouseReleased(ofMouseEventArgs & args);
 
-	void draw();
-
     template<class ListenerClass>
     void addListener(ListenerClass * listener, void ( ListenerClass::*method )(bool&)){
         value.addListener(listener,method);
@@ -40,12 +38,12 @@ public:
 
 	ofAbstractParameter & getParameter(){ return value; }
 
-    void render() {}
-
 protected:
 	ofImage* imgPtr;
     ofParameter<bool> value;
-	virtual bool setValue(float mx, float my, bool bCheck);
 	bool showName;
 	ofParameter<int> imgBorder; // pixels of border around img
+
+	virtual bool setValue(float mx, float my, bool bCheck);
+    virtual void render();
 };
