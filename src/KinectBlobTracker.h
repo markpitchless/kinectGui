@@ -43,19 +43,19 @@ class KinectBlobTracker {
         vector<ofPolyline> blobs;
         ofColor boundingColor;
         ofColor lineColor;
-        ofxParameter<float> kinectAngle;
-        ofxParameter<bool> bThresholds;
-        ofxParameter<int> nearThreshold;
-        ofxParameter<int> farThreshold;
-        ofxParameter<bool> bMask;
-        ofxParameter<int> extraMaskDepth;
-        ofxParameter<int> medianBlur;
-        ofxParameter<int> gaussianBlur;
-        ofxParameter<bool> kinectFlip;
-        ofxParameter<int> minArea, maxArea, maxBlobs;
-        ofxParameter<bool> bFindHoles, bUseApproximation;
-        ofxParameter<float> simplify, resampleSpacing;
-        ofxParameter<int> resampleCount;
+        ofParameter<float> kinectAngle;
+        ofParameter<bool> bThresholds;
+        ofParameter<int> nearThreshold;
+        ofParameter<int> farThreshold;
+        ofParameter<bool> bMask;
+        ofParameter<int> extraMaskDepth;
+        ofParameter<int> medianBlur;
+        ofParameter<int> gaussianBlur;
+        ofParameter<bool> kinectFlip;
+        ofParameter<int> minArea, maxArea, maxBlobs;
+        ofParameter<bool> bFindHoles, bUseApproximation;
+        ofParameter<float> simplify, resampleSpacing;
+        ofParameter<int> resampleCount;
 
     private:
         ofPolyline tmpLine;
