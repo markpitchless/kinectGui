@@ -14,7 +14,7 @@ ofxFpsSlider* ofxFpsSlider::setup(string _fpsName, float _max, float width, floa
     return this;
 }
 
-void ofxFpsSlider::draw() {
+void ofxFpsSlider::render() {
     fps = ofGetFrameRate();
 
     ofPushStyle();

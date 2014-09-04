@@ -12,17 +12,16 @@ public:
 
 	ofAbstractParameter & getParameter(){ return fps; }
 
-    void draw();
-
     // Abstract methods we must implement
 	virtual bool mouseMoved(ofMouseEventArgs & args){ return false; }
 	virtual bool mousePressed(ofMouseEventArgs & args){ return false; }
 	virtual bool mouseDragged(ofMouseEventArgs & args){ return false; }
 	virtual bool mouseReleased(ofMouseEventArgs & args){ return false; }
 	virtual bool setValue(float mx, float my, bool bCheckBounds){ return false; }
-    void render() {}
 
 protected:
     float min, max;
     ofParameter<float> fps;
+
+    virtual void render();
 };
