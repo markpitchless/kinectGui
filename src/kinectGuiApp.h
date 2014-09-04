@@ -31,13 +31,9 @@ class kinectGuiApp : public ofBaseApp {
 
         void setupGui();
         void loadSettings();
-        void loadSettings( bool& pressed) { if (pressed) loadSettings(); } // event hook
         void saveSettings();
-        void saveSettings( bool& pressed) { if (pressed) saveSettings(); } // event hook
         void grabMask();
-        void grabMask( bool& pressed) { if (pressed) grabMask(); } // event hook
         void clearMask();
-        void clearMask( bool& pressed) { if (pressed) clearMask(); } // event hook
         void drawKinectImages();
 
         KinectBlobTracker kinect;
