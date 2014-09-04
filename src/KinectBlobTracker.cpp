@@ -107,7 +107,7 @@ void KinectBlobTracker::findBlobs() {
     blobs.clear();
     for (size_t i=0; i < contourFinder.blobs.size(); ++i) {
         ofPolyline nline;
-        nline.addVertexes(contourFinder.blobs[i].pts);
+        nline.addVertices(contourFinder.blobs[i].pts);
         nline.setClosed(true);
         if (simplify > 0.0) {
             nline.simplify(simplify);
