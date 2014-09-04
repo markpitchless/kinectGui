@@ -192,13 +192,16 @@ void kinectGuiApp::update(){
         }
 
         if (medianBlur > 0) {
-            if (medianBlur % 2 == 0) medianBlur++; // must be odd
+            // XXX Used to work, now fails, no operator++(int) declared for postfix `++`
+            //if (medianBlur % 2 == 0) medianBlur++;
+            if (medianBlur % 2 == 0) medianBlur = medianBlur + 1; // must be odd
             tempGrayImg = grayImg;
             cvSmooth(tempGrayImg.getCvImage(), grayImg.getCvImage(), CV_MEDIAN, medianBlur);
         }
 
         if (gaussianBlur > 0) {
-            if (gaussianBlur % 2 == 0) gaussianBlur++; // must be odd
+            //if (gaussianBlur % 2 == 0) gaussianBlur++; // must be odd
+            if (gaussianBlur % 2 == 0) gaussianBlur = gaussianBlur + 1; // must be odd
             grayImg.blurGaussian(gaussianBlur);
         }
 

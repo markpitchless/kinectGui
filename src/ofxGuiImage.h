@@ -2,6 +2,8 @@
 
 #include "ofParameter.h"
 #include "ofxBaseGui.h"
+#include "ofImage.h"
+#include "ofMain.h"
 
 class ofxGuiImage: public ofxBaseGui {
 public:
@@ -13,13 +15,10 @@ public:
     // Set width, scale height based on img and showName to preserve aspect.
     ofxGuiImage * setup(string _name, ofImage* _imgPtr, bool _showName = true, float width = defaultWidth );
 
-	virtual void mouseMoved(ofMouseEventArgs & args);
-	virtual void mousePressed(ofMouseEventArgs & args);
-	virtual void mouseDragged(ofMouseEventArgs & args);
-	virtual void mouseReleased(ofMouseEventArgs & args);
-
-	virtual void saveToXml(ofxXmlSettings& xml) ;
-	virtual void loadFromXml(ofxXmlSettings& xml);
+	virtual bool mouseMoved(ofMouseEventArgs & args);
+	virtual bool mousePressed(ofMouseEventArgs & args);
+	virtual bool mouseDragged(ofMouseEventArgs & args);
+	virtual bool mouseReleased(ofMouseEventArgs & args);
 
 	void draw();
 
@@ -33,16 +32,20 @@ public:
         value.removeListener(listener,method);
     }
 
-    ofxParameter<int> getImgBorder() { return imgBorder; }
+    ofParameter<int> getImgBorder() { return imgBorder; }
     void setImgBorder(int v)         { imgBorder = v; }
 
 	bool operator=(bool v) { value = v; return v; }
-	operator bool & ()     { return value; }
+	operator const bool & ()     { return value; }
+
+	ofAbstractParameter & getParameter(){ return value; }
+
+    void render() {}
 
 protected:
 	ofImage* imgPtr;
-    ofxParameter<bool> value;
-	void setValue(float mx, float my, bool bCheck);
+    ofParameter<bool> value;
+	virtual bool setValue(float mx, float my, bool bCheck);
 	bool showName;
-	ofxParameter<int> imgBorder; // pixels of border around img
+	ofParameter<int> imgBorder; // pixels of border around img
 };

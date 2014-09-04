@@ -29,9 +29,7 @@ class kinectGuiApp : public ofBaseApp {
 
         void setupGui();
         void loadSettings();
-        void loadSettings( bool& pressed) { if (pressed) loadSettings(); } // event hook
         void saveSettings();
-        void saveSettings( bool& pressed) { if (pressed) saveSettings(); } // event hook
         ofxPanel guiApp;
         ofxFpsSlider fpsSlider;
         ofxToggle showGui;
@@ -53,9 +51,7 @@ class kinectGuiApp : public ofBaseApp {
         void setNearThreshold( int n );
         void setFarThreshold( int n);
         void grabMask();
-        void grabMask( bool& pressed) { if (pressed) grabMask(); } // event hook
         void clearMask();
-        void clearMask( bool& pressed) { if (pressed) clearMask(); } // event hook
         void drawPointCloud();
         void drawKinectImages();
         ofxKinect kinect;
