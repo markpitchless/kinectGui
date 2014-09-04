@@ -1,7 +1,7 @@
 #include "ofxGuiImage.h"
 
 ofxGuiImage * ofxGuiImage::setup(string _name, ofImage* _imgPtr, bool _showName, float width ) {
-	name     = _name;
+	setName(_name);
 	showName = _showName;
 	b.width  = width;
 	b.height = _imgPtr->height*(width/_imgPtr->width);
@@ -12,7 +12,7 @@ ofxGuiImage * ofxGuiImage::setup(string _name, ofImage* _imgPtr, bool _showName,
 }
 
 ofxGuiImage * ofxGuiImage::setup(string _name, ofImage* _imgPtr, bool _showName, float width, float height ) {
-	name     = _name;
+	setName(_name);
 	showName = _showName;
 	b.width  = width;
 	b.height = height;
@@ -20,29 +20,11 @@ ofxGuiImage * ofxGuiImage::setup(string _name, ofImage* _imgPtr, bool _showName,
 	return this;
 }
 
-void ofxGuiImage::mouseMoved(ofMouseEventArgs & args){
+bool ofxGuiImage::mousePressed(ofMouseEventArgs & args){
+    return setValue(args.x, args.y, true);
 }
 
-void ofxGuiImage::mousePressed(ofMouseEventArgs & args){
-    setValue(args.x, args.y, true);
-}
-
-void ofxGuiImage::mouseDragged(ofMouseEventArgs & args){
-}
-
-void ofxGuiImage::mouseReleased(ofMouseEventArgs & args){
-    bGuiActive = false;
-}
-
-void ofxGuiImage::saveToXml(ofxXmlSettings& xml) {
-}
-
-void ofxGuiImage::loadFromXml(ofxXmlSettings& xml) {
-}
-
-void ofxGuiImage::draw(){
-	currentFrame = ofGetFrameNum();
-
+void ofxGuiImage::render(){
 	ofPushStyle();
 	ofPushMatrix();
 
@@ -58,17 +40,19 @@ void ofxGuiImage::draw(){
 
 	if (showName) {
         ofSetColor(textColor);
-        ofDrawBitmapString(name, textPadding, b.height-textPadding);
+        ofDrawBitmapString(getName(), textPadding, b.height-textPadding);
 	}
 
 	ofPopMatrix();
 	ofPopStyle();
 }
 
-void ofxGuiImage::setValue(float mx, float my, bool bCheck){
-    if( ofGetFrameNum() - currentFrame > 1 ){
-        bGuiActive = false;
-        return;
+bool ofxGuiImage::setValue(float mx, float my, bool bCheck){
+    // TODO - Taken from slider. Do we need out own bGuiActive on the class?
+    bool bGuiActive(false);
+    if( !isGuiDrawing() ){
+    bGuiActive = false;
+        return false;
     }
     if( bCheck ){
         if( b.inside(mx, my) ){
@@ -79,5 +63,7 @@ void ofxGuiImage::setValue(float mx, float my, bool bCheck){
     }
     if( bGuiActive ){
         value = !value;
+        return true;
     }
+    return false;
 }
