@@ -17,7 +17,7 @@ void kinectGuiApp::setup(){
     setupGui();
     loadSettings();
     // XXX - Access to serials when multi kinect.
-    kinectId = "ID: " + ofToString(kinect.kinect.getDeviceId()) + " " + kinect.kinect.getSerial();;
+    kinectId = ofToString(kinect.kinect.getDeviceId()) + " " + kinect.kinect.getSerial();;
     // Some time to settle the kinect.
     ofSleepMillis(1000);
 }
@@ -35,7 +35,7 @@ void kinectGuiApp::setupGui() {
     saveButton.addListener(this, &kinectGuiApp::saveSettings);
 
     guiKinect.setup("Kinect");
-    guiKinect.add( kinectId.setup("kinectId", "Connecting...") );
+    guiKinect.add( kinectId.setup("ID", "Connecting...") );
     guiKinect.add( kinect.kinectAngle );
     guiKinect.add( kinect.kinectFlip );
     guiKinect.add( kinect.nearThreshold );
