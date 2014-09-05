@@ -14,6 +14,10 @@
 class kinectGuiApp : public ofBaseApp {
 
     public:
+        KinectBlobTracker kinect;
+        ofParameter<ofColor> bgColor1;
+        ofParameter<ofColor> bgColor2;
+
         void setup();
         void update();
         void draw();
@@ -35,8 +39,6 @@ class kinectGuiApp : public ofBaseApp {
         void grabMask();
         void clearMask();
         void drawKinectImages();
-
-        KinectBlobTracker kinect;
 
         ofxPanel guiApp;
         ofxFpsSlider fpsSlider;

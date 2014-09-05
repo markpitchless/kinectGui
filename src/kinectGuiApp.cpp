@@ -9,6 +9,8 @@ void kinectGuiApp::setup(){
     ofEnableSmoothing();
 
     maskFilename = "mask.png";
+    bgColor1.set("bgColor1", ofColor(200,200,200),ofColor(0,0),ofColor(255,255));
+    bgColor2.set("bgColor2", ofColor(23,23,23),ofColor(0,0),ofColor(255,255));
 
     // Starting the kinect after the gui seems to break loading xml settings
     // in setup, which breaks any future load and save. If you don't load xml
@@ -30,6 +32,8 @@ void kinectGuiApp::setupGui() {
     guiApp.add( showGui.setup("Show Gui", true) );
     guiApp.add( loadButton.setup("Load") );
     guiApp.add( saveButton.setup("Save") );
+    guiApp.add( bgColor1 );
+    guiApp.add( bgColor2 );
     guiApp.add( status.setup("Status","") );
     loadButton.addListener(this, &kinectGuiApp::loadSettings);
     saveButton.addListener(this, &kinectGuiApp::saveSettings);
@@ -108,7 +112,7 @@ void kinectGuiApp::update(){
 
 //--------------------------------------------------------------
 void kinectGuiApp::draw(){
-    ofBackgroundGradient(ofColor::white, ofColor::gray);
+    ofBackgroundGradient(bgColor1, bgColor2);
 
     drawKinectImages();
 
