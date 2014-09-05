@@ -26,7 +26,7 @@ void kinectGuiApp::setup(){
 void kinectGuiApp::setupGui() {
     // Note: The panels will get repositioned in windowResized
     guiApp.setup("KinectGui");
-    guiApp.add( fpsSlider.setup("FPS", 200) );
+    guiApp.add( fpsSlider.setup("FPS", 60) );
     guiApp.add( showGui.setup("Show Gui", true) );
     guiApp.add( loadButton.setup("Load") );
     guiApp.add( saveButton.setup("Save") );
