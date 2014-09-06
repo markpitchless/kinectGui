@@ -40,16 +40,18 @@ void kinectGuiApp::setupGui() {
 
     guiKinect.setup("Kinect");
     guiKinect.add( kinectId.setup("ID", "Connecting...") );
-    guiKinect.add( kinect.kinectAngle );
-    guiKinect.add( kinect.kinectFlip );
-    guiKinect.add( kinect.nearThreshold );
-    guiKinect.add( kinect.farThreshold );
-    guiKinect.add( kinect.bThresholds );
+    kinectParams.setName("Settings");
+    kinectParams.add( kinect.kinectAngle );
+    kinectParams.add( kinect.kinectFlip );
+    kinectParams.add( kinect.nearThreshold );
+    kinectParams.add( kinect.farThreshold );
+    kinectParams.add( kinect.bThresholds );
+    kinectParams.add( kinect.extraMaskDepth );
+    guiKinect.add( kinectParams );
     guiKinect.add( grabMaskButton.setup("Grab Mask") );
     grabMaskButton.addListener(this, &kinectGuiApp::grabMask);
     guiKinect.add( clearMaskButton.setup("Clear Mask") );
     clearMaskButton.addListener(this, &kinectGuiApp::clearMask);
-    guiKinect.add( kinect.extraMaskDepth );
     guiKinect.add( kinect.bMask );
     guiKinect.add( showPointCloud.setup("Point Cloud", true) );
     // Images

@@ -48,6 +48,7 @@ class kinectGuiApp : public ofBaseApp {
         ofxLabel status;
 
         ofxPanel guiKinect;
+        ofParameterGroup kinectParams;
         ofxLabel kinectId;
         ofxGuiImage colorImgGui;
         ofxGuiImage depthImgGui;
