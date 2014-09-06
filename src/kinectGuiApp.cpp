@@ -208,7 +208,7 @@ void kinectGuiApp::mouseReleased(int x, int y, int button){
 
 //--------------------------------------------------------------
 void kinectGuiApp::windowResized(int w, int h){
-    status = "Size: " + ofToString(w) + "x" + ofToString(h);
+    status = ofToString(w) + "x" + ofToString(h);
     guiApp.setPosition(ofGetWidth()-guiApp.getShape().width-10, 10);
     guiKinect.setPosition(10,10);
     guiBlobs.setPosition(10+guiKinect.getShape().width+10,10);
