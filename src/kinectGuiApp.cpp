@@ -26,6 +26,12 @@ void kinectGuiApp::setup(){
 
 
 void kinectGuiApp::setupGui() {
+    ofxGuiSetHeaderColor( ofColor(100) );    // param group headers
+    ofxGuiSetBackgroundColor( ofColor(60) ); // bg of params (sliders and stuff but not buttons)
+    ofxGuiSetBorderColor( ofColor(200) );     // bg of param groups (but not panels)
+    ofxGuiSetFillColor( ofColor(175,145,0) ); // Fill on slider bars etc
+    ofxGuiSetTextColor( ofColor::white );
+
     // Note: The panels will get repositioned in windowResized
     guiApp.setup("KinectGui");
     guiApp.add( fpsSlider.setup("FPS", 60) );
