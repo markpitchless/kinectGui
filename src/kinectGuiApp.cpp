@@ -31,6 +31,7 @@ void kinectGuiApp::setupGui() {
     ofxGuiSetBorderColor( ofColor(200) );     // bg of param groups (but not panels)
     ofxGuiSetFillColor( ofColor(175,145,0) ); // Fill on slider bars etc
     ofxGuiSetTextColor( ofColor::white );
+    ofxGuiSetFont("verdana.ttf", 10);
 
     // Note: The panels will get repositioned in windowResized
     guiApp.setup("KinectGui");
