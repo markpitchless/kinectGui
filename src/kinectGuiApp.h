@@ -49,6 +49,7 @@ class kinectGuiApp : public ofBaseApp {
 
         ofxPanel guiKinect;
         ofParameterGroup kinectParams;
+        ofParameterGroup blobParams;
         ofxLabel kinectId;
         ofxGuiImage colorImgGui;
         ofxGuiImage depthImgGui;

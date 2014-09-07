@@ -72,16 +72,18 @@ void kinectGuiApp::setupGui() {
 
     guiBlobs.setup("Blobs");
     guiBlobs.add( showBlobs.setup("Show Blobs", false) );
-    guiBlobs.add( kinect.medianBlur );
-    guiBlobs.add( kinect.gaussianBlur );
-    guiBlobs.add( kinect.minArea );
-    guiBlobs.add( kinect.maxArea );
-    guiBlobs.add( kinect.maxBlobs );
-    guiBlobs.add( kinect.bFindHoles );
-    guiBlobs.add( kinect.bUseApproximation );
-    guiBlobs.add( kinect.simplify );
-    guiBlobs.add( kinect.resampleSpacing );
-    guiBlobs.add( kinect.resampleCount );
+    blobParams.add( kinect.medianBlur );
+    blobParams.add( kinect.gaussianBlur );
+    blobParams.add( kinect.minArea );
+    blobParams.add( kinect.maxArea );
+    blobParams.add( kinect.maxBlobs );
+    blobParams.add( kinect.bFindHoles );
+    blobParams.add( kinect.bUseApproximation );
+    blobParams.add( kinect.simplify );
+    blobParams.add( kinect.resampleSpacing );
+    blobParams.add( kinect.resampleCount );
+    guiBlobs.add( blobParams );
+
     guiBlobs.add( stencilImgGui.setup("Stencil", (ofImage*)&kinect.stencilImg, false) );
     guiBlobs.add( showStencilImg.setup("Stencil", false) );
     guiBlobs.add( grayImgGui.setup("Gray", (ofImage*)&kinect.grayImg, false) );
