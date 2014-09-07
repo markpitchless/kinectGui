@@ -39,11 +39,17 @@ void kinectGuiApp::setupGui() {
     guiApp.add( showGui.setup("Show Gui", true) );
     guiApp.add( loadButton.setup("Load") );
     guiApp.add( saveButton.setup("Save") );
+    guiApp.add( grabMaskButton.setup("Grab Mask") );
+    guiApp.add( clearMaskButton.setup("Clear Mask") );
+    guiApp.add( showBlobs.setup("Show Blobs", false) );
+    guiApp.add( showPointCloud.setup("Show Point Cloud", true) );
     guiApp.add( bgColor1 );
     guiApp.add( bgColor2 );
     guiApp.add( status.setup("Status","") );
     loadButton.addListener(this, &kinectGuiApp::loadSettings);
     saveButton.addListener(this, &kinectGuiApp::saveSettings);
+    grabMaskButton.addListener(this, &kinectGuiApp::grabMask);
+    clearMaskButton.addListener(this, &kinectGuiApp::clearMask);
 
     guiKinect.setup("Kinect");
     guiKinect.add( kinectId.setup("ID", "Connecting...") );
@@ -54,13 +60,8 @@ void kinectGuiApp::setupGui() {
     kinectParams.add( kinect.farThreshold );
     kinectParams.add( kinect.bThresholds );
     kinectParams.add( kinect.extraMaskDepth );
+    kinectParams.add( kinect.bMask );
     guiKinect.add( kinectParams );
-    guiKinect.add( grabMaskButton.setup("Grab Mask") );
-    grabMaskButton.addListener(this, &kinectGuiApp::grabMask);
-    guiKinect.add( clearMaskButton.setup("Clear Mask") );
-    clearMaskButton.addListener(this, &kinectGuiApp::clearMask);
-    guiKinect.add( kinect.bMask );
-    guiKinect.add( showPointCloud.setup("Point Cloud", true) );
     // Images
     // Hide the names and use toggles as labels on the images.
     guiKinect.add( colorImgGui.setup("Color", (ofImage*)&kinect.colorImg,false) );
@@ -71,7 +72,6 @@ void kinectGuiApp::setupGui() {
     guiKinect.add( showMaskImg.setup("Mask", false) );
 
     guiBlobs.setup("Blobs");
-    guiBlobs.add( showBlobs.setup("Show Blobs", false) );
     blobParams.add( kinect.medianBlur );
     blobParams.add( kinect.gaussianBlur );
     blobParams.add( kinect.minArea );
