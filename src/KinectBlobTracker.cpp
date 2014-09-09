@@ -2,7 +2,7 @@
 
 KinectBlobTracker::KinectBlobTracker() {
     boundingColor = ofColor::green;
-    lineColor = ofColor::yellow;
+    lineColor.set("Line Color", ofColor::yellow, ofColor(0,0), ofColor(255,255));
     kinectAngle.set("Angle", 0.0, -30.0, 30.0);
     bThresholds.set("Apply Threshold", false);
     nearThreshold.set("Near Threshold", 255, 0, 255);
@@ -21,6 +21,9 @@ KinectBlobTracker::KinectBlobTracker() {
     simplify.set("Simplify Blob Lines", 0.0, 0.0, 1.0);
     resampleSpacing.set("Resample Spacing", 0.0, 0.0, kinect.width);
     resampleCount.set("Resample Count", 0, 0, 1000);
+
+    showVerts.set("Show Verts", false);
+    showInfo.set("Show Info", false);
 }
 
 KinectBlobTracker::~KinectBlobTracker() {
@@ -186,28 +189,35 @@ void KinectBlobTracker::drawBlobs(float x, float y, float w, float h) {
         // Draw the blobs
         vector<ofPolyline>::iterator it;
         for (it = blobs.begin(); it != blobs.end(); ++it) {
-            stringstream info;
-            info << "Size:" << it->size()
-                    << " Area:" << it->getArea()
-                    << " Perimeter:" << it->getPerimeter();
-            ofSetColor(boundingColor);
-            ofRectangle box = it->getBoundingBox();
-            ofRect(box);
-            ofDrawBitmapString(info.str(), box.x, box.y);
-
+            // Draw the line
             ofSetColor(lineColor);
             it->draw();
 
-            vector<ofPoint> pts = it->getVertices();
-            for (size_t j=0; j<pts.size(); ++j) {
-                ofSetColor(255,0,255,100);
-                ofFill();
-                ofCircle(pts[j].x, pts[j].y, 10);
-                ofSetColor(0,0,0);
-                ofDrawBitmapString(ofToString(j), pts[j].x-6, pts[j].y+3);
-                ofSetColor(255,255,255);
-                ofNoFill();
-                ofCircle(pts[j].x, pts[j].y, 10);
+            // Verts
+            if (showVerts) {
+                vector<ofPoint> pts = it->getVertices();
+                for (size_t j=0; j<pts.size(); ++j) {
+                    ofSetColor(255,0,255,100);
+                    ofFill();
+                    ofCircle(pts[j].x, pts[j].y, 10);
+                    ofSetColor(0,0,0);
+                    ofDrawBitmapString(ofToString(j), pts[j].x-6, pts[j].y+3);
+                    ofSetColor(255,255,255);
+                    ofNoFill();
+                    ofCircle(pts[j].x, pts[j].y, 10);
+                }
+            }
+
+            // Bounding and info
+            if (showInfo) {
+                stringstream info;
+                info << "Size:" << it->size()
+                     << " Area:" << it->getArea()
+                     << " Perimeter:" << it->getPerimeter();
+                ofSetColor(boundingColor);
+                ofRectangle box = it->getBoundingBox();
+                ofRect(box);
+                ofDrawBitmapString(info.str(), box.x, box.y);
             }
         }
 

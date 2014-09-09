@@ -41,8 +41,6 @@ class KinectBlobTracker {
         ofxCvGrayscaleImage stencilImg;
         ofxCvContourFinder contourFinder;
         vector<ofPolyline> blobs;
-        ofColor boundingColor;
-        ofColor lineColor;
         ofParameter<float> kinectAngle;
         ofParameter<bool> bThresholds;
         ofParameter<int> nearThreshold;
@@ -56,6 +54,10 @@ class KinectBlobTracker {
         ofParameter<bool> bFindHoles, bUseApproximation;
         ofParameter<float> simplify, resampleSpacing;
         ofParameter<int> resampleCount;
+
+        ofParameter<ofColor> boundingColor;
+        ofParameter<ofColor> lineColor;
+        ofParameter<bool> showVerts, showInfo;
 
     private:
         ofPolyline tmpLine;

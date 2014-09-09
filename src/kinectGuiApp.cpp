@@ -81,6 +81,9 @@ void kinectGuiApp::setupGui() {
     blobParams.add( kinect.simplify );
     blobParams.add( kinect.resampleSpacing );
     blobParams.add( kinect.resampleCount );
+    blobParams.add( kinect.showInfo );
+    blobParams.add( kinect.showVerts );
+    blobParams.add( kinect.lineColor );
     guiBlobs.add( blobParams );
 
     // Images
