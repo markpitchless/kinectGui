@@ -194,8 +194,15 @@ void KinectBlobTracker::drawBlobs(float x, float y, float w, float h) {
             // Draw the line
             ofSetColor(lineColor);
             ofSetLineWidth(lineWidth);
-            if (bFill) { ofFill(); it->close(); } else { ofNoFill(); }
-            it->draw();
+            if (bFill) ofFill();
+            else ofNoFill();
+//            it->draw();
+            ofBeginShape();
+                vector<ofPoint> pts = it->getVertices();
+                for (size_t i=0; i<pts.size(); ++i) {
+                    ofVertex(pts[i].x, pts[i].y);
+                }
+            ofEndShape(true);
 
             // Verts
             if (showVerts) {
