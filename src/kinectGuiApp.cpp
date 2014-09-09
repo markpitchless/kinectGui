@@ -40,6 +40,7 @@ void kinectGuiApp::setupGui() {
     guiApp.add( saveButton.setup("Save") );
     guiApp.add( grabMaskButton.setup("Grab Mask") );
     guiApp.add( clearMaskButton.setup("Clear Mask") );
+    appParams.setName("Display");
     appParams.add( showGui.set("Show Gui", true) );
     appParams.add( showPointCloud.set("Show Point Cloud", true) );
     appParams.add( showColorImg.set("RGB", false) );
@@ -68,11 +69,6 @@ void kinectGuiApp::setupGui() {
     kinectParams.add( kinect.extraMaskDepth );
     kinectParams.add( kinect.bMask );
     guiKinect.add( kinectParams );
-    // Images
-    // Hide the names and use toggles as labels on the images.
-    guiKinect.add( colorImgGui.setup("Color", (ofImage*)&kinect.colorImg,false) );
-    guiKinect.add( depthImgGui.setup("Depth", (ofImage*)&kinect.depthImg, false) );
-    guiKinect.add( maskImgGui.setup("Mask", (ofImage*)&kinect.maskImg, false) );
 
     guiBlobs.setup("Blobs");
     blobParams.add( kinect.medianBlur );
@@ -87,8 +83,20 @@ void kinectGuiApp::setupGui() {
     blobParams.add( kinect.resampleCount );
     guiBlobs.add( blobParams );
 
-    guiBlobs.add( stencilImgGui.setup("Stencil", (ofImage*)&kinect.stencilImg, false) );
-    guiBlobs.add( grayImgGui.setup("Gray", (ofImage*)&kinect.grayImg, false) );
+    // Images
+    // Hide the names and use toggles as labels on the images.
+    guiImages.setup("Images");
+    //guiImages.setSize(100,100);
+    ofxGuiGroup * guiImgGroup = new ofxGuiGroup();
+    guiImgGroup->setup("");
+    //guiImgGroup->setSize(100,18);
+    int imgWidth = 200;
+    guiImgGroup->add( colorImgGui.setup("Color", (ofImage*)&kinect.colorImg, false, imgWidth) );
+    guiImgGroup->add( depthImgGui.setup("Depth", (ofImage*)&kinect.depthImg, false) );
+    guiImgGroup->add( maskImgGui.setup("Mask", (ofImage*)&kinect.maskImg, false) );
+    guiImgGroup->add( stencilImgGui.setup("Stencil", (ofImage*)&kinect.stencilImg, false) );
+    guiImgGroup->add( grayImgGui.setup("Gray", (ofImage*)&kinect.grayImg, false) );
+    guiImages.add( guiImgGroup );
 }
 
 //--------------------------------------------------------------
@@ -142,6 +150,7 @@ void kinectGuiApp::draw(){
         guiApp.draw();
         guiKinect.draw();
         guiBlobs.draw();
+        guiImages.draw();
     }
 }
 
@@ -222,8 +231,10 @@ void kinectGuiApp::mouseReleased(int x, int y, int button){
 void kinectGuiApp::windowResized(int w, int h){
     status = ofToString(w) + "x" + ofToString(h);
     guiApp.setPosition(ofGetWidth()-guiApp.getShape().width-10, 10);
-    guiKinect.setPosition(10,10);
-    guiBlobs.setPosition(10+guiKinect.getShape().width+10,10);
+    guiImages.setPosition(10,10);
+    guiKinect.setPosition(10+guiImages.getShape().width+10,10);
+    guiBlobs.setPosition(10+guiKinect.getPosition().x+guiKinect.getShape().width+10,10);
+
 }
 
 //--------------------------------------------------------------
