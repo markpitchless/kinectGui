@@ -43,6 +43,11 @@ void kinectGuiApp::setupGui() {
     guiApp.add( clearMaskButton.setup("Clear Mask") );
     guiApp.add( showBlobs.setup("Show Blobs", false) );
     guiApp.add( showPointCloud.setup("Show Point Cloud", true) );
+    guiApp.add( showColorImg.setup("RGB", false) );
+    guiApp.add( showDepthImg.setup("Depth", false) );
+    guiApp.add( showMaskImg.setup("Mask", false) );
+    guiApp.add( showStencilImg.setup("Stencil", false) );
+    guiApp.add( showGrayImg.setup("Gray", false) );
     guiApp.add( bgColor1 );
     guiApp.add( bgColor2 );
     guiApp.add( status.setup("Status","") );
@@ -65,11 +70,8 @@ void kinectGuiApp::setupGui() {
     // Images
     // Hide the names and use toggles as labels on the images.
     guiKinect.add( colorImgGui.setup("Color", (ofImage*)&kinect.colorImg,false) );
-    guiKinect.add( showColorImg.setup("RGB", false) );
     guiKinect.add( depthImgGui.setup("Depth", (ofImage*)&kinect.depthImg, false) );
-    guiKinect.add( showDepthImg.setup("Depth", false) );
     guiKinect.add( maskImgGui.setup("Mask", (ofImage*)&kinect.maskImg, false) );
-    guiKinect.add( showMaskImg.setup("Mask", false) );
 
     guiBlobs.setup("Blobs");
     blobParams.add( kinect.medianBlur );
@@ -85,9 +87,7 @@ void kinectGuiApp::setupGui() {
     guiBlobs.add( blobParams );
 
     guiBlobs.add( stencilImgGui.setup("Stencil", (ofImage*)&kinect.stencilImg, false) );
-    guiBlobs.add( showStencilImg.setup("Stencil", false) );
     guiBlobs.add( grayImgGui.setup("Gray", (ofImage*)&kinect.grayImg, false) );
-    guiBlobs.add( showGrayImg.setup("Gray", false) );
 }
 
 //--------------------------------------------------------------
