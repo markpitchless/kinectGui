@@ -24,6 +24,8 @@ KinectBlobTracker::KinectBlobTracker() {
 
     showVerts.set("Show Verts", false);
     showInfo.set("Show Info", false);
+    bFill.set("Fill", false);
+    lineWidth.set("Line Width", 2.0, 0.0, 60.0);
 }
 
 KinectBlobTracker::~KinectBlobTracker() {
@@ -191,6 +193,8 @@ void KinectBlobTracker::drawBlobs(float x, float y, float w, float h) {
         for (it = blobs.begin(); it != blobs.end(); ++it) {
             // Draw the line
             ofSetColor(lineColor);
+            ofSetLineWidth(lineWidth);
+            if (bFill) { ofFill(); it->close(); } else { ofNoFill(); }
             it->draw();
 
             // Verts

@@ -55,9 +55,10 @@ class KinectBlobTracker {
         ofParameter<float> simplify, resampleSpacing;
         ofParameter<int> resampleCount;
 
+        ofParameter<float> lineWidth;
         ofParameter<ofColor> boundingColor;
         ofParameter<ofColor> lineColor;
-        ofParameter<bool> showVerts, showInfo;
+        ofParameter<bool> bFill, showVerts, showInfo;
 
     private:
         ofPolyline tmpLine;
