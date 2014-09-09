@@ -41,6 +41,7 @@ class kinectGuiApp : public ofBaseApp {
         void drawKinectImages();
 
         ofxPanel guiApp;
+        ofParameterGroup appParams;
         ofxFpsSlider fpsSlider;
         ofParameter<bool> showGui;
         ofxButton loadButton;
