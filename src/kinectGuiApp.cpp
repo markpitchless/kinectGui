@@ -36,18 +36,18 @@ void kinectGuiApp::setupGui() {
     // Note: The panels will get repositioned in windowResized
     guiApp.setup("KinectGui");
     guiApp.add( fpsSlider.setup("FPS", 60) );
-    guiApp.add( showGui.setup("Show Gui", true) );
+    guiApp.add( showGui.set("Show Gui", true) );
     guiApp.add( loadButton.setup("Load") );
     guiApp.add( saveButton.setup("Save") );
     guiApp.add( grabMaskButton.setup("Grab Mask") );
     guiApp.add( clearMaskButton.setup("Clear Mask") );
-    guiApp.add( showBlobs.setup("Show Blobs", false) );
-    guiApp.add( showPointCloud.setup("Show Point Cloud", true) );
-    guiApp.add( showColorImg.setup("RGB", false) );
-    guiApp.add( showDepthImg.setup("Depth", false) );
-    guiApp.add( showMaskImg.setup("Mask", false) );
-    guiApp.add( showStencilImg.setup("Stencil", false) );
-    guiApp.add( showGrayImg.setup("Gray", false) );
+    guiApp.add( showPointCloud.set("Show Point Cloud", true) );
+    guiApp.add( showColorImg.set("RGB", false) );
+    guiApp.add( showDepthImg.set("Depth", false) );
+    guiApp.add( showMaskImg.set("Mask", false) );
+    guiApp.add( showStencilImg.set("Stencil", false) );
+    guiApp.add( showGrayImg.set("Gray", false) );
+    guiApp.add( showBlobs.set("Show Blobs", false) );
     guiApp.add( bgColor1 );
     guiApp.add( bgColor2 );
     guiApp.add( status.setup("Status","") );

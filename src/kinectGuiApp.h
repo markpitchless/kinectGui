@@ -42,10 +42,17 @@ class kinectGuiApp : public ofBaseApp {
 
         ofxPanel guiApp;
         ofxFpsSlider fpsSlider;
-        ofxToggle showGui;
+        ofParameter<bool> showGui;
         ofxButton loadButton;
         ofxButton saveButton;
         ofxLabel status;
+        ofParameter<bool> showPointCloud;
+        ofParameter<bool> showColorImg;
+        ofParameter<bool> showDepthImg;
+        ofParameter<bool> showMaskImg;
+        ofParameter<bool> showStencilImg;
+        ofParameter<bool> showGrayImg;
+        ofParameter<bool> showBlobs;
 
         ofxPanel guiKinect;
         ofParameterGroup kinectParams;
@@ -57,17 +64,11 @@ class kinectGuiApp : public ofBaseApp {
         ofxButton grabMaskButton;
         ofxButton clearMaskButton;
         string maskFilename;
-        ofxToggle showPointCloud;
-        ofxToggle showColorImg;
-        ofxToggle showDepthImg;
-        ofxToggle showMaskImg;
+
         // used for viewing the point cloud
         ofEasyCam easyCam;
 
         ofxPanel guiBlobs;
-        ofxToggle showBlobs;
         ofxGuiImage grayImgGui;
         ofxGuiImage stencilImgGui;
-        ofxToggle showStencilImg;
-        ofxToggle showGrayImg;
 };
