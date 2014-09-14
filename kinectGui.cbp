@@ -27,6 +27,47 @@
 				<Option projectLinkerOptionsRelation="2" />
 			</Target>
 		</Build>
+		<Unit filename="../../../addons/ofxGui/src/ofxBaseGui.cpp" />
+		<Unit filename="../../../addons/ofxGui/src/ofxBaseGui.h" />
+		<Unit filename="../../../addons/ofxGui/src/ofxButton.cpp" />
+		<Unit filename="../../../addons/ofxGui/src/ofxButton.h" />
+		<Unit filename="../../../addons/ofxGui/src/ofxGui.h" />
+		<Unit filename="../../../addons/ofxGui/src/ofxGuiGroup.cpp" />
+		<Unit filename="../../../addons/ofxGui/src/ofxGuiGroup.h" />
+		<Unit filename="../../../addons/ofxGui/src/ofxLabel.cpp" />
+		<Unit filename="../../../addons/ofxGui/src/ofxLabel.h" />
+		<Unit filename="../../../addons/ofxGui/src/ofxPanel.cpp" />
+		<Unit filename="../../../addons/ofxGui/src/ofxPanel.h" />
+		<Unit filename="../../../addons/ofxGui/src/ofxSlider.cpp" />
+		<Unit filename="../../../addons/ofxGui/src/ofxSlider.h" />
+		<Unit filename="../../../addons/ofxGui/src/ofxSliderGroup.cpp" />
+		<Unit filename="../../../addons/ofxGui/src/ofxSliderGroup.h" />
+		<Unit filename="../../../addons/ofxGui/src/ofxToggle.cpp" />
+		<Unit filename="../../../addons/ofxGui/src/ofxToggle.h" />
+		<Unit filename="../../../addons/ofxKinect/src/extra/ofxKinectExtras.cpp" />
+		<Unit filename="../../../addons/ofxKinect/src/extra/ofxKinectExtras.h" />
+		<Unit filename="../../../addons/ofxKinect/src/ofxBase3DVideo.h" />
+		<Unit filename="../../../addons/ofxKinect/src/ofxKinect.cpp" />
+		<Unit filename="../../../addons/ofxKinect/src/ofxKinect.h" />
+		<Unit filename="../../../addons/ofxOpenCv/src/ofxCvBlob.h" />
+		<Unit filename="../../../addons/ofxOpenCv/src/ofxCvColorImage.cpp" />
+		<Unit filename="../../../addons/ofxOpenCv/src/ofxCvColorImage.h" />
+		<Unit filename="../../../addons/ofxOpenCv/src/ofxCvConstants.h" />
+		<Unit filename="../../../addons/ofxOpenCv/src/ofxCvContourFinder.cpp" />
+		<Unit filename="../../../addons/ofxOpenCv/src/ofxCvContourFinder.h" />
+		<Unit filename="../../../addons/ofxOpenCv/src/ofxCvFloatImage.cpp" />
+		<Unit filename="../../../addons/ofxOpenCv/src/ofxCvFloatImage.h" />
+		<Unit filename="../../../addons/ofxOpenCv/src/ofxCvGrayscaleImage.cpp" />
+		<Unit filename="../../../addons/ofxOpenCv/src/ofxCvGrayscaleImage.h" />
+		<Unit filename="../../../addons/ofxOpenCv/src/ofxCvHaarFinder.cpp" />
+		<Unit filename="../../../addons/ofxOpenCv/src/ofxCvHaarFinder.h" />
+		<Unit filename="../../../addons/ofxOpenCv/src/ofxCvImage.cpp" />
+		<Unit filename="../../../addons/ofxOpenCv/src/ofxCvImage.h" />
+		<Unit filename="../../../addons/ofxOpenCv/src/ofxCvShortImage.cpp" />
+		<Unit filename="../../../addons/ofxOpenCv/src/ofxCvShortImage.h" />
+		<Unit filename="../../../addons/ofxOpenCv/src/ofxOpenCv.h" />
+		<Unit filename="../../../addons/ofxXmlSettings/src/ofxXmlSettings.cpp" />
+		<Unit filename="../../../addons/ofxXmlSettings/src/ofxXmlSettings.h" />
 		<Unit filename="config.make">
 			<Option virtualFolder="build config" />
 		</Unit>
