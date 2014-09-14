@@ -5,6 +5,43 @@
 #include "ofxKinect.h"
 #include "ofParameter.h"
 
+class Blob {
+    public:
+        Blob() {
+            line.setClosed(true);
+        }
+
+        ofPolyline line;
+
+        vector<ofPoint> & getVertices() { return line.getVertices(); }
+
+        void addVertices(const vector<ofPoint>& verts) { line.addVertices(verts); }
+
+        void simplify(float tolerance=0.3f) { line.simplify(tolerance); }
+
+        void resampleBySpacing(float spacing) {
+            tmpLine = line.getResampledBySpacing(spacing);
+            line = tmpLine;
+        }
+
+        void resampleByCount(float resampleCount) {
+            tmpLine = line.getResampledByCount(resampleCount);
+            line = tmpLine;
+        }
+
+        ofRectangle getBoundingBox() const { return line.getBoundingBox(); }
+        float getArea() const { return line.getArea(); }
+        size_t size() const { return line.size(); }
+
+        void draw() { line.draw(); }
+
+    private:
+        ofPolyline tmpLine;
+
+};
+
+typedef vector<Blob> BlobVector;
+
 class KinectBlobTracker {
     public:
         KinectBlobTracker();
@@ -40,7 +77,7 @@ class KinectBlobTracker {
         ofxCvGrayscaleImage maskImg;
         ofxCvGrayscaleImage stencilImg;
         ofxCvContourFinder contourFinder;
-        vector<ofPolyline> blobs;
+        BlobVector blobs;
         ofParameter<float> kinectAngle;
         ofParameter<bool> bThresholds;
         ofParameter<int> nearThreshold;
@@ -61,5 +98,5 @@ class KinectBlobTracker {
         ofParameter<bool> bFill, showVerts, showInfo;
 
     private:
-        ofPolyline tmpLine;
 };
+

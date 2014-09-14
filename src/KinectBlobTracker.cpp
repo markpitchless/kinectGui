@@ -111,21 +111,18 @@ void KinectBlobTracker::findBlobs() {
 
     blobs.clear();
     for (size_t i=0; i < contourFinder.blobs.size(); ++i) {
-        ofPolyline nline;
-        nline.addVertices(contourFinder.blobs[i].pts);
-        nline.setClosed(true);
+        Blob blob;
+        blob.addVertices(contourFinder.blobs[i].pts);
         if (simplify > 0.0) {
-            nline.simplify(simplify);
+            blob.simplify(simplify);
         }
         if (resampleSpacing > 0.0) {
-            tmpLine = nline.getResampledBySpacing(resampleSpacing);
-            nline = tmpLine;
+            blob.resampleBySpacing(resampleSpacing);
         }
         if (resampleCount > 0) {
-            tmpLine = nline.getResampledByCount(resampleCount);
-            nline = tmpLine;
+            blob.resampleByCount(resampleCount);
         }
-        blobs.push_back(nline);
+        blobs.push_back(blob);
     }
 }
 
@@ -189,12 +186,12 @@ void KinectBlobTracker::drawBlobs(float x, float y, float w, float h) {
 
         ofNoFill();
         // Draw the blobs
-        vector<ofPolyline>::iterator it;
+        BlobVector::iterator it;
         for (it = blobs.begin(); it != blobs.end(); ++it) {
             // Draw the line
             ofSetColor(lineColor);
             ofSetLineWidth(lineWidth);
-            if (bFill) { ofFill(); it->close(); } else { ofNoFill(); }
+            if (bFill) { ofFill(); } else { ofNoFill(); }
             it->draw();
 
             // Verts
@@ -217,7 +214,7 @@ void KinectBlobTracker::drawBlobs(float x, float y, float w, float h) {
                 stringstream info;
                 info << "Size:" << it->size()
                      << " Area:" << it->getArea()
-                     << " Perimeter:" << it->getPerimeter();
+                     << " Perimeter:" << it->line.getPerimeter();
                 ofSetColor(boundingColor);
                 ofRectangle box = it->getBoundingBox();
                 ofRect(box);
