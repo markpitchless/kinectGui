@@ -112,6 +112,7 @@ void KinectBlobTracker::findBlobs() {
     blobs.clear();
     for (size_t i=0; i < contourFinder.blobs.size(); ++i) {
         Blob blob;
+        blob.bHole = contourFinder.blobs[i].hole;
         blob.addVertices(contourFinder.blobs[i].pts);
         if (simplify > 0.0) {
             blob.simplify(simplify);

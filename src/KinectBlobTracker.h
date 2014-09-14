@@ -12,6 +12,7 @@ class Blob {
         }
 
         ofPolyline line;
+        bool bHole;
 
         vector<ofPoint> & getVertices() { return line.getVertices(); }
 
