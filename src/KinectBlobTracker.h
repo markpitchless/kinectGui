@@ -34,7 +34,34 @@ class Blob {
         float getArea() const { return line.getArea(); }
         size_t size() const { return line.size(); }
 
-        void draw() { line.draw(); }
+        void drawLine() { line.draw(); }
+
+        void drawVertices() {
+            vector<ofPoint> pts = line.getVertices();
+            for (size_t j=0; j<pts.size(); ++j) {
+                ofSetColor(255,0,255,100);
+                ofFill();
+                ofCircle(pts[j].x, pts[j].y, 10);
+                ofSetColor(0,0,0);
+                ofDrawBitmapString(ofToString(j), pts[j].x-6, pts[j].y+3);
+                ofSetColor(255,255,255);
+                ofNoFill();
+                ofCircle(pts[j].x, pts[j].y, 10);
+            }
+        }
+
+        void drawBounding(bool bInfo = false) {
+            ofRectangle box = getBoundingBox();
+            ofRect(box);
+            if (bInfo) {
+                stringstream info;
+                info << "Hole:" << bHole
+                     << " Size:" << size()
+                     << " Area:" << getArea()
+                     << " Perimeter:" << line.getPerimeter();
+                ofDrawBitmapString(info.str(), box.x, box.y);
+            }
+        }
 
     private:
         ofPolyline tmpLine;
