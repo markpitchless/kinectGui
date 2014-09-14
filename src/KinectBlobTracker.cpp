@@ -199,6 +199,7 @@ void KinectBlobTracker::drawBlobs(float x, float y, float w, float h) {
                 it->drawVertices();
 
             if (showInfo)
+                ofSetColor(0,255,0,100);
                 it->drawBounding(true);
         }
 
