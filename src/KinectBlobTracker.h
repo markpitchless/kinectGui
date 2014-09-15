@@ -36,6 +36,14 @@ class Blob {
 
         void drawLine() { line.draw(); }
 
+        void drawBlob() {
+            ofBeginShape();
+                for (size_t i=0; i<line.getVertices().size(); ++i) {
+                    ofVertex(line[i].x, line[i].y);
+                }
+            ofEndShape(true);
+        }
+
         void drawVertices() {
             vector<ofPoint> pts = line.getVertices();
             for (size_t j=0; j<pts.size(); ++j) {

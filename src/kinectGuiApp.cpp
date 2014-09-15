@@ -196,6 +196,9 @@ void kinectGuiApp::keyPressed(int key){
     if( key == 'h' ){
         showGui = !showGui;
 	}
+    if( key == 'f' ){
+        ofToggleFullscreen();
+	}
 	if(key == 's') {
 	    saveSettings();
 	}

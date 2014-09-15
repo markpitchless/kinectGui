@@ -185,7 +185,7 @@ void KinectBlobTracker::drawBlobs(float x, float y, float w, float h) {
     ofTranslate(x,y,0.0);
     ofScale(scalex, scaley, 0.0);
 
-        ofNoFill();
+        //ofNoFill();
         // Draw the blobs
         BlobVector::iterator it;
         for (it = blobs.begin(); it != blobs.end(); ++it) {
@@ -193,6 +193,7 @@ void KinectBlobTracker::drawBlobs(float x, float y, float w, float h) {
             ofSetColor(lineColor);
             ofSetLineWidth(lineWidth);
             if (bFill) { ofFill(); } else { ofNoFill(); }
+            it->drawBlob();
             it->drawLine();
 
             if (showVerts)
