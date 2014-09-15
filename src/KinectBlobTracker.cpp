@@ -198,9 +198,10 @@ void KinectBlobTracker::drawBlobs(float x, float y, float w, float h) {
             if (showVerts)
                 it->drawVertices();
 
-            if (showInfo)
+            if (showInfo) {
                 ofSetColor(0,255,0,100);
                 it->drawBounding(true);
+            }
         }
 
     ofPopMatrix();
