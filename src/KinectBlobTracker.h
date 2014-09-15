@@ -5,13 +5,17 @@
 #include "ofxKinect.h"
 #include "ofParameter.h"
 
+/// A single blob (or hole) found by the tracker.
 class Blob {
     public:
         Blob() {
             line.setClosed(true);
         }
 
+        /// The points of the blob as an ofPolyline
         ofPolyline line;
+
+        /// True if this blob is a hole
         bool bHole;
 
         vector<ofPoint> & getVertices() { return line.getVertices(); }
@@ -78,6 +82,16 @@ class Blob {
 
 typedef vector<Blob> BlobVector;
 
+/// A frames worth of data from the tracker, includes kinect images
+/// (depth and color) as well as the blobs found.
+class BlobFrame {
+    public:
+        ofxCvColorImage colorImg;
+        ofxCvGrayscaleImage depthImg;// grayscale depth image
+        ofxCvGrayscaleImage grayImg; // grayscale depth image after processing
+        BlobVector blobs;
+};
+
 class KinectBlobTracker {
     public:
         KinectBlobTracker();
@@ -112,8 +126,10 @@ class KinectBlobTracker {
         // Remove this img from depth before contour finding. e.g. background.
         ofxCvGrayscaleImage maskImg;
         ofxCvGrayscaleImage stencilImg;
+
         ofxCvContourFinder contourFinder;
         BlobVector blobs;
+
         ofParameter<float> kinectAngle;
         ofParameter<bool> bThresholds;
         ofParameter<int> nearThreshold;
