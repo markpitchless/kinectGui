@@ -120,8 +120,6 @@ class KinectBlobTracker {
         ofxCvColorImage colorImg;
         ofxCvGrayscaleImage depthImg;// grayscale depth image
         ofxCvGrayscaleImage grayImg; // grayscale depth image after threshold
-        ofxCvGrayscaleImage grayThreshNear; // the near thresholded image
-        ofxCvGrayscaleImage grayThreshFar;  // the far thresholded image
         ofxCvGrayscaleImage tempGrayImg;    // Used by some filters
         // Remove this img from depth before contour finding. e.g. background.
         ofxCvGrayscaleImage maskImg;

@@ -36,8 +36,6 @@ void KinectBlobTracker::setup() {
     colorImg.allocate(kinect.width, kinect.height);
     depthImg.allocate(kinect.width, kinect.height);
     grayImg.allocate(kinect.width, kinect.height);
-    grayThreshNear.allocate(kinect.width, kinect.height);
-    grayThreshFar.allocate(kinect.width, kinect.height);
     maskImg.allocate(kinect.width, kinect.height);
     stencilImg.allocate(kinect.width, kinect.height);
     tempGrayImg.allocate(kinect.width, kinect.height);
