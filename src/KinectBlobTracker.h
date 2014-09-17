@@ -92,6 +92,8 @@ class BlobFrame {
         BlobVector blobs;
 };
 
+typedef queue<BlobFrame> BlobHistory;
+
 class KinectBlobTracker {
     public:
         KinectBlobTracker();
@@ -102,6 +104,9 @@ class KinectBlobTracker {
 
         void setCameraTiltAngle(float & n_angle);
         //void setCameraTiltAngle(float & v) { float nv = v; setCameraTiltAngle(nv); };
+
+        void setHistorySize(int & n_size);
+
         void grabMask();
         void clearMask();
         bool loadMask(string filename);
@@ -127,8 +132,10 @@ class KinectBlobTracker {
 
         ofxCvContourFinder contourFinder;
         BlobVector blobs;
+        BlobHistory history;
 
         ofParameter<float> kinectAngle;
+        ofParameter<int> historySize;
         ofParameter<bool> bThresholds;
         ofParameter<int> nearThreshold;
         ofParameter<int> farThreshold;

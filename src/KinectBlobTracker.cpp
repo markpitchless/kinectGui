@@ -32,6 +32,12 @@ KinectBlobTracker::~KinectBlobTracker() {
     kinectAngle.removeListener(this, &KinectBlobTracker::setCameraTiltAngle);
 }
 
+
+void KinectBlobTracker::setHistorySize(int& n_size)
+{
+    // TODO Initialise the history queue, with a set of empty, initialized frames.
+}
+
 void KinectBlobTracker::setup() {
     colorImg.allocate(kinect.width, kinect.height);
     depthImg.allocate(kinect.width, kinect.height);
@@ -41,6 +47,7 @@ void KinectBlobTracker::setup() {
     tempGrayImg.allocate(kinect.width, kinect.height);
 
     kinectAngle.addListener(this, &KinectBlobTracker::setCameraTiltAngle);
+    historySize.addListener(this, &KinectBlobTracker::setHistorySize);
 
     // enable depth->video image calibration
     kinect.setRegistration(true);
@@ -101,6 +108,8 @@ void KinectBlobTracker::update() {
     stencilImg.flagImageChanged();
 
     findBlobs();
+
+    // TODO Update the history, pop the oldest value, update it with current frame and then push.
 }
 
 void KinectBlobTracker::findBlobs() {
