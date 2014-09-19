@@ -47,6 +47,7 @@ class kinectGuiApp : public ofBaseApp {
         void grabMask();
         void clearMask();
         void drawKinectImages();
+        void connect();
 
         ofxPanel guiApp;
         ofParameterGroup appParams;
@@ -60,6 +61,7 @@ class kinectGuiApp : public ofBaseApp {
         ofParameterGroup kinectParams;
         ofParameterGroup blobParams;
         ofxLabel kinectId;
+        ofxButton reConnectButton;
         ofxButton grabMaskButton;
         ofxButton clearMaskButton;
         string maskFilename;

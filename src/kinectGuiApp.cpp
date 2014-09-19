@@ -36,6 +36,7 @@ void kinectGuiApp::setupGui() {
     // Note: The panels will get repositioned in windowResized
     guiApp.setup("KinectGui");
     guiApp.add( fpsSlider.setup("FPS", 60) );
+    guiApp.add( reConnectButton.setup("Connect") );
     guiApp.add( loadButton.setup("Load") );
     guiApp.add( saveButton.setup("Save") );
     guiApp.add( grabMaskButton.setup("Grab Mask") );
@@ -59,14 +60,17 @@ void kinectGuiApp::setupGui() {
     clearMaskButton.addListener(this, &kinectGuiApp::clearMask);
 
     guiKinect.setup("Kinect");
-    guiKinect.add( kinectId.setup("ID", "Connecting...") );
+    ofxGuiGroup * guiKinectGroup = new ofxGuiGroup();
+    guiKinectGroup->setup("");
+    guiKinectGroup->add( kinectId.setup("ID", "Connecting...") );
+    reConnectButton.addListener(this, &kinectGuiApp::connect);
     // Open settings
     connectionParams.setName("Connection");
     connectionParams.add( kinect.bDepthRegistration );
     connectionParams.add( kinect.bVideo );
     connectionParams.add( kinect.bInfrared );
     connectionParams.add( kinect.bTexture );
-    guiKinect.add( connectionParams );
+    guiKinectGroup->add( connectionParams );
     // Run time settings
     kinectParams.setName("Settings");
     kinectParams.add( kinect.kinectAngle );
@@ -76,7 +80,8 @@ void kinectGuiApp::setupGui() {
     kinectParams.add( kinect.bThresholds );
     kinectParams.add( kinect.extraMaskDepth );
     kinectParams.add( kinect.bMask );
-    guiKinect.add( kinectParams );
+    guiKinectGroup->add( kinectParams );
+    guiKinect.add( guiKinectGroup );
 
     guiBlobs.setup("Blobs");
     blobParams.add( kinect.medianBlur );
@@ -111,6 +116,8 @@ void kinectGuiApp::setupGui() {
     guiImgGroup->add( grayImgGui.setup("Gray", (ofImage*)&kinect.grayImg, false) );
     guiImages.add( guiImgGroup );
 }
+
+void kinectGuiApp::connect() { kinect.reConnect(); }
 
 //--------------------------------------------------------------
 void kinectGuiApp::loadSettings() {

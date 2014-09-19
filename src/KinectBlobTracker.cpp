@@ -49,18 +49,18 @@ void KinectBlobTracker::setup() {
     tempGrayImg.allocate(kinect.width, kinect.height);
 
     // Changing these settings requires a re-connect
-    bDepthRegistration.addListener(this, &KinectBlobTracker::reOpen);
-    bVideo.addListener(this, &KinectBlobTracker::reOpen);
-    bInfrared.addListener(this, &KinectBlobTracker::reOpen);
-    bTexture.addListener(this, &KinectBlobTracker::reOpen);
+    bDepthRegistration.addListener(this, &KinectBlobTracker::connectionSettingChange);
+    bVideo.addListener(this, &KinectBlobTracker::connectionSettingChange);
+    bInfrared.addListener(this, &KinectBlobTracker::connectionSettingChange);
+    bTexture.addListener(this, &KinectBlobTracker::connectionSettingChange);
 
     // Move the camera when param changes.
     kinectAngle.addListener(this, &KinectBlobTracker::setCameraTiltAngle);
 
-    open();
+    connect();
 }
 
-bool KinectBlobTracker::open() {
+bool KinectBlobTracker::connect() {
     // enable depth->video image calibration
     kinect.setRegistration(bDepthRegistration);
     kinect.init(bInfrared, bVideo, bTexture);
@@ -77,10 +77,10 @@ bool KinectBlobTracker::open() {
     return result;
 }
 
-bool KinectBlobTracker::reOpen(bool & val) {
+bool KinectBlobTracker::reConnect() {
     ofLogNotice() << "Re-opening";
     if (kinect.isConnected()) { kinect.close(); }
-    return open();
+    return connect();
 }
 
 

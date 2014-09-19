@@ -27,8 +27,8 @@ class KinectBlobTracker {
             drawBlobs(rect.x, rect.y, rect.width, rect.height);
         }
 
-        bool reOpen(bool & v);
-        bool open();
+        bool connect();
+        bool reConnect();
         void close();
 
         ofxKinect kinect;
@@ -76,4 +76,7 @@ class KinectBlobTracker {
 
     private:
         ofPolyline tmpLine;
+
+        // Hook for ofParameter<bool> events
+        inline bool connectionSettingChange(bool & val) { reConnect(); }
 };
