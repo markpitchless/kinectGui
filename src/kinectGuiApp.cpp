@@ -66,6 +66,7 @@ void kinectGuiApp::setupGui() {
     connectionParams.add( kinect.bInfrared );
     connectionParams.add( kinect.bTexture );
     guiKinectGroup->add( connectionParams );
+
     // Run time settings
     kinectParams.setName("Settings");
     kinectParams.add( kinect.kinectAngle );
@@ -76,9 +77,8 @@ void kinectGuiApp::setupGui() {
     kinectParams.add( kinect.extraMaskDepth );
     kinectParams.add( kinect.bMask );
     guiKinectGroup->add( kinectParams );
-    guiKinect.add( guiKinectGroup );
 
-    guiBlobs.setup("Blobs");
+    blobParams.setName("Blobs");
     blobParams.add( kinect.medianBlur );
     blobParams.add( kinect.gaussianBlur );
     blobParams.add( kinect.minArea );
@@ -94,7 +94,9 @@ void kinectGuiApp::setupGui() {
     blobParams.add( kinect.lineWidth );
     blobParams.add( kinect.lineColor );
     blobParams.add( kinect.bFill );
-    guiBlobs.add( blobParams );
+    guiKinectGroup->add(blobParams);
+
+    guiKinect.add( guiKinectGroup );
 
     // Images
     // Hide the names and use toggles as labels on the images.
@@ -118,14 +120,12 @@ void kinectGuiApp::connect() { kinect.reConnect(); }
 void kinectGuiApp::loadSettings() {
     guiApp.loadFromFile("settings.xml");
     guiKinect.loadFromFile("kinect.xml");
-    guiBlobs.loadFromFile("blobs.xml");
     kinect.loadMask(maskFilename);
 }
 
 void kinectGuiApp::saveSettings() {
     guiApp.saveToFile("settings.xml");
     guiKinect.saveToFile("kinect.xml");
-    guiBlobs.saveToFile("blobs.xml");
     kinect.saveMask(maskFilename);
 }
 
@@ -164,7 +164,6 @@ void kinectGuiApp::draw(){
     if (showGui) {
         guiApp.draw();
         guiKinect.draw();
-        guiBlobs.draw();
         guiImages.draw();
     }
 }
@@ -251,10 +250,8 @@ void kinectGuiApp::windowResized(int w, int h){
     guiApp.setPosition(ofGetWidth()-guiApp.getShape().width-10, 10);
     guiImages.setPosition(10,10);
     guiKinect.setPosition(10+guiImages.getShape().width+10,10);
-    guiBlobs.setPosition(10+guiKinect.getPosition().x+guiKinect.getShape().width+10,10);
     guiImages.minimizeAll();
     guiKinect.minimizeAll();
-    guiBlobs.minimizeAll();
 
 }
 

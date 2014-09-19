@@ -65,8 +65,6 @@ class kinectGuiApp : public ofBaseApp {
         ofxButton clearMaskButton;
         string maskFilename;
 
-        ofxPanel guiBlobs;
-
         ofxPanel guiImages;
         ofxGuiImage colorImgGui;
         ofxGuiImage depthImgGui;
