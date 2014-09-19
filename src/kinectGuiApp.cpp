@@ -18,8 +18,6 @@ void kinectGuiApp::setup(){
     kinect.setup();
     setupGui();
     loadSettings();
-    // XXX - Access to serials when multi kinect.
-    kinectId = ofToString(kinect.kinect.getDeviceId()) + " " + kinect.kinect.getSerial();;
     // Some time to settle the kinect.
     ofSleepMillis(1000);
 }
@@ -54,6 +52,7 @@ void kinectGuiApp::setupGui() {
     appParams.add( bgColor2 );
     guiApp.add( appParams );
     guiApp.add( status.setup("Status","") );
+    reConnectButton.addListener(this, &kinectGuiApp::connect);
     loadButton.addListener(this, &kinectGuiApp::loadSettings);
     saveButton.addListener(this, &kinectGuiApp::saveSettings);
     grabMaskButton.addListener(this, &kinectGuiApp::grabMask);
@@ -62,10 +61,10 @@ void kinectGuiApp::setupGui() {
     guiKinect.setup("Kinect");
     ofxGuiGroup * guiKinectGroup = new ofxGuiGroup();
     guiKinectGroup->setup("");
-    guiKinectGroup->add( kinectId.setup("ID", "Connecting...") );
-    reConnectButton.addListener(this, &kinectGuiApp::connect);
     // Open settings
     connectionParams.setName("Connection");
+    connectionParams.add( kinect.deviceId );
+    connectionParams.add( kinect.serial );
     connectionParams.add( kinect.bDepthRegistration );
     connectionParams.add( kinect.bVideo );
     connectionParams.add( kinect.bInfrared );

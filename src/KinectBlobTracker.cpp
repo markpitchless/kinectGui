@@ -1,7 +1,9 @@
 #include "KinectBlobTracker.h"
 
 KinectBlobTracker::KinectBlobTracker()
-    : bInfrared("Grab Infrared", false)
+    : serial("Serial", "")
+    , deviceId("ID", -1, -1,10)
+    , bInfrared("Grab Infrared", false)
     , bVideo("Grab Video", true)
     , bTexture("Use Texture", true)
     , bDepthRegistration("Depth Registration", false)
@@ -74,6 +76,8 @@ bool KinectBlobTracker::connect() {
     else {
         ofLogError() << "Failed to open kinect";
     }
+    deviceId = kinect.getDeviceId();
+    serial = kinect.getSerial();
     return result;
 }
 

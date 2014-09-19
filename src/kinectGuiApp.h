@@ -60,7 +60,6 @@ class kinectGuiApp : public ofBaseApp {
         ofParameterGroup connectionParams;
         ofParameterGroup kinectParams;
         ofParameterGroup blobParams;
-        ofxLabel kinectId;
         ofxButton reConnectButton;
         ofxButton grabMaskButton;
         ofxButton clearMaskButton;

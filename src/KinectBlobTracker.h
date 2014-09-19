@@ -55,6 +55,8 @@ class KinectBlobTracker {
 
         /// Angle of kinect, setting thins moves the sensor. e.g.
         ///   kinect.kinectAngle = 23;
+        ofParameter<int> deviceId;
+        ofParameter<string> serial;
         ofParameter<float> kinectAngle;
         ofParameter<bool> bThresholds;
         ofParameter<int> nearThreshold;
