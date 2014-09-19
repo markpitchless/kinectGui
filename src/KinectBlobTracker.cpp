@@ -65,12 +65,13 @@ bool KinectBlobTracker::connectionSettingChange(bool& val) {
     if (kinect.isConnected()) {
         return reConnect();
     }
-    return false;
+    return val;
 }
 
 
 bool KinectBlobTracker::connect() {
     // enable depth->video image calibration
+    colorImg.set(0);
     kinect.setRegistration(bDepthRegistration);
     kinect.init(bInfrared, bVideo, bTexture);
     //kinect.open(1);   // open a kinect by id, starting with 0 (sorted by serial # lexicographically))
@@ -99,7 +100,6 @@ bool KinectBlobTracker::reConnect() {
     return connect();
 }
 
-
 void KinectBlobTracker::update() {
     if (!kinect.isConnected()) {
         if (retryInCounter < 0) {
@@ -116,9 +116,11 @@ void KinectBlobTracker::update() {
     if(!kinect.isFrameNew()) return;
 
     // load the rgb image
-    colorImg.setFromPixels(kinect.getPixels(), kinect.width, kinect.height);
-    if (kinectFlip)
-        colorImg.mirror(false,true);
+    if (bVideo) {
+        colorImg.setFromPixels(kinect.getPixels(), kinect.width, kinect.height);
+        if (kinectFlip)
+            colorImg.mirror(false,true);
+    }
 
     // load grayscale depth image from the kinect source
     depthImg.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
@@ -138,6 +140,7 @@ void KinectBlobTracker::update() {
         cvCmp(depthImg.getCvImage(), maskImg.getCvImage(), stencilImg.getCvImage(), CV_CMP_GT);
         // Apply the stencil to the depth image.
         cvAnd(grayImg.getCvImage(), stencilImg.getCvImage(), grayImg.getCvImage());
+        stencilImg.flagImageChanged();
     }
 
     if (medianBlur > 0) {
@@ -153,7 +156,6 @@ void KinectBlobTracker::update() {
 
     // update the cv images
     grayImg.flagImageChanged();
-    stencilImg.flagImageChanged();
 
     findBlobs();
 }
