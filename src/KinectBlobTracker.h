@@ -80,5 +80,5 @@ class KinectBlobTracker {
         ofPolyline tmpLine;
 
         // Hook for ofParameter<bool> events
-        inline bool connectionSettingChange(bool & val) { reConnect(); }
+        inline bool connectionSettingChange(bool & val);
 };

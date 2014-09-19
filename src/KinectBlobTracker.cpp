@@ -59,8 +59,15 @@ void KinectBlobTracker::setup() {
     // Move the camera when param changes.
     kinectAngle.addListener(this, &KinectBlobTracker::setCameraTiltAngle);
 
-    connect();
+    //connect();
 }
+
+bool KinectBlobTracker::connectionSettingChange(bool& val) {
+    if (kinect.isConnected()) {
+        return reConnect();
+    }
+}
+
 
 bool KinectBlobTracker::connect() {
     // enable depth->video image calibration
@@ -72,6 +79,8 @@ bool KinectBlobTracker::connect() {
     if (result) {
         ofLogNotice() << "Opened kinect";
         kinect.setCameraTiltAngle(kinectAngle);
+        // Some time to settle the kinect.
+        ofSleepMillis(1000);
     }
     else {
         ofLogError() << "Failed to open kinect";
@@ -82,8 +91,11 @@ bool KinectBlobTracker::connect() {
 }
 
 bool KinectBlobTracker::reConnect() {
-    ofLogNotice() << "Re-opening";
-    if (kinect.isConnected()) { kinect.close(); }
+    ofLogNotice() << "Reconnecting";
+    if (kinect.isConnected()) {
+        close();
+        ofSleepMillis(1000);
+    }
     return connect();
 }
 
@@ -292,5 +304,6 @@ void KinectBlobTracker::drawPointCloud() {
 }
 
 void KinectBlobTracker::close() {
+    ofLogNotice() << "Closing Kinect connection";
     kinect.close();
 }

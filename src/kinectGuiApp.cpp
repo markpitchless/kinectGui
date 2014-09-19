@@ -12,14 +12,10 @@ void kinectGuiApp::setup(){
     bgColor1.set("bgColor1", ofColor(200,200,200),ofColor(0,0),ofColor(255,255));
     bgColor2.set("bgColor2", ofColor(23,23,23),ofColor(0,0),ofColor(255,255));
 
-    // Starting the kinect after the gui seems to break loading xml settings
-    // in setup, which breaks any future load and save. If you don't load xml
-    // in setup you don't see the bug at all. Very strange.
     kinect.setup();
     setupGui();
     loadSettings();
-    // Some time to settle the kinect.
-    ofSleepMillis(1000);
+    kinect.connect();
 }
 
 
