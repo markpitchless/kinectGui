@@ -56,6 +56,7 @@ class kinectGuiApp : public ofBaseApp {
         ofxLabel status;
 
         ofxPanel guiKinect;
+        ofParameterGroup connectionParams;
         ofParameterGroup kinectParams;
         ofParameterGroup blobParams;
         ofxLabel kinectId;

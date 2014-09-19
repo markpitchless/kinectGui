@@ -60,13 +60,15 @@ void kinectGuiApp::setupGui() {
 
     guiKinect.setup("Kinect");
     guiKinect.add( kinectId.setup("ID", "Connecting...") );
-    kinectParams.setName("Settings");
     // Open settings
-    kinectParams.add( kinect.bDepthRegistration );
-    kinectParams.add( kinect.bVideo );
-    kinectParams.add( kinect.bInfrared );
-    kinectParams.add( kinect.bTexture );
+    connectionParams.setName("Connection");
+    connectionParams.add( kinect.bDepthRegistration );
+    connectionParams.add( kinect.bVideo );
+    connectionParams.add( kinect.bInfrared );
+    connectionParams.add( kinect.bTexture );
+    guiKinect.add( connectionParams );
     // Run time settings
+    kinectParams.setName("Settings");
     kinectParams.add( kinect.kinectAngle );
     kinectParams.add( kinect.kinectFlip );
     kinectParams.add( kinect.nearThreshold );
