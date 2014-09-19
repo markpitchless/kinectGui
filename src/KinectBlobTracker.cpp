@@ -1,7 +1,7 @@
 #include "KinectBlobTracker.h"
 
 KinectBlobTracker::KinectBlobTracker()
-    : bInfrared("Grab Infrared", true)
+    : bInfrared("Grab Infrared", false)
     , bVideo("Grab Video", true)
     , bTexture("Use Texture", true)
     , bDepthRegistration("Depth Registration", false)
