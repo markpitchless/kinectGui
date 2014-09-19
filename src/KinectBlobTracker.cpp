@@ -58,8 +58,6 @@ void KinectBlobTracker::setup() {
 
     // Move the camera when param changes.
     kinectAngle.addListener(this, &KinectBlobTracker::setCameraTiltAngle);
-
-    //connect();
 }
 
 bool KinectBlobTracker::connectionSettingChange(bool& val) {

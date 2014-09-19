@@ -104,11 +104,11 @@ void kinectGuiApp::setupGui() {
     guiImgGroup->setup("");
     //guiImgGroup->setSize(100,18);
     int imgWidth = 200;
-    guiImgGroup->add( colorImgGui.setup("Color", (ofImage*)&kinect.colorImg, false, imgWidth) );
-    guiImgGroup->add( depthImgGui.setup("Depth", (ofImage*)&kinect.depthImg, false) );
-    guiImgGroup->add( maskImgGui.setup("Mask", (ofImage*)&kinect.maskImg, false) );
-    guiImgGroup->add( stencilImgGui.setup("Stencil", (ofImage*)&kinect.stencilImg, false) );
-    guiImgGroup->add( grayImgGui.setup("Gray", (ofImage*)&kinect.grayImg, false) );
+    guiImgGroup->add( colorImgGui.setup("Color", (ofImage*)&kinect.colorImg, true, imgWidth) );
+    guiImgGroup->add( depthImgGui.setup("Depth", (ofImage*)&kinect.depthImg, true) );
+    guiImgGroup->add( maskImgGui.setup("Mask", (ofImage*)&kinect.maskImg, true) );
+    guiImgGroup->add( stencilImgGui.setup("Stencil", (ofImage*)&kinect.stencilImg, true) );
+    guiImgGroup->add( grayImgGui.setup("Gray", (ofImage*)&kinect.grayImg, true) );
     guiImages.add( guiImgGroup );
 }
 
