@@ -1,12 +1,13 @@
 #include "KinectBlobTracker.h"
 
 KinectBlobTracker::KinectBlobTracker()
-    : serial("Serial", "")
-    , deviceId("ID", -1, -1,10)
-    , bInfrared("Grab Infrared", false)
+    : bInfrared("Grab Infrared", false)
     , bVideo("Grab Video", true)
     , bTexture("Use Texture", true)
     , bDepthRegistration("Depth Registration", false)
+    , deviceId("ID", -1, -1,10)
+    , serial("Serial", "")
+    , retryInCounter(-1)
     {
     boundingColor = ofColor::green;
     lineColor.set("Line Color", ofColor::yellow, ofColor(0,0), ofColor(255,255));
@@ -64,6 +65,7 @@ bool KinectBlobTracker::connectionSettingChange(bool& val) {
     if (kinect.isConnected()) {
         return reConnect();
     }
+    return false;
 }
 
 
@@ -99,6 +101,17 @@ bool KinectBlobTracker::reConnect() {
 
 
 void KinectBlobTracker::update() {
+    if (!kinect.isConnected()) {
+        if (retryInCounter < 0) {
+            ofLogWarning() << "Kinect not found, re-connect in 2...";
+            retryInCounter = 120;
+        }
+        if (--retryInCounter == 0) {
+            connect();
+        }
+        return;
+    }
+    retryInCounter = -1;
     kinect.update();
     if(!kinect.isFrameNew()) return;
 

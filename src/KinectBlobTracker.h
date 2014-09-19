@@ -78,6 +78,7 @@ class KinectBlobTracker {
 
     private:
         ofPolyline tmpLine;
+        int retryInCounter;
 
         // Hook for ofParameter<bool> events
         inline bool connectionSettingChange(bool & val);
