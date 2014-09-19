@@ -1,6 +1,11 @@
 #include "KinectBlobTracker.h"
 
-KinectBlobTracker::KinectBlobTracker() {
+KinectBlobTracker::KinectBlobTracker()
+    : bInfrared("Grab Infrared", true)
+    , bVideo("Grab Video", true)
+    , bTexture("Use Texture", true)
+    , bDepthRegistration("Depth Registration", false)
+    {
     boundingColor = ofColor::green;
     lineColor.set("Line Color", ofColor::yellow, ofColor(0,0), ofColor(255,255));
     kinectAngle.set("Angle", 0.0, -30.0, 30.0);
@@ -45,11 +50,9 @@ void KinectBlobTracker::setup() {
     kinectAngle.addListener(this, &KinectBlobTracker::setCameraTiltAngle);
 
     // enable depth->video image calibration
-    kinect.setRegistration(true);
+    kinect.setRegistration(bDepthRegistration);
 
-    kinect.init();
-    //kinect.init(true); // shows infrared instead of RGB video image
-    //kinect.init(false, false); // disable video image (faster fps)
+    kinect.init(bInfrared, bVideo, bTexture);
 
     kinect.open();		// opens first available kinect
     //kinect.open(1);	// open a kinect by id, starting with 0 (sorted by serial # lexicographically))

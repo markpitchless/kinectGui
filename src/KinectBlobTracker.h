@@ -41,6 +41,18 @@ class KinectBlobTracker {
         ofxCvGrayscaleImage stencilImg;
         ofxCvContourFinder contourFinder;
         vector<ofPolyline> blobs;
+
+        /// True to make video image IR instead of RGB. Default false.
+        ofParameter<bool> bInfrared;
+        /// Set false to disable video image grabbing.
+        ofParameter<bool> bVideo;
+        /// Set false to not use internal textures, Default true.
+        ofParameter<bool> bTexture;
+        /// False to disable depth registration.
+        ofParameter<bool> bDepthRegistration;
+
+        /// Angle of kinect, setting thins moves the sensor. e.g.
+        ///   kinect.kinectAngle = 23;
         ofParameter<float> kinectAngle;
         ofParameter<bool> bThresholds;
         ofParameter<int> nearThreshold;
