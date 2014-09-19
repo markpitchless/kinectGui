@@ -3,7 +3,7 @@
 //--------------------------------------------------------------
 void kinectGuiApp::setup(){
     ofSetWindowTitle("kinectGui");
-    ofSetLogLevel(OF_LOG_VERBOSE);
+    //ofSetLogLevel(OF_LOG_VERBOSE);
     //ofSetFrameRate(60);
     ofEnableAlphaBlending();
     ofEnableSmoothing();

@@ -27,6 +27,8 @@ class KinectBlobTracker {
             drawBlobs(rect.x, rect.y, rect.width, rect.height);
         }
 
+        bool reOpen(bool & v);
+        bool open();
         void close();
 
         ofxKinect kinect;

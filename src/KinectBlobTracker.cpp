@@ -38,6 +38,7 @@ KinectBlobTracker::~KinectBlobTracker() {
 }
 
 void KinectBlobTracker::setup() {
+    // Grab some memory to store out images.
     colorImg.allocate(kinect.width, kinect.height);
     depthImg.allocate(kinect.width, kinect.height);
     grayImg.allocate(kinect.width, kinect.height);
@@ -47,19 +48,41 @@ void KinectBlobTracker::setup() {
     stencilImg.allocate(kinect.width, kinect.height);
     tempGrayImg.allocate(kinect.width, kinect.height);
 
+    // Changing these settings requires a re-connect
+    bDepthRegistration.addListener(this, &KinectBlobTracker::reOpen);
+    bVideo.addListener(this, &KinectBlobTracker::reOpen);
+    bInfrared.addListener(this, &KinectBlobTracker::reOpen);
+    bTexture.addListener(this, &KinectBlobTracker::reOpen);
+
+    // Move the camera when param changes.
     kinectAngle.addListener(this, &KinectBlobTracker::setCameraTiltAngle);
 
+    open();
+}
+
+bool KinectBlobTracker::open() {
     // enable depth->video image calibration
     kinect.setRegistration(bDepthRegistration);
-
     kinect.init(bInfrared, bVideo, bTexture);
-
-    kinect.open();		// opens first available kinect
-    //kinect.open(1);	// open a kinect by id, starting with 0 (sorted by serial # lexicographically))
-    //kinect.open("A00362A08602047A");	// open a kinect using it's unique serial #
-
-    kinect.setCameraTiltAngle(kinectAngle);
+    //kinect.open(1);   // open a kinect by id, starting with 0 (sorted by serial # lexicographically))
+    //kinect.open("A00362A08602047A");  // open a kinect using it's unique serial #
+    bool result = kinect.open();      // opens first available kinect
+    if (result) {
+        ofLogNotice() << "Opened kinect";
+        kinect.setCameraTiltAngle(kinectAngle);
+    }
+    else {
+        ofLogError() << "Failed to open kinect";
+    }
+    return result;
 }
+
+bool KinectBlobTracker::reOpen(bool & val) {
+    ofLogNotice() << "Re-opening";
+    if (kinect.isConnected()) { kinect.close(); }
+    return open();
+}
+
 
 void KinectBlobTracker::update() {
     kinect.update();
