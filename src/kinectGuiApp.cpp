@@ -252,6 +252,9 @@ void kinectGuiApp::windowResized(int w, int h){
     guiImages.setPosition(10,10);
     guiKinect.setPosition(10+guiImages.getShape().width+10,10);
     guiBlobs.setPosition(10+guiKinect.getPosition().x+guiKinect.getShape().width+10,10);
+    guiImages.minimizeAll();
+    guiKinect.minimizeAll();
+    guiBlobs.minimizeAll();
 
 }
 
