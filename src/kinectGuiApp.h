@@ -26,6 +26,8 @@ class kinectGuiApp : public ofBaseApp {
         ofParameter<ofColor> bgColor1;
         ofParameter<ofColor> bgColor2;
 
+        ofVideoPlayer videoPlayer;
+
         void setup();
         void update();
         void draw();
