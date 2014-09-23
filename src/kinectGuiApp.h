@@ -43,10 +43,12 @@ class kinectGuiApp : public ofBaseApp {
         void exit();
 
         vector<ofVideoPlayer> videos;
+        int iCurVideo;
         ofVideoPlayer& getCurVideo();
         bool addVideo(string filename);
         void loadVideoDir(string dirname);
         void playVideo(size_t vid_numer=0);
+        void playNextVideo();
 
         void setupGui();
         void loadSettings();
@@ -61,6 +63,7 @@ class kinectGuiApp : public ofBaseApp {
         ofxFpsSlider fpsSlider;
         ofxButton loadButton;
         ofxButton saveButton;
+        ofxButton nextVideoButton;
         ofxLabel status;
 
         ofxPanel guiKinect;

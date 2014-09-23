@@ -12,8 +12,8 @@ void kinectGuiApp::setup(){
     bgColor1.set("bgColor1", ofColor(200,200,200),ofColor(0,0),ofColor(255,255));
     bgColor2.set("bgColor2", ofColor(23,23,23),ofColor(0,0),ofColor(255,255));
 
+    iCurVideo = 0;
     showVideo.set("Show Video", true);
-
     loadVideoDir("video");
     playVideo();
 
@@ -25,6 +25,7 @@ void kinectGuiApp::setup(){
 
 void kinectGuiApp::loadVideoDir(string dirname) {
     ofLogNotice() << "Loading video from: " << dirname;
+    iCurVideo = 0;
     ofDirectory dir(dirname);
     dir.listDir();
     if (dir.numFiles() == 0) {
@@ -54,11 +55,19 @@ bool kinectGuiApp::addVideo(string filename) {
 }
 
 void kinectGuiApp::playVideo(size_t vid_numer) {
+    getCurVideo().stop();
     videos[vid_numer].play();
 }
 
+void kinectGuiApp::playNextVideo(){
+    iCurVideo++;
+    if ( iCurVideo > videos.size()-1 ) { iCurVideo = 0; }
+    playVideo(iCurVideo);
+}
+
+
 ofVideoPlayer& kinectGuiApp::getCurVideo(){
-    return videos[0];
+    return videos[iCurVideo];
 }
 
 void kinectGuiApp::setupGui() {
@@ -77,6 +86,7 @@ void kinectGuiApp::setupGui() {
     guiApp.add( saveButton.setup("Save") );
     guiApp.add( grabMaskButton.setup("Grab Mask") );
     guiApp.add( clearMaskButton.setup("Clear Mask") );
+    guiApp.add( nextVideoButton.setup("Next Video") );
     appParams.setName("Display");
     appParams.add( showGui.set("Show Gui", true) );
     appParams.add( showPointCloud.set("Show Point Cloud", true) );
@@ -96,6 +106,7 @@ void kinectGuiApp::setupGui() {
     saveButton.addListener(this, &kinectGuiApp::saveSettings);
     grabMaskButton.addListener(this, &kinectGuiApp::grabMask);
     clearMaskButton.addListener(this, &kinectGuiApp::clearMask);
+    nextVideoButton.addListener(this, &kinectGuiApp::playNextVideo);
 
     guiKinect.setup("Kinect");
     ofxGuiGroup * guiKinectGroup = new ofxGuiGroup();
@@ -267,6 +278,9 @@ void kinectGuiApp::keyPressed(int key){
 	if(key == 'g') {
 	    grabMask();
 	}
+	if (key == 'n') {
+        playNextVideo();
+    }
 }
 
 //--------------------------------------------------------------
