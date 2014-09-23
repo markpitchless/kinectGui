@@ -4,6 +4,7 @@
 #include "ofxGui.h"
 #include "ofxOpenCv.h"
 #include "ofxKinect.h"
+#include "ofxMidi.h"
 
 // Custom controls.
 #include "ofxFpsSlider.h"
@@ -11,7 +12,7 @@
 
 #include "KinectBlobTracker.h"
 
-class kinectGuiApp : public ofBaseApp {
+class kinectGuiApp : public ofBaseApp, public ofxMidiListener {
 
     public:
         KinectBlobTracker kinect;
@@ -48,9 +49,14 @@ class kinectGuiApp : public ofBaseApp {
         bool addVideo(string filename);
         void loadVideoDir(string dirname);
         void playVideo();
+        void togglePlayVideo();
         void pauseVideo();
         void playNextVideo();
         void cueNextVideo();
+
+        ofxMidiIn midiIn;
+        ofxMidiMessage midiMessage;
+        void newMidiMessage(ofxMidiMessage& eventArgs);
 
         void setupGui();
         void loadSettings();

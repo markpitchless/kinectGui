@@ -2,3 +2,4 @@ ofxGui
 ofxKinect
 ofxXmlSettings
 ofxOpenCv
+ofxMidi

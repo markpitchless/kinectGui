@@ -12,15 +12,65 @@ void kinectGuiApp::setup(){
     bgColor1.set("bgColor1", ofColor(200,200,200),ofColor(0,0),ofColor(255,255));
     bgColor2.set("bgColor2", ofColor(23,23,23),ofColor(0,0),ofColor(255,255));
 
+    // Video
     iCurVideo = 0;
     showVideo.set("Show Video", true);
     loadVideoDir("video");
     playVideo();
 
+    // Midi
+    // print ports to console
+	midiIn.listPorts(); // via instance
+	//ofxMidiIn::listPorts(); // via static as well
+
+	// open port by number (you may need to change this)
+	midiIn.openPort(1);
+	//midiIn.openPort("IAC Pure Data In");	// by name
+	//midiIn.openVirtualPort("ofxMidiIn Input");	// open a virtual port
+
+	// don't ignore sysex, timing, & active sense messages,
+	// these are ignored by default
+	midiIn.ignoreTypes(false, false, false);
+
+	// add app as a listener
+	midiIn.addListener(this);
+
+	// print received messages to the console
+	midiIn.setVerbose(true);
+
     kinect.setup();
     setupGui();
     loadSettings();
     kinect.connect();
+}
+
+//--------------------------------------------------------------
+void kinectGuiApp::newMidiMessage(ofxMidiMessage& msg) {
+	// make a copy of the latest message
+	midiMessage = msg;
+
+    stringstream text;
+    // draw the last recieved message contents to the screen
+	text << "Received: " << ofxMidiMessage::getStatusString(midiMessage.status);
+	text << " channel: " << midiMessage.channel;
+	text << " pitch: " << midiMessage.pitch;
+	text << " velocity: " << midiMessage.velocity;
+	text << " control: " << midiMessage.control;
+	text << " value: " << midiMessage.value;
+
+//	if(midiMessage.status == MIDI_PITCH_BEND) {
+//		ofRect(20, 202, ofMap(midiMessage.value, 0, MIDI_MAX_BEND, 0, ofGetWidth()-40), 20);
+//	}
+//	else {
+//		ofRect(20, 202, ofMap(midiMessage.value, 0, 127, 0, ofGetWidth()-40), 20);
+//	}
+
+	text << "delta: " << midiMessage.deltatime;
+    ofLogNotice() << "MIDI: " << text.str();
+
+    if (msg.channel == 10 && msg.velocity > 0) {
+        togglePlayVideo();
+    }
 }
 
 void kinectGuiApp::loadVideoDir(string dirname) {
@@ -59,6 +109,12 @@ bool kinectGuiApp::addVideo(string filename) {
 }
 
 void kinectGuiApp::playVideo() { getCurVideo().play(); }
+
+void kinectGuiApp::togglePlayVideo() {
+    ofVideoPlayer vid = getCurVideo();
+    if ( vid.isPaused() ) { vid.play(); }
+    else { vid.setPaused(true); }
+}
 
 void kinectGuiApp::pauseVideo() { getCurVideo().setPaused(true);}
 
@@ -340,6 +396,11 @@ void kinectGuiApp::exit() {
     loadButton.removeListener(this, &kinectGuiApp::loadSettings);
     saveButton.removeListener(this, &kinectGuiApp::saveSettings);
     grabMaskButton.removeListener(this, &kinectGuiApp::grabMask);
+
+    // clean up midi
+	midiIn.closePort();
+	midiIn.removeListener(this);
+
 }
 
 
