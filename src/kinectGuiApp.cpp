@@ -397,10 +397,18 @@ void kinectGuiApp::mouseReleased(int x, int y, int button){
 
 void kinectGuiApp::axisChanged(ofxGamepadAxisEvent& e) {
 	ofLogNotice() << "AXIS " << e.axis << " VALUE " << ofToString(e.value) << endl;
+	float deadzone = 0.1;
+	if ( e.axis = 1 && (e.value > deadzone || e.value < -deadzone) ) { // left y
+        ofColor c = kinect.lineColor.get();
+        c[3] += -1*(e.value * 2.0); // -1 reverse negative is up on stick
+        c.clamp();
+        kinect.lineColor.set(c);
+	}
 }
 
 void kinectGuiApp::buttonPressed(ofxGamepadButtonEvent& e) {
 	ofLogNotice() << "BUTTON " << e.button << " PRESSED" << endl;
+	if (e.button == 1) { showBlobs = !showBlobs; }
 }
 
 void kinectGuiApp::buttonReleased(ofxGamepadButtonEvent& e) {
