@@ -38,6 +38,16 @@ void kinectGuiApp::setup(){
 	// print received messages to the console
 	midiIn.setVerbose(true);
 
+    showJoystick.set("Show Joystick", false);
+	ofxGamepadHandler::get()->enableHotplug();
+	//CHECK IF THERE EVEN IS A GAMEPAD CONNECTED
+	if(ofxGamepadHandler::get()->getNumPads()>0){
+        ofxGamepad* pad = ofxGamepadHandler::get()->getGamepad(0);
+        ofAddListener(pad->onAxisChanged, this, &kinectGuiApp::axisChanged);
+        ofAddListener(pad->onButtonPressed, this, &kinectGuiApp::buttonPressed);
+        ofAddListener(pad->onButtonReleased, this, &kinectGuiApp::buttonReleased);
+	}
+
     kinect.setup();
     setupGui();
     loadSettings();
@@ -164,6 +174,7 @@ void kinectGuiApp::setupGui() {
     guiApp.add( nextVideoButton.setup("Play Next Video") );
     appParams.setName("Display");
     appParams.add( showGui.set("Show Gui", true) );
+    appParams.add( showJoystick );
     appParams.add( showPointCloud.set("Show Point Cloud", true) );
     appParams.add( showColorImg.set("RGB", false) );
     appParams.add( showDepthImg.set("Depth", false) );
@@ -300,6 +311,9 @@ void kinectGuiApp::draw(){
         kinect.drawBlobs(0,0,w,h);
     }
 
+    if (showJoystick)
+        ofxGamepadHandler::get()->draw(42,80);
+
     if (showGui) {
         guiApp.draw();
         guiKinect.draw();
@@ -376,6 +390,21 @@ void kinectGuiApp::mousePressed(int x, int y, int button){
 //--------------------------------------------------------------
 void kinectGuiApp::mouseReleased(int x, int y, int button){
 
+}
+
+//--------------------------------------------------------------
+// ofxGamepad events
+
+void kinectGuiApp::axisChanged(ofxGamepadAxisEvent& e) {
+	ofLogNotice() << "AXIS " << e.axis << " VALUE " << ofToString(e.value) << endl;
+}
+
+void kinectGuiApp::buttonPressed(ofxGamepadButtonEvent& e) {
+	ofLogNotice() << "BUTTON " << e.button << " PRESSED" << endl;
+}
+
+void kinectGuiApp::buttonReleased(ofxGamepadButtonEvent& e) {
+	ofLogNotice() << "BUTTON " << e.button << " RELEASED" << endl;
 }
 
 //--------------------------------------------------------------

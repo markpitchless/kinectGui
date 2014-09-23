@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
@@ -27,9 +27,34 @@
 				<Option projectLinkerOptionsRelation="2" />
 			</Target>
 		</Build>
+		<Unit filename="../../../addons/ofxMidi/src/desktop/ofxRtMidiIn.cpp" />
+		<Unit filename="../../../addons/ofxMidi/src/desktop/ofxRtMidiIn.h" />
+		<Unit filename="../../../addons/ofxMidi/src/desktop/ofxRtMidiOut.cpp" />
+		<Unit filename="../../../addons/ofxMidi/src/desktop/ofxRtMidiOut.h" />
+		<Unit filename="../../../addons/ofxMidi/src/ios/ofxPGMidiContext.h" />
+		<Unit filename="../../../addons/ofxMidi/src/ios/ofxPGMidiDelegate.h" />
+		<Unit filename="../../../addons/ofxMidi/src/ios/ofxPGMidiIn.h" />
+		<Unit filename="../../../addons/ofxMidi/src/ios/ofxPGMidiOut.h" />
+		<Unit filename="../../../addons/ofxMidi/src/ios/ofxPGMidiSourceDelegate.h" />
+		<Unit filename="../../../addons/ofxMidi/src/ofxBaseMidi.cpp" />
+		<Unit filename="../../../addons/ofxMidi/src/ofxBaseMidi.h" />
+		<Unit filename="../../../addons/ofxMidi/src/ofxMidi.cpp" />
+		<Unit filename="../../../addons/ofxMidi/src/ofxMidi.h" />
+		<Unit filename="../../../addons/ofxMidi/src/ofxMidiConstants.h" />
+		<Unit filename="../../../addons/ofxMidi/src/ofxMidiIn.cpp" />
+		<Unit filename="../../../addons/ofxMidi/src/ofxMidiIn.h" />
+		<Unit filename="../../../addons/ofxMidi/src/ofxMidiMessage.cpp" />
+		<Unit filename="../../../addons/ofxMidi/src/ofxMidiMessage.h" />
+		<Unit filename="../../../addons/ofxMidi/src/ofxMidiOut.cpp" />
+		<Unit filename="../../../addons/ofxMidi/src/ofxMidiOut.h" />
+		<Unit filename="../../../addons/ofxMidi/src/ofxMidiTypes.h" />
 		<Unit filename="config.make">
 			<Option virtualFolder="build config" />
 		</Unit>
+		<Unit filename="src/KinectBlobTracker.cpp" />
+		<Unit filename="src/KinectBlobTracker.h" />
+		<Unit filename="src/kinectGuiApp.cpp" />
+		<Unit filename="src/kinectGuiApp.h" />
 		<Unit filename="src/main.cpp">
 			<Option virtualFolder="src/" />
 		</Unit>
@@ -39,6 +64,10 @@
 		<Unit filename="src/ofApp.h">
 			<Option virtualFolder="src/" />
 		</Unit>
+		<Unit filename="src/ofxFpsSlider.cpp" />
+		<Unit filename="src/ofxFpsSlider.h" />
+		<Unit filename="src/ofxGuiImage.cpp" />
+		<Unit filename="src/ofxGuiImage.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

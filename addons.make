@@ -3,3 +3,4 @@ ofxKinect
 ofxXmlSettings
 ofxOpenCv
 ofxMidi
+ofxGamepad

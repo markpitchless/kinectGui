@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_workspace_file>
 	<Workspace title="kinectGui">
-		<Project filename="kinectGui.cbp" active="1">
+		<Project filename="kinectGui.cbp">
 			<Depends filename="../../../libs/openFrameworksCompiled/project/linux64/libopenFrameworks.cbp" />
 		</Project>
 		<Project filename="../../../libs/openFrameworksCompiled/project/linux64/libopenFrameworks.cbp" />
+		<Project filename="../../../examples/gl/textureExample/textureExample.cbp" />
+		<Project filename="../../../examples/gl/alphaMaskingShaderExample/alphaMaskingShaderExample.cbp" />
+		<Project filename="../../../addons/ofxMidi/exampleInput/exampleInput.cbp" />
+		<Project filename="../../../addons/ofxMidi/exampleOutput/exampleOutput.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

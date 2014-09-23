@@ -5,6 +5,8 @@
 #include "ofxOpenCv.h"
 #include "ofxKinect.h"
 #include "ofxMidi.h"
+#include "ofxGamepadHandler.h"
+
 
 // Custom controls.
 #include "ofxFpsSlider.h"
@@ -25,6 +27,7 @@ class kinectGuiApp : public ofBaseApp, public ofxMidiListener {
         ofParameter<bool> showGrayImg;
         ofParameter<bool> showBlobs;
         ofParameter<bool> showVideo;
+        ofParameter<bool> showJoystick;
         ofParameter<ofColor> bgColor1;
         ofParameter<ofColor> bgColor2;
 
@@ -43,6 +46,11 @@ class kinectGuiApp : public ofBaseApp, public ofxMidiListener {
         void gotMessage(ofMessage msg);
         void exit();
 
+        // ofxGamepad
+        void axisChanged(ofxGamepadAxisEvent &e);
+        void buttonPressed(ofxGamepadButtonEvent &e);
+        void buttonReleased(ofxGamepadButtonEvent &e);
+
         vector<ofVideoPlayer> videos;
         int iCurVideo;
         ofVideoPlayer& getCurVideo();
@@ -54,6 +62,7 @@ class kinectGuiApp : public ofBaseApp, public ofxMidiListener {
         void playNextVideo();
         void cueNextVideo();
 
+        // ofxMidi
         ofxMidiIn midiIn;
         ofxMidiMessage midiMessage;
         void newMidiMessage(ofxMidiMessage& eventArgs);
