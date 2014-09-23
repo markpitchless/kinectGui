@@ -409,7 +409,14 @@ void kinectGuiApp::axisChanged(ofxGamepadAxisEvent& e) {
 void kinectGuiApp::buttonPressed(ofxGamepadButtonEvent& e) {
 	ofLogNotice() << "BUTTON " << e.button << " PRESSED" << endl;
 	if (e.button == 1) { showBlobs = !showBlobs; } // B
-	if (e.button == 3) { kinect.bFill = !kinect.bFill; }
+	if (e.button == 3) {
+        kinect.bFill = !kinect.bFill;
+        if (kinect.bFill && kinect.lineColor.get()[3] > 100) {
+            ofColor c = kinect.lineColor.get();
+            c[3] = 100;
+            kinect.lineColor.set(c);
+        }
+    }
 }
 
 void kinectGuiApp::buttonReleased(ofxGamepadButtonEvent& e) {
