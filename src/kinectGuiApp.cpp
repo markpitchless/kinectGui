@@ -111,15 +111,21 @@ bool kinectGuiApp::addVideo(string filename) {
     return true;
 }
 
-void kinectGuiApp::playVideo() { getCurVideo().play(); }
+void kinectGuiApp::playVideo() {
+    getCurVideo().play();
+    ofLogNotice() << "Playing video: " << getCurVideo().getMoviePath();
+}
 
 void kinectGuiApp::togglePlayVideo() {
     ofVideoPlayer vid = getCurVideo();
-    if ( vid.isPaused() ) { vid.play(); }
-    else { vid.setPaused(true); }
+    if ( vid.isPaused() ) { playVideo(); }
+    else { pauseVideo(); }
 }
 
-void kinectGuiApp::pauseVideo() { getCurVideo().setPaused(true);}
+void kinectGuiApp::pauseVideo() {
+    getCurVideo().setPaused(true);
+    ofLogNotice() << "Pause video: " << getCurVideo().getMoviePath();
+}
 
 void kinectGuiApp::cueNextVideo() {
     getCurVideo().stop();
@@ -128,6 +134,7 @@ void kinectGuiApp::cueNextVideo() {
     videos[iCurVideo].play();
     videos[iCurVideo].setPaused(true);
     videos[iCurVideo].firstFrame();
+    ofLogNotice() << "Cue video: " << getCurVideo().getMoviePath();
 }
 
 void kinectGuiApp::playNextVideo(){
