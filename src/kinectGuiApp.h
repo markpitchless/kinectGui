@@ -23,6 +23,7 @@ class kinectGuiApp : public ofBaseApp {
         ofParameter<bool> showStencilImg;
         ofParameter<bool> showGrayImg;
         ofParameter<bool> showBlobs;
+        ofParameter<bool> showVideo;
         ofParameter<ofColor> bgColor1;
         ofParameter<ofColor> bgColor2;
 

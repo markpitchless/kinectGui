@@ -12,6 +12,8 @@ void kinectGuiApp::setup(){
     bgColor1.set("bgColor1", ofColor(200,200,200),ofColor(0,0),ofColor(255,255));
     bgColor2.set("bgColor2", ofColor(23,23,23),ofColor(0,0),ofColor(255,255));
 
+    showVideo.set("Show Video", true);
+
     addVideo("tribazik/1 too dead proxy.ogg");
     playVideo();
 
@@ -68,6 +70,7 @@ void kinectGuiApp::setupGui() {
     appParams.add( showStencilImg.set("Stencil", false) );
     appParams.add( showGrayImg.set("Gray", false) );
     appParams.add( showBlobs.set("Show Blobs", false) );
+    appParams.add( showVideo );
     appParams.add( bgColor1 );
     appParams.add( bgColor2 );
     guiApp.add( appParams );
@@ -177,7 +180,8 @@ void kinectGuiApp::draw(){
 
     ofBackgroundGradient(bgColor1, bgColor2);
 
-    getCurVideo().draw(0,0,w,h);
+    if (showVideo)
+        getCurVideo().draw(0,0,w,h);
 
     drawKinectImages();
 
