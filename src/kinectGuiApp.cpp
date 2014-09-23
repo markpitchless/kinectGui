@@ -348,6 +348,7 @@ void kinectGuiApp::keyPressed(int key){
     if (key == 'g') { grabMask(); }
     if (key == 'p') { playVideo(); }
     if (key == 'P') { pauseVideo(); }
+    if (key == ' ') { togglePlayVideo(); }
     if (key == 'c') { cueNextVideo(); }
     if (key == 'n') { playNextVideo(); }
 }
