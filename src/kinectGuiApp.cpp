@@ -66,6 +66,8 @@ void kinectGuiApp::cueNextVideo() {
     getCurVideo().stop();
     iCurVideo++;
     if ( iCurVideo > videos.size()-1 ) { iCurVideo = 0; }
+    videos[iCurVideo].play();
+    videos[iCurVideo].setPaused(true);
     videos[iCurVideo].firstFrame();
 }
 
