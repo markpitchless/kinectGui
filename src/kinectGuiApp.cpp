@@ -41,6 +41,10 @@ void kinectGuiApp::loadVideoDir(string dirname) {
     ofLogNotice() << "Loaded " << num_loaded << " video(s) in: " << dirname;
 }
 
+ofVideoPlayer& kinectGuiApp::getCurVideo(){
+    return videos[iCurVideo];
+}
+
 bool kinectGuiApp::addVideo(string filename) {
     ofVideoPlayer vid;
     ofLogNotice() << "Loading movie: " << filename;
@@ -54,20 +58,20 @@ bool kinectGuiApp::addVideo(string filename) {
     return true;
 }
 
-void kinectGuiApp::playVideo(size_t vid_numer) {
+void kinectGuiApp::playVideo() { getCurVideo().play(); }
+
+void kinectGuiApp::pauseVideo() { getCurVideo().setPaused(true);}
+
+void kinectGuiApp::cueNextVideo() {
     getCurVideo().stop();
-    videos[vid_numer].play();
+    iCurVideo++;
+    if ( iCurVideo > videos.size()-1 ) { iCurVideo = 0; }
+    videos[iCurVideo].firstFrame();
 }
 
 void kinectGuiApp::playNextVideo(){
-    iCurVideo++;
-    if ( iCurVideo > videos.size()-1 ) { iCurVideo = 0; }
-    playVideo(iCurVideo);
-}
-
-
-ofVideoPlayer& kinectGuiApp::getCurVideo(){
-    return videos[iCurVideo];
+    cueNextVideo();
+    playVideo();
 }
 
 void kinectGuiApp::setupGui() {
@@ -86,7 +90,10 @@ void kinectGuiApp::setupGui() {
     guiApp.add( saveButton.setup("Save") );
     guiApp.add( grabMaskButton.setup("Grab Mask") );
     guiApp.add( clearMaskButton.setup("Clear Mask") );
-    guiApp.add( nextVideoButton.setup("Next Video") );
+    guiApp.add( playVideoButton.setup("Play Video") );
+    guiApp.add( pauseVideoButton.setup("Pause Video") );
+    guiApp.add( cueNextVideoButton.setup("Cue Next Video") );
+    guiApp.add( nextVideoButton.setup("Play Next Video") );
     appParams.setName("Display");
     appParams.add( showGui.set("Show Gui", true) );
     appParams.add( showPointCloud.set("Show Point Cloud", true) );
@@ -106,6 +113,9 @@ void kinectGuiApp::setupGui() {
     saveButton.addListener(this, &kinectGuiApp::saveSettings);
     grabMaskButton.addListener(this, &kinectGuiApp::grabMask);
     clearMaskButton.addListener(this, &kinectGuiApp::clearMask);
+    playVideoButton.addListener(this, &kinectGuiApp::playVideo);
+    pauseVideoButton.addListener(this, &kinectGuiApp::pauseVideo);
+    cueNextVideoButton.addListener(this, &kinectGuiApp::cueNextVideo);
     nextVideoButton.addListener(this, &kinectGuiApp::playNextVideo);
 
     guiKinect.setup("Kinect");
@@ -263,24 +273,15 @@ void kinectGuiApp::drawKinectImages() {
 
 //--------------------------------------------------------------
 void kinectGuiApp::keyPressed(int key){
-    if( key == 'h' ){
-        showGui = !showGui;
-	}
-    if( key == 'f' ){
-        ofToggleFullscreen();
-	}
-	if(key == 's') {
-	    saveSettings();
-	}
-	if(key == 'l') {
-	    loadSettings();
-	}
-	if(key == 'g') {
-	    grabMask();
-	}
-	if (key == 'n') {
-        playNextVideo();
-    }
+    if (key == 'h') { showGui = !showGui; }
+    if (key == 'f') { ofToggleFullscreen(); }
+    if (key == 's') { saveSettings(); }
+    if (key == 'l') { loadSettings(); }
+    if (key == 'g') { grabMask(); }
+    if (key == 'p') { playVideo(); }
+    if (key == 'P') { pauseVideo(); }
+    if (key == 'c') { cueNextVideo(); }
+    if (key == 'n') { playNextVideo(); }
 }
 
 //--------------------------------------------------------------
