@@ -106,7 +106,7 @@ bool kinectGuiApp::addVideo(string filename) {
         ofLogError() << "Failed to load movie: " << filename;
         return false;
     }
-    vid.setLoopState(OF_LOOP_NORMAL);
+    vid.setLoopState(OF_LOOP_NONE);
     videos.push_back(vid);
     return true;
 }
