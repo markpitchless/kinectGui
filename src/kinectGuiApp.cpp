@@ -68,7 +68,10 @@ void kinectGuiApp::newMidiMessage(ofxMidiMessage& msg) {
 	text << "delta: " << midiMessage.deltatime;
     ofLogNotice() << "MIDI: " << text.str();
 
-    if (msg.channel == 10 && msg.velocity > 0) {
+    if (msg.channel == 10 && msg.velocity > 0 && msg.pitch == 60) {
+        cueNextVideo();
+    }
+    if (msg.channel == 10 && msg.velocity > 0 && msg.pitch == 44) {
         togglePlayVideo();
     }
 }
