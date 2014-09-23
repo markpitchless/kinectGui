@@ -4,7 +4,7 @@
 void kinectGuiApp::setup(){
     ofSetWindowTitle("kinectGui");
     //ofSetLogLevel(OF_LOG_VERBOSE);
-    //ofSetFrameRate(60);
+    ofSetFrameRate(60);
     ofEnableAlphaBlending();
     ofEnableSmoothing();
 
@@ -12,18 +12,34 @@ void kinectGuiApp::setup(){
     bgColor1.set("bgColor1", ofColor(200,200,200),ofColor(0,0),ofColor(255,255));
     bgColor2.set("bgColor2", ofColor(23,23,23),ofColor(0,0),ofColor(255,255));
 
-    //videoPlayer.setPixelFormat(OF_PIXELS_RGBA);
-    //videoPlayer.loadMovie("1 too dead proxy.mov");
-    //videoPlayer.loadMovie("2 spacetime trilo 2.mov");
-    //videoPlayer.loadMovie("3 atom album proxy.mov");
-    videoPlayer.loadMovie("4 bloodline proxy.mov");
-    //videoPlayer.setLoopState(OF_LOOP_NORMAL);
-    videoPlayer.play();
+    addVideo("tribazik/1 too dead proxy.ogg");
+    playVideo();
 
     kinect.setup();
     setupGui();
     loadSettings();
     kinect.connect();
+}
+
+void kinectGuiApp::playVideo(size_t vid_numer) {
+    videos[vid_numer].play();
+}
+
+ofVideoPlayer& kinectGuiApp::getCurVideo(){
+    return videos[0];
+}
+
+bool kinectGuiApp::addVideo(string filename) {
+    ofVideoPlayer vid;
+    ofLogNotice() << "Loading movie: " << filename;
+    //videoPlayer.setPixelFormat(OF_PIXELS_RGBA);
+    if (!vid.loadMovie(filename)) {
+        ofLogError() << "Failed to load movie: " << filename;
+        return false;
+    }
+    vid.setLoopState(OF_LOOP_NORMAL);
+    videos.push_back(vid);
+    return true;
 }
 
 
@@ -150,7 +166,7 @@ void kinectGuiApp::clearMask() {
 
 //--------------------------------------------------------------
 void kinectGuiApp::update(){
-    videoPlayer.update();
+    getCurVideo().update();
     kinect.update();
 }
 
@@ -161,7 +177,7 @@ void kinectGuiApp::draw(){
 
     ofBackgroundGradient(bgColor1, bgColor2);
 
-    videoPlayer.draw(0,0,w,h);
+    getCurVideo().draw(0,0,w,h);
 
     drawKinectImages();
 

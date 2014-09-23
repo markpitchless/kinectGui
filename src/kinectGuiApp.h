@@ -26,8 +26,6 @@ class kinectGuiApp : public ofBaseApp {
         ofParameter<ofColor> bgColor1;
         ofParameter<ofColor> bgColor2;
 
-        ofVideoPlayer videoPlayer;
-
         void setup();
         void update();
         void draw();
@@ -42,6 +40,11 @@ class kinectGuiApp : public ofBaseApp {
         void dragEvent(ofDragInfo dragInfo);
         void gotMessage(ofMessage msg);
         void exit();
+
+        vector<ofVideoPlayer> videos;
+        ofVideoPlayer& getCurVideo();
+        bool addVideo(string filename);
+        void playVideo(size_t vid_numer=0);
 
         void setupGui();
         void loadSettings();
