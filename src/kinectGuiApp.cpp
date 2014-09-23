@@ -14,7 +14,7 @@ void kinectGuiApp::setup(){
 
     showVideo.set("Show Video", true);
 
-    addVideo("tribazik/1 too dead proxy.ogg");
+    loadVideoDir("video");
     playVideo();
 
     kinect.setup();
@@ -23,12 +23,21 @@ void kinectGuiApp::setup(){
     kinect.connect();
 }
 
-void kinectGuiApp::playVideo(size_t vid_numer) {
-    videos[vid_numer].play();
-}
-
-ofVideoPlayer& kinectGuiApp::getCurVideo(){
-    return videos[0];
+void kinectGuiApp::loadVideoDir(string dirname) {
+    ofLogNotice() << "Loading video from: " << dirname;
+    ofDirectory dir(dirname);
+    dir.listDir();
+    if (dir.numFiles() == 0) {
+        videos.resize(1); // at least one blank video
+        ofLogNotice() << "No video found, added default blank video.";
+        return;
+    }
+    //videos.resize(dir.numFiles());
+    int num_loaded = 0;
+    for (size_t i=0; i < dir.numFiles(); i++) {
+        if ( addVideo(dir.getPath(i)) ) { num_loaded++; }
+    }
+    ofLogNotice() << "Loaded " << num_loaded << " video(s) in: " << dirname;
 }
 
 bool kinectGuiApp::addVideo(string filename) {
@@ -44,6 +53,13 @@ bool kinectGuiApp::addVideo(string filename) {
     return true;
 }
 
+void kinectGuiApp::playVideo(size_t vid_numer) {
+    videos[vid_numer].play();
+}
+
+ofVideoPlayer& kinectGuiApp::getCurVideo(){
+    return videos[0];
+}
 
 void kinectGuiApp::setupGui() {
     ofxGuiSetHeaderColor( ofColor(100) );    // param group headers

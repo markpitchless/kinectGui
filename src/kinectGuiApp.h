@@ -45,6 +45,7 @@ class kinectGuiApp : public ofBaseApp {
         vector<ofVideoPlayer> videos;
         ofVideoPlayer& getCurVideo();
         bool addVideo(string filename);
+        void loadVideoDir(string dirname);
         void playVideo(size_t vid_numer=0);
 
         void setupGui();
