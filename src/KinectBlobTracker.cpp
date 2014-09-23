@@ -1,6 +1,14 @@
 #include "KinectBlobTracker.h"
 
-KinectBlobTracker::KinectBlobTracker() {
+KinectBlobTracker::KinectBlobTracker()
+    : bInfrared("Grab Infrared", false)
+    , bVideo("Grab Video", true)
+    , bTexture("Use Texture", true)
+    , bDepthRegistration("Depth Registration", false)
+    , deviceId("ID", -1, -1,10)
+    , serial("Serial", "")
+    , retryInCounter(-1)
+    {
     boundingColor = ofColor::green;
     lineColor.set("Line Color", ofColor::yellow, ofColor(0,0), ofColor(255,255));
     kinectAngle.set("Angle", 0.0, -30.0, 30.0);
@@ -33,6 +41,7 @@ KinectBlobTracker::~KinectBlobTracker() {
 }
 
 void KinectBlobTracker::setup() {
+    // Grab some memory to store out images.
     colorImg.allocate(kinect.width, kinect.height);
     depthImg.allocate(kinect.width, kinect.height);
     grayImg.allocate(kinect.width, kinect.height);
@@ -42,30 +51,76 @@ void KinectBlobTracker::setup() {
     stencilImg.allocate(kinect.width, kinect.height);
     tempGrayImg.allocate(kinect.width, kinect.height);
 
+    // Changing these settings requires a re-connect
+    bDepthRegistration.addListener(this, &KinectBlobTracker::connectionSettingChange);
+    bVideo.addListener(this, &KinectBlobTracker::connectionSettingChange);
+    bInfrared.addListener(this, &KinectBlobTracker::connectionSettingChange);
+    bTexture.addListener(this, &KinectBlobTracker::connectionSettingChange);
+
+    // Move the camera when param changes.
     kinectAngle.addListener(this, &KinectBlobTracker::setCameraTiltAngle);
+}
 
+bool KinectBlobTracker::connectionSettingChange(bool& val) {
+    if (kinect.isConnected()) {
+        return reConnect();
+    }
+    return val;
+}
+
+
+bool KinectBlobTracker::connect() {
     // enable depth->video image calibration
-    kinect.setRegistration(true);
+    colorImg.set(0);
+    kinect.setRegistration(bDepthRegistration);
+    kinect.init(bInfrared, bVideo, bTexture);
+    //kinect.open(1);   // open a kinect by id, starting with 0 (sorted by serial # lexicographically))
+    //kinect.open("A00362A08602047A");  // open a kinect using it's unique serial #
+    bool result = kinect.open();      // opens first available kinect
+    if (result) {
+        ofLogNotice() << "Opened kinect";
+        kinect.setCameraTiltAngle(kinectAngle);
+        // Some time to settle the kinect.
+        ofSleepMillis(1000);
+    }
+    else {
+        ofLogError() << "Failed to open kinect";
+    }
+    deviceId = kinect.getDeviceId();
+    serial = kinect.getSerial();
+    return result;
+}
 
-    kinect.init();
-    //kinect.init(true); // shows infrared instead of RGB video image
-    //kinect.init(false, false); // disable video image (faster fps)
-
-    kinect.open();		// opens first available kinect
-    //kinect.open(1);	// open a kinect by id, starting with 0 (sorted by serial # lexicographically))
-    //kinect.open("A00362A08602047A");	// open a kinect using it's unique serial #
-
-    kinect.setCameraTiltAngle(kinectAngle);
+bool KinectBlobTracker::reConnect() {
+    ofLogNotice() << "Reconnecting";
+    if (kinect.isConnected()) {
+        close();
+        ofSleepMillis(1000);
+    }
+    return connect();
 }
 
 void KinectBlobTracker::update() {
+    if (!kinect.isConnected()) {
+        if (retryInCounter < 0) {
+            ofLogWarning() << "Kinect not found, re-connect in 2...";
+            retryInCounter = 120;
+        }
+        if (--retryInCounter == 0) {
+            connect();
+        }
+        return;
+    }
+    retryInCounter = -1;
     kinect.update();
     if(!kinect.isFrameNew()) return;
 
     // load the rgb image
-    colorImg.setFromPixels(kinect.getPixels(), kinect.width, kinect.height);
-    if (kinectFlip)
-        colorImg.mirror(false,true);
+    if (bVideo) {
+        colorImg.setFromPixels(kinect.getPixels(), kinect.width, kinect.height);
+        if (kinectFlip)
+            colorImg.mirror(false,true);
+    }
 
     // load grayscale depth image from the kinect source
     depthImg.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
@@ -85,6 +140,7 @@ void KinectBlobTracker::update() {
         cvCmp(depthImg.getCvImage(), maskImg.getCvImage(), stencilImg.getCvImage(), CV_CMP_GT);
         // Apply the stencil to the depth image.
         cvAnd(grayImg.getCvImage(), stencilImg.getCvImage(), grayImg.getCvImage());
+        stencilImg.flagImageChanged();
     }
 
     if (medianBlur > 0) {
@@ -100,7 +156,6 @@ void KinectBlobTracker::update() {
 
     // update the cv images
     grayImg.flagImageChanged();
-    stencilImg.flagImageChanged();
 
     findBlobs();
 }
@@ -262,5 +317,6 @@ void KinectBlobTracker::drawPointCloud() {
 }
 
 void KinectBlobTracker::close() {
+    ofLogNotice() << "Closing Kinect connection";
     kinect.close();
 }

@@ -3,7 +3,7 @@
 //--------------------------------------------------------------
 void kinectGuiApp::setup(){
     ofSetWindowTitle("kinectGui");
-    ofSetLogLevel(OF_LOG_VERBOSE);
+    //ofSetLogLevel(OF_LOG_VERBOSE);
     //ofSetFrameRate(60);
     ofEnableAlphaBlending();
     ofEnableSmoothing();
@@ -12,16 +12,10 @@ void kinectGuiApp::setup(){
     bgColor1.set("bgColor1", ofColor(200,200,200),ofColor(0,0),ofColor(255,255));
     bgColor2.set("bgColor2", ofColor(23,23,23),ofColor(0,0),ofColor(255,255));
 
-    // Starting the kinect after the gui seems to break loading xml settings
-    // in setup, which breaks any future load and save. If you don't load xml
-    // in setup you don't see the bug at all. Very strange.
     kinect.setup();
     setupGui();
     loadSettings();
-    // XXX - Access to serials when multi kinect.
-    kinectId = ofToString(kinect.kinect.getDeviceId()) + " " + kinect.kinect.getSerial();;
-    // Some time to settle the kinect.
-    ofSleepMillis(1000);
+    kinect.connect();
 }
 
 
@@ -36,6 +30,7 @@ void kinectGuiApp::setupGui() {
     // Note: The panels will get repositioned in windowResized
     guiApp.setup("KinectGui");
     guiApp.add( fpsSlider.setup("FPS", 60) );
+    guiApp.add( reConnectButton.setup("Connect") );
     guiApp.add( loadButton.setup("Load") );
     guiApp.add( saveButton.setup("Save") );
     guiApp.add( grabMaskButton.setup("Grab Mask") );
@@ -53,13 +48,26 @@ void kinectGuiApp::setupGui() {
     appParams.add( bgColor2 );
     guiApp.add( appParams );
     guiApp.add( status.setup("Status","") );
+    reConnectButton.addListener(this, &kinectGuiApp::connect);
     loadButton.addListener(this, &kinectGuiApp::loadSettings);
     saveButton.addListener(this, &kinectGuiApp::saveSettings);
     grabMaskButton.addListener(this, &kinectGuiApp::grabMask);
     clearMaskButton.addListener(this, &kinectGuiApp::clearMask);
 
     guiKinect.setup("Kinect");
-    guiKinect.add( kinectId.setup("ID", "Connecting...") );
+    ofxGuiGroup * guiKinectGroup = new ofxGuiGroup();
+    guiKinectGroup->setup("");
+    // Open settings
+    connectionParams.setName("Connection");
+    connectionParams.add( kinect.deviceId );
+    connectionParams.add( kinect.serial );
+    connectionParams.add( kinect.bDepthRegistration );
+    connectionParams.add( kinect.bVideo );
+    connectionParams.add( kinect.bInfrared );
+    connectionParams.add( kinect.bTexture );
+    guiKinectGroup->add( connectionParams );
+
+    // Run time settings
     kinectParams.setName("Settings");
     kinectParams.add( kinect.kinectAngle );
     kinectParams.add( kinect.kinectFlip );
@@ -68,9 +76,9 @@ void kinectGuiApp::setupGui() {
     kinectParams.add( kinect.bThresholds );
     kinectParams.add( kinect.extraMaskDepth );
     kinectParams.add( kinect.bMask );
-    guiKinect.add( kinectParams );
+    guiKinectGroup->add( kinectParams );
 
-    guiBlobs.setup("Blobs");
+    blobParams.setName("Blobs");
     blobParams.add( kinect.medianBlur );
     blobParams.add( kinect.gaussianBlur );
     blobParams.add( kinect.minArea );
@@ -86,7 +94,9 @@ void kinectGuiApp::setupGui() {
     blobParams.add( kinect.lineWidth );
     blobParams.add( kinect.lineColor );
     blobParams.add( kinect.bFill );
-    guiBlobs.add( blobParams );
+    guiKinectGroup->add(blobParams);
+
+    guiKinect.add( guiKinectGroup );
 
     // Images
     // Hide the names and use toggles as labels on the images.
@@ -96,26 +106,26 @@ void kinectGuiApp::setupGui() {
     guiImgGroup->setup("");
     //guiImgGroup->setSize(100,18);
     int imgWidth = 200;
-    guiImgGroup->add( colorImgGui.setup("Color", (ofImage*)&kinect.colorImg, false, imgWidth) );
-    guiImgGroup->add( depthImgGui.setup("Depth", (ofImage*)&kinect.depthImg, false) );
-    guiImgGroup->add( maskImgGui.setup("Mask", (ofImage*)&kinect.maskImg, false) );
-    guiImgGroup->add( stencilImgGui.setup("Stencil", (ofImage*)&kinect.stencilImg, false) );
-    guiImgGroup->add( grayImgGui.setup("Gray", (ofImage*)&kinect.grayImg, false) );
+    guiImgGroup->add( colorImgGui.setup("Color", (ofImage*)&kinect.colorImg, true, imgWidth) );
+    guiImgGroup->add( depthImgGui.setup("Depth", (ofImage*)&kinect.depthImg, true) );
+    guiImgGroup->add( maskImgGui.setup("Mask", (ofImage*)&kinect.maskImg, true) );
+    guiImgGroup->add( stencilImgGui.setup("Stencil", (ofImage*)&kinect.stencilImg, true) );
+    guiImgGroup->add( grayImgGui.setup("Gray", (ofImage*)&kinect.grayImg, true) );
     guiImages.add( guiImgGroup );
 }
+
+void kinectGuiApp::connect() { kinect.reConnect(); }
 
 //--------------------------------------------------------------
 void kinectGuiApp::loadSettings() {
     guiApp.loadFromFile("settings.xml");
     guiKinect.loadFromFile("kinect.xml");
-    guiBlobs.loadFromFile("blobs.xml");
     kinect.loadMask(maskFilename);
 }
 
 void kinectGuiApp::saveSettings() {
     guiApp.saveToFile("settings.xml");
     guiKinect.saveToFile("kinect.xml");
-    guiBlobs.saveToFile("blobs.xml");
     kinect.saveMask(maskFilename);
 }
 
@@ -154,7 +164,6 @@ void kinectGuiApp::draw(){
     if (showGui) {
         guiApp.draw();
         guiKinect.draw();
-        guiBlobs.draw();
         guiImages.draw();
     }
 }
@@ -241,7 +250,8 @@ void kinectGuiApp::windowResized(int w, int h){
     guiApp.setPosition(ofGetWidth()-guiApp.getShape().width-10, 10);
     guiImages.setPosition(10,10);
     guiKinect.setPosition(10+guiImages.getShape().width+10,10);
-    guiBlobs.setPosition(10+guiKinect.getPosition().x+guiKinect.getShape().width+10,10);
+    guiImages.minimizeAll();
+    guiKinect.minimizeAll();
 
 }
 
