@@ -329,8 +329,8 @@ void kinectGuiApp::update(){
         int foo = -4*joyAxisLeftY;
         //ofLogNotice() << "joy: " << joyAxisLeftY << " foo: " << foo;
         //c[3] += int(-2*joyAxisLeftY); // -1 reverse negative is up on stick
-        c[3] = c[3] + foo;
-        c.clamp();
+        c[3] = ofClamp(c[3] + foo, 0, 255);
+        //c.clamp();
         kinect.lineColor.set(c);
 
         mainAlpha = ofClamp(mainAlpha+foo, 0, 255);
@@ -507,10 +507,10 @@ void kinectGuiApp::axisChanged(ofxGamepadAxisEvent& e) {
     if ( !(val > joyDeadzone || val < -joyDeadzone) ) {
         val = 0.0;
     }
-	if ( e.axis = 0 ) { joyAxisLeftX  = val; }
-    if ( e.axis = 1 ) { joyAxisLeftY  = val; }
-    if ( e.axis = 3 ) { joyAxisRightX = val; }
-    if ( e.axis = 4 ) { joyAxisRightY = val; }
+	if ( e.axis == 0 ) { joyAxisLeftX  = val; }
+    if ( e.axis == 1 ) { joyAxisLeftY  = val; }
+    if ( e.axis == 3 ) { joyAxisRightX = val; }
+    if ( e.axis == 4 ) { joyAxisRightY = val; }
 }
 
 void kinectGuiApp::buttonPressed(ofxGamepadButtonEvent& e) {
