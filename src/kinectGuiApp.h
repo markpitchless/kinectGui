@@ -33,6 +33,9 @@ class kinectGuiApp : public ofBaseApp, public ofxMidiListener {
         ofParameter<ofColor> bgColor1;
         ofParameter<ofColor> bgColor2;
         ofParameter<int> mainAlpha;
+        ofParameter<int> mainHue;
+        ofParameter<int> mainSaturation;
+        ofParameter<int> mainBrightness;
 
         void setup();
         void update();

@@ -20,6 +20,8 @@ void kinectGuiApp::setup(){
 
     showMain.set("Show Main", true);
     mainAlpha.set("Main Alpha", 100, 0, 255);
+    mainHue.set("Main Hue", 255, 0, 255);
+    mainSaturation.set("Main Saturation", 255, 0, 255);
     imgMain.allocate(kinect.kinect.width, kinect.kinect.height, OF_IMAGE_COLOR_ALPHA);
 
     // Midi
@@ -189,6 +191,8 @@ void kinectGuiApp::setupGui() {
     appParams.add( showVideo );
     appParams.add( showMain );
     appParams.add( mainAlpha );
+    appParams.add( mainHue );
+    appParams.add( mainSaturation );
     appParams.add( bgColor1 );
     appParams.add( bgColor2 );
     guiApp.add( appParams );
@@ -308,10 +312,27 @@ void kinectGuiApp::update(){
             newPix[i*4+3] = 0;
         }
         else {
-            newPix[i*4]   = pix[i];
-            newPix[i*4+1] = pix[i];
-            newPix[i*4+2] = pix[i];
-            newPix[i*4+3] = mainAlpha;
+            int val = pix[i];
+            //ofColor newcol = ofColor(val, mainAlpha);
+            ofColor newcol = ofColor::fromHsb(mainHue, mainSaturation, pix[i], mainAlpha);
+            //col.r = pix[i];
+            //col.g = pix[i];
+            //col.b = pix[i];
+            //col[4] = mainAlpha;
+            //imgMain.setColor(i,col);
+            //newPix[i*4]   = pix[i];
+            //newPix[i*4+1] = pix[i];
+            //newPix[i*4+2] = pix[i];
+            //newPix[i*4+3] = mainAlpha
+            //newPix[i*4]   = col.r;
+            //newPix[i*4+1] = col.g;
+            //newPix[i*4+2] = col.b;
+            //newPix[i*4+3] = col[4];
+            newPix[i*4]   = newcol.r;
+            newPix[i*4+1] = newcol.g;
+            newPix[i*4+2] = newcol.b;
+            newPix[i*4+3] = newcol[3];
+            //newPix[i*4+3] = mainAlpha;
         }
     }
     imgMain.update();
