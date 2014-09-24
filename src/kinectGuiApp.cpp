@@ -44,7 +44,12 @@ void kinectGuiApp::setup(){
 	// print received messages to the console
 	midiIn.setVerbose(true);
 
+    joyAxisLeftX  = 0.0;
+    joyAxisLeftY  = 0.0;
+    joyAxisRightX = 0.0;
+    joyAxisRightY = 0.0;
     showJoystick.set("Show Joystick", false);
+    joyDeadzone.set("Joystick Deadzone", 0.1, 0.0, 1.0);
 	ofxGamepadHandler::get()->enableHotplug();
 	//CHECK IF THERE EVEN IS A GAMEPAD CONNECTED
 	if(ofxGamepadHandler::get()->getNumPads()>0){
@@ -181,6 +186,7 @@ void kinectGuiApp::setupGui() {
     appParams.setName("Display");
     appParams.add( showGui.set("Show Gui", true) );
     appParams.add( showJoystick );
+    appParams.add( joyDeadzone );
     appParams.add( showPointCloud.set("Show Point Cloud", true) );
     appParams.add( showColorImg.set("RGB", false) );
     appParams.add( showDepthImg.set("Depth", false) );
@@ -297,6 +303,15 @@ void kinectGuiApp::clearMask() {
 void kinectGuiApp::update(){
     getCurVideo().update();
     kinect.update();
+
+    if (joyAxisLeftY != 0) {
+        ofColor c = kinect.lineColor.get();
+        int foo = -2*joyAxisLeftY;
+        ofLogNotice() << "joy: " << joyAxisLeftY << " foo: " << foo;
+        c[3] += int(-2*joyAxisLeftY); // -1 reverse negative is up on stick
+        c.clamp();
+        kinect.lineColor.set(c);
+    }
 
     // Copy the kinect grey image into our video layer
     unsigned char* newPix = imgMain.getPixels();
@@ -449,13 +464,14 @@ void kinectGuiApp::mouseReleased(int x, int y, int button){
 
 void kinectGuiApp::axisChanged(ofxGamepadAxisEvent& e) {
 	ofLogNotice() << "AXIS " << e.axis << " VALUE " << ofToString(e.value) << endl;
-	float deadzone = 0.1;
-	if ( e.axis = 1 && (e.value > deadzone || e.value < -deadzone) ) { // left y
-        ofColor c = kinect.lineColor.get();
-        c[3] += -1*(e.value * 2.0); // -1 reverse negative is up on stick
-        c.clamp();
-        kinect.lineColor.set(c);
-	}
+    float val = e.value;
+    if ( !(val > joyDeadzone || val < -joyDeadzone) ) {
+        val = 0.0;
+    }
+	if ( e.axis = 0 ) { joyAxisLeftX  = val; }
+    if ( e.axis = 1 ) { joyAxisLeftY  = val; }
+    if ( e.axis = 3 ) { joyAxisRightX = val; }
+    if ( e.axis = 4 ) { joyAxisRightY = val; }
 }
 
 void kinectGuiApp::buttonPressed(ofxGamepadButtonEvent& e) {

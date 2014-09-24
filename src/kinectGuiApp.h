@@ -30,6 +30,7 @@ class kinectGuiApp : public ofBaseApp, public ofxMidiListener {
         ofParameter<bool> showMain;
         ofParameter<bool> showJoystick;
         ofParameter<float> joyDeadzone;
+        float joyAxisLeftX, joyAxisLeftY, joyAxisRightX, joyAxisRightY;
         ofParameter<ofColor> bgColor1;
         ofParameter<ofColor> bgColor2;
         ofParameter<int> mainAlpha;
