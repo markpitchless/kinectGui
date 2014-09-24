@@ -306,11 +306,14 @@ void kinectGuiApp::update(){
 
     if (joyAxisLeftY != 0) {
         ofColor c = kinect.lineColor.get();
-        int foo = -2*joyAxisLeftY;
-        ofLogNotice() << "joy: " << joyAxisLeftY << " foo: " << foo;
-        c[3] += int(-2*joyAxisLeftY); // -1 reverse negative is up on stick
+        int foo = -4*joyAxisLeftY;
+        //ofLogNotice() << "joy: " << joyAxisLeftY << " foo: " << foo;
+        //c[3] += int(-2*joyAxisLeftY); // -1 reverse negative is up on stick
+        c[3] = c[3] + foo;
         c.clamp();
         kinect.lineColor.set(c);
+
+        mainAlpha = ofClamp(mainAlpha+foo, 0, 255);
     }
 
     // Copy the kinect grey image into our video layer
@@ -463,7 +466,7 @@ void kinectGuiApp::mouseReleased(int x, int y, int button){
 // ofxGamepad events
 
 void kinectGuiApp::axisChanged(ofxGamepadAxisEvent& e) {
-	ofLogNotice() << "AXIS " << e.axis << " VALUE " << ofToString(e.value) << endl;
+	//ofLogNotice() << "AXIS " << e.axis << " VALUE " << ofToString(e.value) << endl;
     float val = e.value;
     if ( !(val > joyDeadzone || val < -joyDeadzone) ) {
         val = 0.0;
