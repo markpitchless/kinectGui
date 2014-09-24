@@ -18,6 +18,12 @@ void kinectGuiApp::setup(){
     loadVideoDir("video");
     playVideo();
 
+    showMain.set("Show Main", true);
+    mainAlpha.set("Main Alpha", 100, 0, 255);
+    mainHue.set("Main Hue", 255, 0, 255);
+    mainSaturation.set("Main Saturation", 255, 0, 255);
+    imgMain.allocate(kinect.kinect.width, kinect.kinect.height, OF_IMAGE_COLOR_ALPHA);
+
     // Midi
     // print ports to console
 	midiIn.listPorts(); // via instance
@@ -38,7 +44,12 @@ void kinectGuiApp::setup(){
 	// print received messages to the console
 	midiIn.setVerbose(true);
 
+    joyAxisLeftX  = 0.0;
+    joyAxisLeftY  = 0.0;
+    joyAxisRightX = 0.0;
+    joyAxisRightY = 0.0;
     showJoystick.set("Show Joystick", false);
+    joyDeadzone.set("Joystick Deadzone", 0.1, 0.0, 1.0);
 	ofxGamepadHandler::get()->enableHotplug();
 	//CHECK IF THERE EVEN IS A GAMEPAD CONNECTED
 	if(ofxGamepadHandler::get()->getNumPads()>0){
@@ -181,6 +192,7 @@ void kinectGuiApp::setupGui() {
     appParams.setName("Display");
     appParams.add( showGui.set("Show Gui", true) );
     appParams.add( showJoystick );
+    appParams.add( joyDeadzone );
     appParams.add( showPointCloud.set("Show Point Cloud", true) );
     appParams.add( showColorImg.set("RGB", false) );
     appParams.add( showDepthImg.set("Depth", false) );
@@ -189,6 +201,10 @@ void kinectGuiApp::setupGui() {
     appParams.add( showGrayImg.set("Gray", false) );
     appParams.add( showBlobs.set("Show Blobs", false) );
     appParams.add( showVideo );
+    appParams.add( showMain );
+    appParams.add( mainAlpha );
+    appParams.add( mainHue );
+    appParams.add( mainSaturation );
     appParams.add( bgColor1 );
     appParams.add( bgColor2 );
     guiApp.add( appParams );
@@ -293,6 +309,63 @@ void kinectGuiApp::clearMask() {
 void kinectGuiApp::update(){
     getCurVideo().update();
     kinect.update();
+
+    if (joyAxisLeftY != 0) {
+        ofColor c = kinect.lineColor.get();
+        int foo = -4*joyAxisLeftY;
+        //ofLogNotice() << "joy: " << joyAxisLeftY << " foo: " << foo;
+        //c[3] += int(-2*joyAxisLeftY); // -1 reverse negative is up on stick
+        c[3] = c[3] + foo;
+        c.clamp();
+        kinect.lineColor.set(c);
+
+        mainAlpha = ofClamp(mainAlpha+foo, 0, 255);
+    }
+    //if (joyAxisRightX != 0) {
+    //    mainHue = ofClamp(mainHue+(-4*joyAxisRightX), 0, 255);
+    //}
+    //if (joyAxisRightY != 0) {
+    //    mainSaturation = ofClamp(mainSaturation+(-4*joyAxisRightY), 0, 255);
+    //}
+
+    // Copy the kinect grey image into our video layer
+    unsigned char* newPix = imgMain.getPixels();
+    unsigned char* pix = kinect.grayImg.getPixels();
+    int numPix = kinect.grayImg.getWidth() * kinect.grayImg.getHeight();
+    ofColor col(0,0,0,0);
+    ofColor blank(0,0,0,0);
+    for ( int i=0; i<numPix; i++ ) {
+        if ( pix[i] < 1 ) {
+            newPix[i*4]   = 0;
+            newPix[i*4+1] = 0;
+            newPix[i*4+2] = 0;
+            newPix[i*4+3] = 0;
+        }
+        else {
+            int val = pix[i];
+            //ofColor newcol = ofColor(val, mainAlpha);
+            ofColor newcol = ofColor::fromHsb(mainHue, mainSaturation, pix[i], mainAlpha);
+            //col.r = pix[i];
+            //col.g = pix[i];
+            //col.b = pix[i];
+            //col[4] = mainAlpha;
+            //imgMain.setColor(i,col);
+            //newPix[i*4]   = pix[i];
+            //newPix[i*4+1] = pix[i];
+            //newPix[i*4+2] = pix[i];
+            //newPix[i*4+3] = mainAlpha
+            //newPix[i*4]   = col.r;
+            //newPix[i*4+1] = col.g;
+            //newPix[i*4+2] = col.b;
+            //newPix[i*4+3] = col[4];
+            newPix[i*4]   = newcol.r;
+            newPix[i*4+1] = newcol.g;
+            newPix[i*4+2] = newcol.b;
+            newPix[i*4+3] = newcol[3];
+            //newPix[i*4+3] = mainAlpha;
+        }
+    }
+    imgMain.update();
 }
 
 //--------------------------------------------------------------
@@ -312,6 +385,9 @@ void kinectGuiApp::draw(){
         kinect.drawPointCloud();
         easyCam.end();
     }
+
+    if (showMain)
+        imgMain.draw(0,0,w,h);
 
     if (showBlobs) {
         kinect.drawBlobs(0,0,w,h);
@@ -402,14 +478,15 @@ void kinectGuiApp::mouseReleased(int x, int y, int button){
 // ofxGamepad events
 
 void kinectGuiApp::axisChanged(ofxGamepadAxisEvent& e) {
-	ofLogNotice() << "AXIS " << e.axis << " VALUE " << ofToString(e.value) << endl;
-	float deadzone = 0.1;
-	if ( e.axis = 1 && (e.value > deadzone || e.value < -deadzone) ) { // left y
-        ofColor c = kinect.lineColor.get();
-        c[3] += -1*(e.value * 2.0); // -1 reverse negative is up on stick
-        c.clamp();
-        kinect.lineColor.set(c);
-	}
+	//ofLogNotice() << "AXIS " << e.axis << " VALUE " << ofToString(e.value) << endl;
+    float val = e.value;
+    if ( !(val > joyDeadzone || val < -joyDeadzone) ) {
+        val = 0.0;
+    }
+	if ( e.axis = 0 ) { joyAxisLeftX  = val; }
+    if ( e.axis = 1 ) { joyAxisLeftY  = val; }
+    if ( e.axis = 3 ) { joyAxisRightX = val; }
+    if ( e.axis = 4 ) { joyAxisRightY = val; }
 }
 
 void kinectGuiApp::buttonPressed(ofxGamepadButtonEvent& e) {

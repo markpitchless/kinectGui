@@ -27,10 +27,16 @@ class kinectGuiApp : public ofBaseApp, public ofxMidiListener {
         ofParameter<bool> showGrayImg;
         ofParameter<bool> showBlobs;
         ofParameter<bool> showVideo;
+        ofParameter<bool> showMain;
         ofParameter<bool> showJoystick;
         ofParameter<float> joyDeadzone;
+        float joyAxisLeftX, joyAxisLeftY, joyAxisRightX, joyAxisRightY;
         ofParameter<ofColor> bgColor1;
         ofParameter<ofColor> bgColor2;
+        ofParameter<int> mainAlpha;
+        ofParameter<int> mainHue;
+        ofParameter<int> mainSaturation;
+        ofParameter<int> mainBrightness;
 
         void setup();
         void update();
@@ -62,6 +68,8 @@ class kinectGuiApp : public ofBaseApp, public ofxMidiListener {
         void pauseVideo();
         void playNextVideo();
         void cueNextVideo();
+
+        ofImage imgMain;
 
         // ofxMidi
         ofxMidiIn midiIn;
