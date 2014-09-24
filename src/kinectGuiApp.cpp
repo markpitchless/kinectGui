@@ -97,9 +97,15 @@ void kinectGuiApp::loadVideoDir(string dirname) {
         return;
     }
     //videos.resize(dir.numFiles());
-    int num_loaded = 0;
+    vector<string> names;
     for (size_t i=0; i < dir.numFiles(); i++) {
-        if ( addVideo(dir.getPath(i)) ) { num_loaded++; }
+        names.push_back(dir.getPath(i));
+    }
+    sort(names.begin(), names.end());
+
+    int num_loaded = 0;
+    for (size_t i=0; i < names.size(); i++) {
+        if ( addVideo(names[i]) ) { num_loaded++; }
     }
     ofLogNotice() << "Loaded " << num_loaded << " video(s) in: " << dirname;
 }
