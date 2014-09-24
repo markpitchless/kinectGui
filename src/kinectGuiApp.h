@@ -32,6 +32,7 @@ class kinectGuiApp : public ofBaseApp, public ofxMidiListener {
         ofParameter<float> joyDeadzone;
         ofParameter<ofColor> bgColor1;
         ofParameter<ofColor> bgColor2;
+        ofParameter<int> mainAlpha;
 
         void setup();
         void update();

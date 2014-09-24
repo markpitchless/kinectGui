@@ -19,6 +19,7 @@ void kinectGuiApp::setup(){
     playVideo();
 
     showMain.set("Show Main", true);
+    mainAlpha.set("Main Alpha", 100, 0, 255);
     imgMain.allocate(kinect.kinect.width, kinect.kinect.height, OF_IMAGE_COLOR_ALPHA);
 
     // Midi
@@ -185,8 +186,9 @@ void kinectGuiApp::setupGui() {
     appParams.add( showStencilImg.set("Stencil", false) );
     appParams.add( showGrayImg.set("Gray", false) );
     appParams.add( showBlobs.set("Show Blobs", false) );
-    appParams.add( showMain );
     appParams.add( showVideo );
+    appParams.add( showMain );
+    appParams.add( mainAlpha );
     appParams.add( bgColor1 );
     appParams.add( bgColor2 );
     guiApp.add( appParams );
@@ -309,7 +311,7 @@ void kinectGuiApp::update(){
             newPix[i*4]   = pix[i];
             newPix[i*4+1] = pix[i];
             newPix[i*4+2] = pix[i];
-            newPix[i*4+3] = 255;
+            newPix[i*4+3] = mainAlpha;
         }
     }
     imgMain.update();
