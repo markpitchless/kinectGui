@@ -315,6 +315,12 @@ void kinectGuiApp::update(){
 
         mainAlpha = ofClamp(mainAlpha+foo, 0, 255);
     }
+    //if (joyAxisRightX != 0) {
+    //    mainHue = ofClamp(mainHue+(-4*joyAxisRightX), 0, 255);
+    //}
+    //if (joyAxisRightY != 0) {
+    //    mainSaturation = ofClamp(mainSaturation+(-4*joyAxisRightY), 0, 255);
+    //}
 
     // Copy the kinect grey image into our video layer
     unsigned char* newPix = imgMain.getPixels();
