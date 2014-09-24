@@ -17,6 +17,7 @@ void kinectGuiApp::setup(){
     showVideo.set("Show Video", true);
     loadVideoDir("video");
     playVideo();
+    pauseVideo();
 
     showMain.set("Show Main", true);
     mainAlpha.set("Main Alpha", 100, 0, 255);
