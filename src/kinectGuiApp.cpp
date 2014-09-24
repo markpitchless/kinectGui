@@ -16,8 +16,8 @@ void kinectGuiApp::setup(){
     iCurVideo = 0;
     showVideo.set("Show Video", true);
     loadVideoDir("video");
-    playVideo();
-    pauseVideo();
+    //playVideo();
+    //pauseVideo();
 
     showMain.set("Show Main", true);
     mainAlpha.set("Main Alpha", 100, 0, 255);
@@ -64,6 +64,8 @@ void kinectGuiApp::setup(){
     setupGui();
     loadSettings();
     kinect.connect();
+
+    cueVideo(0);
 }
 
 //--------------------------------------------------------------
@@ -156,13 +158,16 @@ void kinectGuiApp::pauseVideo() {
 }
 
 void kinectGuiApp::cueNextVideo() {
-    getCurVideo().stop();
-    iCurVideo++;
-    if ( iCurVideo > videos.size()-1 ) { iCurVideo = 0; }
-    videos[iCurVideo].play();
-    videos[iCurVideo].setPaused(true);
-    videos[iCurVideo].firstFrame();
-    ofLogNotice() << "Cue video: " << getCurVideo().getMoviePath();
+    //getCurVideo().stop();
+    //iCurVideo++;
+    int num = iCurVideo + 1;
+    //if ( iCurVideo > videos.size()-1 ) { iCurVideo = 0; }
+    if ( num > videos.size()-1 ) { num = 0; }
+    //videos[iCurVideo].play();
+    //videos[iCurVideo].setPaused(true);
+    //videos[iCurVideo].firstFrame();
+    //ofLogNotice() << "Cue video: " << getCurVideo().getMoviePath();
+    cueVideo(num);
 }
 
 void kinectGuiApp::cueVideo(int num) {
@@ -176,6 +181,17 @@ void kinectGuiApp::cueVideo(int num) {
     videos[iCurVideo].setPaused(true);
     videos[iCurVideo].firstFrame();
     ofLogNotice() << "Cue video: " << getCurVideo().getMoviePath();
+    showBlobs = false;
+    showMain = false;
+    if (num == 0) {
+        kinect.lineColor.set(ofColor(0,0,10,32));
+    }
+    else if (num == 1) {
+        kinect.lineColor.set(ofColor(0,201,0,50));
+    }
+    else {
+        kinect.lineColor.set(ofColor(255,255,255,23));
+    }
 }
 
 void kinectGuiApp::playNextVideo(){
@@ -458,7 +474,8 @@ void kinectGuiApp::keyPressed(int key){
     if (key == 'g') { grabMask(); }
     if (key == 'p') { playVideo(); }
     if (key == 'P') { pauseVideo(); }
-    if (key == ' ') { togglePlayVideo(); }
+    //if (key == ' ') { togglePlayVideo(); }
+    if (key == ' ') { showBlobs = false; showMain = false; }
     if (key == 'c') { cueNextVideo(); }
     if (key == 'n') { playNextVideo(); }
     if (key == '1') { cueVideo(0); }
