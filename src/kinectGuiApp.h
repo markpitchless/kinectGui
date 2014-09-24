@@ -68,6 +68,7 @@ class kinectGuiApp : public ofBaseApp, public ofxMidiListener {
         void pauseVideo();
         void playNextVideo();
         void cueNextVideo();
+        void cueVideo(int num);
 
         ofImage imgMain;
 

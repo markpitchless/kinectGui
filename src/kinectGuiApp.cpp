@@ -165,6 +165,19 @@ void kinectGuiApp::cueNextVideo() {
     ofLogNotice() << "Cue video: " << getCurVideo().getMoviePath();
 }
 
+void kinectGuiApp::cueVideo(int num) {
+    if ( num < 0 || num > videos.size()-1 ) {
+        ofLogWarning() << "Attempt to cue unknown video: " << num;
+        return;
+    }
+    getCurVideo().stop();
+    iCurVideo = num;
+    videos[iCurVideo].play();
+    videos[iCurVideo].setPaused(true);
+    videos[iCurVideo].firstFrame();
+    ofLogNotice() << "Cue video: " << getCurVideo().getMoviePath();
+}
+
 void kinectGuiApp::playNextVideo(){
     cueNextVideo();
     playVideo();
@@ -448,6 +461,16 @@ void kinectGuiApp::keyPressed(int key){
     if (key == ' ') { togglePlayVideo(); }
     if (key == 'c') { cueNextVideo(); }
     if (key == 'n') { playNextVideo(); }
+    if (key == '1') { cueVideo(0); }
+    if (key == '2') { cueVideo(1); }
+    if (key == '3') { cueVideo(2); }
+    if (key == '4') { cueVideo(3); }
+    if (key == '5') { cueVideo(4); }
+    if (key == '6') { cueVideo(5); }
+    if (key == '7') { cueVideo(6); }
+    if (key == '8') { cueVideo(7); }
+    if (key == '9') { cueVideo(8); }
+    if (key == '0') { cueVideo(9); }
 }
 
 //--------------------------------------------------------------
