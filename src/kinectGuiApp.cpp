@@ -189,6 +189,9 @@ void kinectGuiApp::cueVideo(int num) {
     else if (num == 1) {
         kinect.lineColor.set(ofColor(0,201,0,50));
     }
+    else if (num == 2) {
+        kinect.lineColor.set(ofColor(0,201,0,50));
+    }
     else {
         kinect.lineColor.set(ofColor(255,255,255,23));
     }
