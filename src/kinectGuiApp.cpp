@@ -544,6 +544,8 @@ void kinectGuiApp::buttonPressed(ofxGamepadButtonEvent& e) {
             kinect.lineColor.set(c);
         }
     }
+    else if (e.button == 4) { kinect.lineColor.set(ofColor(255,255,255,32)); } // left shoulder
+    else if (e.button == 5) { kinect.lineColor.set(ofColor(0,0,0,32)); } // left shoulder
 }
 
 void kinectGuiApp::buttonReleased(ofxGamepadButtonEvent& e) {
