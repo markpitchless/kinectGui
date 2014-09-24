@@ -470,17 +470,17 @@ void kinectGuiApp::drawKinectImages() {
 
 //--------------------------------------------------------------
 void kinectGuiApp::keyPressed(int key){
-    if (key == 'h') { showGui = !showGui; }
-    if (key == 'f') { ofToggleFullscreen(); }
-    if (key == 's') { saveSettings(); }
-    if (key == 'l') { loadSettings(); }
-    if (key == 'g') { grabMask(); }
+    if (key == 'H') { showGui = !showGui; }
+    if (key == 'F') { ofToggleFullscreen(); }
+    if (key == 'S') { saveSettings(); }
+    if (key == 'L') { loadSettings(); }
+    if (key == 'G') { grabMask(); }
     if (key == 'p') { playVideo(); }
     if (key == 'P') { pauseVideo(); }
     //if (key == ' ') { togglePlayVideo(); }
     if (key == ' ') { showBlobs = false; showMain = false; }
-    if (key == 'c') { cueNextVideo(); }
-    if (key == 'n') { playNextVideo(); }
+    if (key == 'C') { cueNextVideo(); }
+    if (key == 'N') { playNextVideo(); }
     if (key == '1') { cueVideo(0); }
     if (key == '2') { cueVideo(1); }
     if (key == '3') { cueVideo(2); }
@@ -491,6 +491,9 @@ void kinectGuiApp::keyPressed(int key){
     if (key == '8') { cueVideo(7); }
     if (key == '9') { cueVideo(8); }
     if (key == '0') { cueVideo(9); }
+    else if (key == 'g') { kinect.lineColor.set(ofColor(0,230,0,32)); }
+    else if (key == 'b') { kinect.lineColor.set(ofColor(0,0,200,32)); }
+    else if (key == 'y') { kinect.lineColor.set(ofColor(200,200,0,32)); }
 }
 
 //--------------------------------------------------------------
