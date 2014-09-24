@@ -18,6 +18,9 @@ void kinectGuiApp::setup(){
     loadVideoDir("video");
     playVideo();
 
+    showMain.set("Show Main", true);
+    imgMain.allocate(kinect.kinect.width, kinect.kinect.height, OF_IMAGE_COLOR_ALPHA);
+
     // Midi
     // print ports to console
 	midiIn.listPorts(); // via instance
@@ -182,6 +185,7 @@ void kinectGuiApp::setupGui() {
     appParams.add( showStencilImg.set("Stencil", false) );
     appParams.add( showGrayImg.set("Gray", false) );
     appParams.add( showBlobs.set("Show Blobs", false) );
+    appParams.add( showMain );
     appParams.add( showVideo );
     appParams.add( bgColor1 );
     appParams.add( bgColor2 );
@@ -287,6 +291,28 @@ void kinectGuiApp::clearMask() {
 void kinectGuiApp::update(){
     getCurVideo().update();
     kinect.update();
+
+    // Copy the kinect grey image into our video layer
+    unsigned char* newPix = imgMain.getPixels();
+    unsigned char* pix = kinect.grayImg.getPixels();
+    int numPix = kinect.grayImg.getWidth() * kinect.grayImg.getHeight();
+    ofColor col(0,0,0,0);
+    ofColor blank(0,0,0,0);
+    for ( int i=0; i<numPix; i++ ) {
+        if ( pix[i] < 1 ) {
+            newPix[i*4]   = 0;
+            newPix[i*4+1] = 0;
+            newPix[i*4+2] = 0;
+            newPix[i*4+3] = 0;
+        }
+        else {
+            newPix[i*4]   = pix[i];
+            newPix[i*4+1] = pix[i];
+            newPix[i*4+2] = pix[i];
+            newPix[i*4+3] = 255;
+        }
+    }
+    imgMain.update();
 }
 
 //--------------------------------------------------------------
@@ -306,6 +332,9 @@ void kinectGuiApp::draw(){
         kinect.drawPointCloud();
         easyCam.end();
     }
+
+    if (showMain)
+        imgMain.draw(0,0,w,h);
 
     if (showBlobs) {
         kinect.drawBlobs(0,0,w,h);
