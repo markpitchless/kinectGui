@@ -192,6 +192,9 @@ void kinectGuiApp::cueVideo(int num) {
     else if (num == 2) {
         kinect.lineColor.set(ofColor(0,201,0,50));
     }
+    else if (num == 4) {
+        kinect.lineColor.set(ofColor(10,0,23,23));
+    }
     else {
         kinect.lineColor.set(ofColor(255,255,255,23));
     }
@@ -494,6 +497,7 @@ void kinectGuiApp::keyPressed(int key){
     else if (key == 'g') { kinect.lineColor.set(ofColor(0,230,0,32)); }
     else if (key == 'b') { kinect.lineColor.set(ofColor(0,0,200,32)); }
     else if (key == 'y') { kinect.lineColor.set(ofColor(200,200,0,32)); }
+    else if (key == 'm') { showBlobs = false; showMain = true; }
 }
 
 //--------------------------------------------------------------
@@ -537,7 +541,7 @@ void kinectGuiApp::axisChanged(ofxGamepadAxisEvent& e) {
 }
 
 void kinectGuiApp::buttonPressed(ofxGamepadButtonEvent& e) {
-	ofLogNotice() << "BUTTON " << e.button << " PRESSED" << endl;
+	//ofLogNotice() << "BUTTON " << e.button << " PRESSED" << endl;
 	if (e.button == 1) { showBlobs = !showBlobs; } // B
 	if (e.button == 3) {
         kinect.bFill = !kinect.bFill;
@@ -552,7 +556,7 @@ void kinectGuiApp::buttonPressed(ofxGamepadButtonEvent& e) {
 }
 
 void kinectGuiApp::buttonReleased(ofxGamepadButtonEvent& e) {
-	ofLogNotice() << "BUTTON " << e.button << " RELEASED" << endl;
+	//ofLogNotice() << "BUTTON " << e.button << " RELEASED" << endl;
 }
 
 //--------------------------------------------------------------
