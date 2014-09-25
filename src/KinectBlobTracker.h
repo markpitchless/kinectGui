@@ -62,6 +62,7 @@ class KinectBlobTracker {
         ofParameter<int> nearThreshold;
         ofParameter<int> farThreshold;
         ofParameter<bool> bMask;
+        ofParameter<float> nearClip, farClip;
         ofParameter<int> extraMaskDepth;
         ofParameter<int> medianBlur;
         ofParameter<int> gaussianBlur;
@@ -75,6 +76,9 @@ class KinectBlobTracker {
         ofParameter<ofColor> boundingColor;
         ofParameter<ofColor> lineColor;
         ofParameter<bool> bFill, showVerts, showInfo;
+
+    protected:
+        void clipChange(float & val);
 
     private:
         ofPolyline tmpLine;

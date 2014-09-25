@@ -7,6 +7,8 @@ KinectBlobTracker::KinectBlobTracker()
     , bDepthRegistration("Depth Registration", false)
     , deviceId("ID", -1, -1,10)
     , serial("Serial", "")
+    , nearClip("Near Depth Clipping (mm)", 500, 500, 4000)
+    , farClip("Far Clipping (mm)", 4000, 500, 4000)
     , retryInCounter(-1)
     {
     boundingColor = ofColor::green;
@@ -34,10 +36,17 @@ KinectBlobTracker::KinectBlobTracker()
     showInfo.set("Show Info", false);
     bFill.set("Fill", false);
     lineWidth.set("Line Width", 2.0, 0.0, 60.0);
+
+    farClip.addListener(this, &KinectBlobTracker::clipChange);
 }
 
 KinectBlobTracker::~KinectBlobTracker() {
     kinectAngle.removeListener(this, &KinectBlobTracker::setCameraTiltAngle);
+    farClip.removeListener(this, &KinectBlobTracker::clipChange);
+}
+
+void KinectBlobTracker::clipChange(float & val) {
+    kinect.setDepthClipping(nearClip, farClip);
 }
 
 void KinectBlobTracker::setup() {

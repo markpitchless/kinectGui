@@ -275,6 +275,8 @@ void kinectGuiApp::setupGui() {
     kinectParams.add( kinect.nearThreshold );
     kinectParams.add( kinect.farThreshold );
     kinectParams.add( kinect.bThresholds );
+    kinectParams.add( kinect.nearClip );
+    kinectParams.add( kinect.farClip );
     kinectParams.add( kinect.extraMaskDepth );
     kinectParams.add( kinect.bMask );
     guiKinectGroup->add( kinectParams );
