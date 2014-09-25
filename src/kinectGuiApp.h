@@ -37,6 +37,7 @@ class kinectGuiApp : public ofBaseApp, public ofxMidiListener {
         ofParameter<int> mainHue;
         ofParameter<int> mainSaturation;
         ofParameter<int> mainBrightness;
+        ofParameter<float> mainRotation;
 
         void setup();
         void update();

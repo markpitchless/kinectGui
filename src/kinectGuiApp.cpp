@@ -24,6 +24,7 @@ void kinectGuiApp::setup(){
     mainHue.set("Main Hue", 255, 0, 255);
     mainSaturation.set("Main Saturation", 255, 0, 255);
     imgMain.allocate(kinect.kinect.width, kinect.kinect.height, OF_IMAGE_COLOR_ALPHA);
+    mainRotation.set("Rotation", 0, 0, 360);
 
     // Midi
     // print ports to console
@@ -237,6 +238,7 @@ void kinectGuiApp::setupGui() {
     appParams.add( showGrayImg.set("Gray", false) );
     appParams.add( showBlobs.set("Show Blobs", false) );
     appParams.add( showVideo );
+    appParams.add( mainRotation );
     appParams.add( showMain );
     appParams.add( mainAlpha );
     appParams.add( mainHue );
@@ -424,12 +426,17 @@ void kinectGuiApp::draw(){
         easyCam.end();
     }
 
+    ofPushMatrix();
+    ofTranslate((w/2.0), (h/2.0));
+    ofRotate(mainRotation);
+    ofTranslate(-(w/2.0), -(h/2.0));
     if (showMain)
         imgMain.draw(0,0,w,h);
 
     if (showBlobs) {
         kinect.drawBlobs(0,0,w,h);
     }
+    ofPopMatrix();
 
     if (showJoystick)
         ofxGamepadHandler::get()->draw(42,80);
