@@ -26,6 +26,7 @@ void kinectGuiApp::setup(){
     imgMain.allocate(kinect.kinect.width, kinect.kinect.height, OF_IMAGE_COLOR_ALPHA);
     mainRotation.set("Rotation", 0, 0, 360);
     pointMode.set("Point Mode",6,0,6);
+    bPointColor.set("Point Color", true);
     // enum ofPrimitiveMode{
     //OF_PRIMITIVE_TRIANGLES
     //OF_PRIMITIVE_TRIANGLE_STRIP
@@ -241,6 +242,7 @@ void kinectGuiApp::setupGui() {
     appParams.add( joyDeadzone );
     appParams.add( showPointCloud.set("Show Point Cloud", true) );
     appParams.add( pointMode );
+    appParams.add( bPointColor );
     appParams.add( showColorImg.set("RGB", false) );
     appParams.add( showDepthImg.set("Depth", false) );
     appParams.add( showMaskImg.set("Mask", false) );
@@ -505,8 +507,12 @@ void kinectGuiApp::drawPointCloud() {
     for(int y = 0; y < h; y += step) {
         for(int x = 0; x < w; x += step) {
             if(kinect.kinect.getDistanceAt(x, y) > 0) {
-                //mesh.addColor(kinect.kinect.getColorAt(x,y));
-                mesh.addColor(kinect.lineColor.get());
+                if (bPointColor) {
+                    mesh.addColor(kinect.kinect.getColorAt(x,y));
+                }
+                else {
+                    mesh.addColor(kinect.lineColor.get());
+                }
                 mesh.addVertex(kinect.kinect.getWorldCoordinateAt(x, y));
             }
         }
