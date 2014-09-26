@@ -25,6 +25,15 @@ void kinectGuiApp::setup(){
     mainSaturation.set("Main Saturation", 255, 0, 255);
     imgMain.allocate(kinect.kinect.width, kinect.kinect.height, OF_IMAGE_COLOR_ALPHA);
     mainRotation.set("Rotation", 0, 0, 360);
+    pointMode.set("Point Mode",6,0,6);
+    // enum ofPrimitiveMode{
+    //OF_PRIMITIVE_TRIANGLES
+    //OF_PRIMITIVE_TRIANGLE_STRIP
+    //OF_PRIMITIVE_TRIANGLE_FAN
+    //OF_PRIMITIVE_LINES
+    //OF_PRIMITIVE_LINE_STRIP
+    //OF_PRIMITIVE_LINE_LOOP
+    //OF_PRIMITIVE_POINTS
 
     // Midi
     // print ports to console
@@ -231,6 +240,7 @@ void kinectGuiApp::setupGui() {
     appParams.add( showJoystick );
     appParams.add( joyDeadzone );
     appParams.add( showPointCloud.set("Show Point Cloud", true) );
+    appParams.add( pointMode );
     appParams.add( showColorImg.set("RGB", false) );
     appParams.add( showDepthImg.set("Depth", false) );
     appParams.add( showMaskImg.set("Mask", false) );
@@ -422,7 +432,8 @@ void kinectGuiApp::draw(){
 
     if (showPointCloud) {
         easyCam.begin();
-        kinect.drawPointCloud();
+        //kinect.drawPointCloud();
+        drawPointCloud();
         easyCam.end();
     }
 
@@ -478,6 +489,55 @@ void kinectGuiApp::drawKinectImages() {
 
     for (int i = 0; i < numImg; ++i)
         images[i]->draw(rects[i]);
+}
+
+void kinectGuiApp::drawPointCloud() {
+    int w = 640;
+    int h = 480;
+    ofMesh mesh;
+    //mesh.setMode(OF_PRIMITIVE_POINTS);
+    //mesh.setMode(OF_PRIMITIVE_TRIANGLES); // needs indices
+    //mesh.setMode(OF_PRIMITIVE_LINES); // excellent crazy lines
+    //mesh.setMode(OF_PRIMITIVE_LINE_STRIP); // wicked crazy lines
+    //mesh.setMode(OF_PRIMITIVE_LINE_LOOP); // wicked crazy lines
+    mesh.setMode(static_cast<ofPrimitiveMode>(pointMode.get()));
+    int step = 2;
+    for(int y = 0; y < h; y += step) {
+        for(int x = 0; x < w; x += step) {
+            if(kinect.kinect.getDistanceAt(x, y) > 0) {
+                //mesh.addColor(kinect.kinect.getColorAt(x,y));
+                mesh.addColor(kinect.lineColor.get());
+                mesh.addVertex(kinect.kinect.getWorldCoordinateAt(x, y));
+            }
+        }
+    }
+    glPointSize(3);
+    ofPushMatrix();
+    // the projected points are 'upside down' and 'backwards'
+    ofScale(1, -1, -1);
+    ofTranslate(0, 0, -1000); // center the points a bit
+    glEnable(GL_DEPTH_TEST);
+
+    mesh.drawVertices();
+
+    //int step = 2;
+    //for(int y = 0; y < h; y += step) {
+    //    for(int x = 0; x < w; x += step) {
+    //        if(kinect.kinect.getDistanceAt(x, y) > 0) {
+    //            //mesh.addVertex(kinect.kinect.getWorldCoordinateAt(x, y));
+    //            //mesh.addColor(kinect.kinect.getColorAt(x,y));
+    //            mesh = ofMesh::box(1.0, 1.0, 1.0);
+    //            ofPushMatrix();
+    //            ofTranslate(kinect.kinect.getWorldCoordinateAt(x, y));
+    //            //mesh.draw();
+    //            mesh.drawWireframe();
+    //            ofPopMatrix();
+    //        }
+    //    }
+    //}
+
+    glDisable(GL_DEPTH_TEST);
+    ofPopMatrix();
 }
 
 //--------------------------------------------------------------

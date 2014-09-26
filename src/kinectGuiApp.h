@@ -38,10 +38,12 @@ class kinectGuiApp : public ofBaseApp, public ofxMidiListener {
         ofParameter<int> mainSaturation;
         ofParameter<int> mainBrightness;
         ofParameter<float> mainRotation;
+        ofParameter<int> pointMode;
 
         void setup();
         void update();
         void draw();
+        void drawPointCloud();
 
         void keyPressed  (int key);
         void keyReleased(int key);
