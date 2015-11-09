@@ -37,6 +37,8 @@ public:
 	operator const bool & ()     { return value; }
 
 	ofAbstractParameter & getParameter(){ return value; }
+	virtual bool mouseScrolled(ofMouseEventArgs & args) { return false; }
+	virtual void generateDraw() { }
 
 protected:
 	ofImage* imgPtr;

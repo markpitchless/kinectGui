@@ -18,6 +18,8 @@ public:
 	virtual bool mouseDragged(ofMouseEventArgs & args){ return false; }
 	virtual bool mouseReleased(ofMouseEventArgs & args){ return false; }
 	virtual bool setValue(float mx, float my, bool bCheckBounds){ return false; }
+	virtual bool mouseScrolled(ofMouseEventArgs & args) { return false; }
+	virtual void generateDraw() { }
 
 protected:
     float min, max;

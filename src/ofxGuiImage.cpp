@@ -4,7 +4,7 @@ ofxGuiImage * ofxGuiImage::setup(string _name, ofImage* _imgPtr, bool _showName,
 	setName(_name);
 	showName = _showName;
 	b.width  = width;
-	b.height = _imgPtr->height*(width/_imgPtr->width);
+	b.height = _imgPtr->getHeight()*(width/_imgPtr->getWidth());
 	if (showName)
 	    b.height += defaultHeight;
 	imgPtr   = _imgPtr;
